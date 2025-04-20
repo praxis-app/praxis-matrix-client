@@ -63,6 +63,7 @@ export default function LoginForm() {
         )}
         <form onSubmit={onSubmit} className="space-y-4">
           <div className="space-y-2">
+            {/* TODO: Determine whether email or username should be used */}
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
@@ -77,7 +78,8 @@ export default function LoginForm() {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label htmlFor="password">Password</Label>
-              {/* <Link
+              {/* TODO: Uncomment when ready to add forgot password functionality
+              <Link
                 href="/forgot-password"
                 className="text-muted-foreground hover:text-primary text-sm"
               >
@@ -93,7 +95,8 @@ export default function LoginForm() {
               required
             />
           </div>
-          {/* <div className="flex items-center space-x-2">
+          {/* TODO: Uncomment when ready to add remember me functionality
+          <div className="flex items-center space-x-2">
             <Checkbox id="remember" />
             <Label htmlFor="remember" className="text-sm font-normal">
               Remember me
@@ -111,7 +114,8 @@ export default function LoginForm() {
           </Button>
         </form>
       </CardContent>
-      {/* <CardFooter className="flex justify-center border-t p-4">
+      {/* TODO: Uncomment when ready to add signup functionality
+      <CardFooter className="flex justify-center border-t p-4">
         <div className="text-muted-foreground text-sm">
           Don't have an account?{' '}
           <Link href="/signup" className="text-primary hover:underline">
