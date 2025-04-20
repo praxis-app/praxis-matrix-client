@@ -1,7 +1,7 @@
 // TODO: Add remaining layout and functionality - below is a WIP
 
 import * as sdk from 'matrix-js-sdk';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button/button';
 import {
   Card,
   CardContent,
@@ -42,6 +42,7 @@ export default function LoginForm() {
       localStorage.setItem('device_id', device_id);
     } catch (error) {
       setError('Invalid email or password. Please try again.');
+      console.error(error);
     } finally {
       setIsLoading(false);
     }
