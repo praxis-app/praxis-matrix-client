@@ -1,4 +1,4 @@
-'use client';
+// TODO: Add remaining layout and functionality - below is a WIP
 
 import * as sdk from 'matrix-js-sdk';
 import { Button } from '@/components/ui/button';
