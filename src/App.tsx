@@ -1,3 +1,5 @@
+// TODO: Add remaining layout and functionality - below is a WIP
+
 import { useEffect } from 'react';
 import LoginForm from './components/auth/login-form';
 import { useMatrixClient } from './hooks/shared.hooks';
