@@ -1,5 +1,6 @@
 'use client';
 
+import * as sdk from 'matrix-js-sdk';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -26,14 +27,19 @@ export default function LoginForm() {
     setError('');
 
     try {
-      // This is where you would typically call your authentication API
-      // For example: await signIn('credentials', { email, password })
-      console.log('Logging in with:', { email, password });
+      const client = sdk.createClient({
+        baseUrl: import.meta.env.VITE_SERVER_BASE_URL,
+      });
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const { user_id, access_token, device_id } = await client.loginRequest({
+        user: email,
+        password: password,
+        type: 'm.login.password',
+      });
 
-      // Redirect to dashboard after successful login here
+      localStorage.setItem('user_id', user_id);
+      localStorage.setItem('access_token', access_token);
+      localStorage.setItem('device_id', device_id);
     } catch (error) {
       setError('Invalid email or password. Please try again.');
     } finally {
@@ -60,10 +66,11 @@ export default function LoginForm() {
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
-              type="email"
+              // type="email"
+              autoComplete="email"
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="name@example.com"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
@@ -82,6 +89,7 @@ export default function LoginForm() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
               required
             />
           </div>
