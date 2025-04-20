@@ -1,10 +1,10 @@
-import { Button } from './components/ui/button';
+import LoginForm from './components/auth/login-form';
 
 const App = () => {
   return (
-    <div className="flex h-screen w-full items-center justify-center">
-      <Button>Praxis Matrix Client</Button>
-    </div>
+    <main className="flex flex-col items-center justify-center p-24">
+      <LoginForm />
+    </main>
   );
 };
 
