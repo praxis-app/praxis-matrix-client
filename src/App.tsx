@@ -1,7 +1,11 @@
 import { Button } from './components/ui/button';
 
 const App = () => {
-  return <Button>Praxis Matrix Client</Button>;
+  return (
+    <div className="flex h-screen w-full items-center justify-center">
+      <Button className="">Praxis Matrix Client</Button>
+    </div>
+  );
 };
 
 export default App;
