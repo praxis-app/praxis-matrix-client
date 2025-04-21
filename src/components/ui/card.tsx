@@ -1,4 +1,6 @@
-import { cn } from '@/lib/utils';
+// Ref: https://ui.shadcn.com/docs/components/card
+
+import { cn } from '@/lib/shared.utils';
 import * as React from 'react';
 
 function Card({ className, ...props }: React.ComponentProps<'div'>) {
@@ -6,7 +8,7 @@ function Card({ className, ...props }: React.ComponentProps<'div'>) {
     <div
       data-slot="card"
       className={cn(
-        'bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm',
+        'bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm md:max-w-[39rem]',
         className,
       )}
       {...props}
