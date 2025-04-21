@@ -1,8 +1,9 @@
 // TODO: Add remaining layout and functionality - below is a WIP
 
 import { useEffect } from 'react';
-import LoginForm from './components/auth/login-form';
-import { useMatrixClient } from './hooks/shared.hooks';
+import Layout from './layout';
+import LoginForm from '../auth/login-form';
+import { useMatrixClient } from '../../hooks/shared.hooks';
 
 const App = () => {
   const matrixClient = useMatrixClient();
@@ -18,15 +19,17 @@ const App = () => {
   }, [matrixClient]);
 
   return (
-    <main className="flex flex-col items-center justify-center p-24">
-      {!matrixClient ? (
-        <>Loading...</>
-      ) : matrixClient.isLoggedIn() ? (
-        <>Logged in</>
-      ) : (
-        <LoginForm />
-      )}
-    </main>
+    <Layout>
+      <div className="flex flex-col items-center justify-center p-24">
+        {!matrixClient ? (
+          <>Loading...</>
+        ) : matrixClient.isLoggedIn() ? (
+          <>Logged in</>
+        ) : (
+          <LoginForm />
+        )}
+      </div>
+    </Layout>
   );
 };
 
