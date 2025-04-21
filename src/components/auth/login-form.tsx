@@ -1,7 +1,6 @@
 // TODO: Add remaining layout and functionality - below is a WIP
 
-import * as sdk from 'matrix-js-sdk';
-import { Button } from '@/components/ui/button/button';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -11,74 +10,99 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Loader2 } from 'lucide-react';
-import type React from 'react';
-import { useState } from 'react';
+import { NavigationPaths } from '@/constants/shared.constants';
+import { useAppStore } from '@/store/app.store';
+import { AuthType, ClientEvent, createClient, SyncState } from 'matrix-js-sdk';
+import { FormEvent, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { LuLoaderCircle } from 'react-icons/lu';
+import { useNavigate } from 'react-router-dom';
 
-export default function LoginForm() {
+export const LoginForm = () => {
+  const { setMatrixClient } = useAppStore();
+
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  async function onSubmit(event: React.FormEvent) {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
     setIsLoading(true);
     setError('');
 
     try {
-      const client = sdk.createClient({
+      const baseClient = createClient({
         baseUrl: import.meta.env.VITE_SERVER_BASE_URL,
       });
 
-      const { user_id, access_token, device_id } = await client.loginRequest({
-        user: email,
-        password: password,
-        type: 'm.login.password',
-      });
+      const { user_id, access_token, device_id } =
+        await baseClient.loginRequest({
+          user: email,
+          password: password,
+          type: AuthType.Password,
+        });
 
       localStorage.setItem('user_id', user_id);
       localStorage.setItem('access_token', access_token);
       localStorage.setItem('device_id', device_id);
+
+      const authenticatedClient = createClient({
+        baseUrl: import.meta.env.VITE_SERVER_BASE_URL,
+        accessToken: access_token,
+        userId: user_id,
+        deviceId: device_id,
+      });
+
+      await authenticatedClient.startClient({
+        initialSyncLimit: 10,
+      });
+
+      // Make client available once it's ready
+      authenticatedClient.once(ClientEvent.Sync, (state) => {
+        if (state === SyncState.Prepared) {
+          setMatrixClient(authenticatedClient);
+        }
+      });
+
+      navigate(NavigationPaths.Home);
     } catch (error) {
       setError('Invalid email or password. Please try again.');
       console.error(error);
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   return (
     <Card className="mx-auto w-full max-w-md">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold">Login</CardTitle>
-        <CardDescription>
-          Enter your email and password to access your account
-        </CardDescription>
+        <CardTitle className="text-xl font-bold">
+          {t('auth.prompts.enterCredentials')}
+        </CardTitle>
+        <CardDescription>{t('auth.prompts.enterCredentials')}</CardDescription>
       </CardHeader>
       <CardContent>
-        {error && (
-          <div className="mb-4 rounded-md bg-red-50 p-3 text-sm text-red-500">
-            {error}
-          </div>
-        )}
         <form onSubmit={onSubmit} className="space-y-4">
           <div className="space-y-2">
             {/* TODO: Determine whether email or username should be used */}
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">{t('auth.labels.email')}</Label>
             <Input
               id="email"
               // type="email"
               autoComplete="email"
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="name@example.com"
+              placeholder={t('auth.placeholders.email')}
               value={email}
               required
             />
           </div>
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t('auth.labels.password')}</Label>
               {/* TODO: Uncomment when ready to add forgot password functionality
               <Link
                 href="/forgot-password"
@@ -103,10 +127,15 @@ export default function LoginForm() {
               Remember me
             </Label>
           </div> */}
+
+          {error && (
+            <div className="mb-4 p-0.5 text-sm text-red-500">{error}</div>
+          )}
+
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <LuLoaderCircle className="mr-2 h-4 w-4 animate-spin" />
                 Logging in...
               </>
             ) : (
@@ -126,4 +155,4 @@ export default function LoginForm() {
       </CardFooter> */}
     </Card>
   );
-}
+};

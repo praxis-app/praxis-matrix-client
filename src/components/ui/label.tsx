@@ -1,4 +1,6 @@
-import { cn } from '@/lib/utils';
+// Ref: https://ui.shadcn.com/docs/components/label
+
+import { cn } from '@/lib/shared.utils';
 import * as LabelPrimitive from '@radix-ui/react-label';
 import * as React from 'react';
 
