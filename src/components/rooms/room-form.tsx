@@ -29,6 +29,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
@@ -63,6 +64,8 @@ export function CreateRoomForm() {
       visibility: 'public',
     },
   });
+
+  const { t } = useTranslation();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
@@ -142,19 +145,25 @@ export function CreateRoomForm() {
               name="visibility"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Room Visibility</FormLabel>
+                  <FormLabel>{t('rooms.labels.visibility')}</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select room visibility" />
+                        <SelectValue
+                          placeholder={t('rooms.placeholders.visibility')}
+                        />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="public">Public</SelectItem>
-                      <SelectItem value="private">Private</SelectItem>
+                      <SelectItem value="public">
+                        {t('rooms.options.public')}
+                      </SelectItem>
+                      <SelectItem value="private">
+                        {t('rooms.options.private')}
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                   <FormDescription>
@@ -168,7 +177,9 @@ export function CreateRoomForm() {
 
             <CardFooter className="px-0 pt-6">
               <Button type="submit" disabled={isSubmitting} className="w-full">
-                {isSubmitting ? 'Creating...' : 'Create Room'}
+                {isSubmitting
+                  ? t('rooms.prompts.creatingRoom')
+                  : t('rooms.actions.create')}
               </Button>
             </CardFooter>
           </form>

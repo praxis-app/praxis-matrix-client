@@ -14,12 +14,15 @@ import { Label } from '@/components/ui/label';
 import { Loader2 } from 'lucide-react';
 import type React from 'react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  const { t } = useTranslation();
 
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -51,10 +54,10 @@ export default function LoginForm() {
   return (
     <Card className="mx-auto w-full max-w-md">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold">Login</CardTitle>
-        <CardDescription>
-          Enter your email and password to access your account
-        </CardDescription>
+        <CardTitle className="text-2xl font-bold">
+          {t('auth.prompts.enterCredentials')}
+        </CardTitle>
+        <CardDescription>{t('auth.prompts.enterCredentials')}</CardDescription>
       </CardHeader>
       <CardContent>
         {error && (
@@ -65,20 +68,20 @@ export default function LoginForm() {
         <form onSubmit={onSubmit} className="space-y-4">
           <div className="space-y-2">
             {/* TODO: Determine whether email or username should be used */}
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">{t('auth.labels.email')}</Label>
             <Input
               id="email"
               // type="email"
               autoComplete="email"
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="name@example.com"
+              placeholder={t('auth.placeholders.email')}
               value={email}
               required
             />
           </div>
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t('auth.labels.password')}</Label>
               {/* TODO: Uncomment when ready to add forgot password functionality
               <Link
                 href="/forgot-password"

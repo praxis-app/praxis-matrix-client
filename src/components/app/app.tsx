@@ -1,12 +1,14 @@
 // TODO: Add remaining layout and functionality - below is a WIP
 
 import { useEffect } from 'react';
-import Layout from './layout';
-import LoginForm from '../auth/login-form';
+import { useTranslation } from 'react-i18next';
 import { useMatrixClient } from '../../hooks/shared.hooks';
+import LoginForm from '../auth/login-form';
+import Layout from './layout';
 
 const App = () => {
   const matrixClient = useMatrixClient();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (matrixClient) {
@@ -20,11 +22,12 @@ const App = () => {
 
   return (
     <Layout>
+      {/* TODO: Move styling to layout */}
       <div className="flex flex-col items-center justify-center p-24">
         {!matrixClient ? (
-          <>Loading...</>
+          <>{t('prompts.loading')}</>
         ) : matrixClient.isLoggedIn() ? (
-          <>Logged in</>
+          <>{t('auth.prompts.loggedIn')}</>
         ) : (
           <LoginForm />
         )}
