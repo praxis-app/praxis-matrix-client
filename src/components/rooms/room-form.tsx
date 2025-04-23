@@ -1,13 +1,12 @@
-'use client';
-
 import { Button } from '@/components/ui/button/button';
 import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -53,8 +52,15 @@ const formSchema = z.object({
   }),
 });
 
-export function CreateRoomForm() {
+interface Props {
+  trigger: React.ReactNode;
+  open?: boolean;
+  setOpen?(open: boolean): void;
+}
+
+function RoomForm({ trigger, open, setOpen }: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { t } = useTranslation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -64,8 +70,6 @@ export function CreateRoomForm() {
       visibility: 'public',
     },
   });
-
-  const { t } = useTranslation();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
@@ -81,6 +85,14 @@ export function CreateRoomForm() {
         description: `Room "${values.name}" has been created.`,
       });
 
+      // Close the dialog
+      if (setOpen) {
+        setOpen(false);
+      }
+
+      // Reset the form
+      form.reset();
+
       // Redirect to the rooms list or the new room
       // router.push("/rooms");
     } catch (error) {
@@ -95,11 +107,12 @@ export function CreateRoomForm() {
   }
 
   return (
-    <Card className="mx-auto w-full max-w-2xl">
-      <CardHeader>
-        <CardTitle>Create a New Chat Room</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
+      <DialogContent className="sm:max-w-2xl">
+        <DialogHeader>
+          <DialogTitle>Create a New Chat Room</DialogTitle>
+        </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
@@ -175,16 +188,18 @@ export function CreateRoomForm() {
               )}
             />
 
-            <CardFooter className="px-0 pt-6">
+            <DialogFooter>
               <Button type="submit" disabled={isSubmitting} className="w-full">
                 {isSubmitting
                   ? t('rooms.prompts.creatingRoom')
                   : t('rooms.actions.create')}
               </Button>
-            </CardFooter>
+            </DialogFooter>
           </form>
         </Form>
-      </CardContent>
-    </Card>
+      </DialogContent>
+    </Dialog>
   );
 }
+
+export default RoomForm;
