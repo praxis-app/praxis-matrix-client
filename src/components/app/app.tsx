@@ -1,18 +1,15 @@
 // TODO: Add remaining layout and functionality - below is a WIP
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Outlet } from 'react-router-dom';
 import { useMatrixClient } from '../../hooks/shared.hooks';
 import LoginForm from '../auth/login-form';
-import RoomForm from '../rooms/room-form';
-import { Button } from '../ui/button/button';
 import Layout from './layout';
 
 const App = () => {
   const matrixClient = useMatrixClient();
   const { t } = useTranslation();
-
-  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (matrixClient) {
@@ -24,18 +21,16 @@ const App = () => {
     }
   }, [matrixClient]);
 
+  // TODO: Move loading to layout
+
+  // TODO: Move login to own page - redirect based on auth state
+
   return (
     <Layout>
       {!matrixClient ? (
         <>{t('prompts.loading')}</>
       ) : matrixClient.isLoggedIn() ? (
-        <div className="absolute top-4 left-4">
-          <RoomForm
-            trigger={<Button variant="outline">Create Room</Button>}
-            open={open}
-            setOpen={setOpen}
-          />
-        </div>
+        <Outlet />
       ) : (
         <LoginForm />
       )}
