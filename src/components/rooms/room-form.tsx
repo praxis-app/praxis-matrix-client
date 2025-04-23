@@ -25,7 +25,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { useMatrixClient } from '@/hooks/shared.hooks';
+import { useMatrixClient } from '@/hooks/matrix.hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Visibility } from 'matrix-js-sdk';
 import { useState } from 'react';

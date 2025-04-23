@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Outlet } from 'react-router-dom';
-import { useMatrixClient } from '../../hooks/shared.hooks';
+import { useMatrixClient } from '../../hooks/matrix.hooks';
 import LoginForm from '../auth/login-form';
 import Layout from './layout';
 
