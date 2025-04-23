@@ -8,7 +8,7 @@ interface Props {
 
 const Layout = ({ children }: Props) => {
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="praxis-theme">
+    <ThemeProvider defaultTheme="system" storageKey="praxis-theme">
       <main>
         <ModeToggle className="absolute top-4 right-4" />
         {children}
