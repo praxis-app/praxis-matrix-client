@@ -25,15 +25,17 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { useMatrixClient } from '@/hooks/shared.hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Visibility } from 'matrix-js-sdk';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import * as z from 'zod';
+import * as zod from 'zod';
 
-const formSchema = z.object({
-  name: z
+const formSchema = zod.object({
+  name: zod
     .string()
     .min(3, {
       message: 'Room name must be at least 3 characters.',
@@ -41,13 +43,13 @@ const formSchema = z.object({
     .max(50, {
       message: 'Room name must not exceed 50 characters.',
     }),
-  description: z
+  description: zod
     .string()
     .max(500, {
       message: 'Description must not exceed 500 characters.',
     })
     .optional(),
-  visibility: z.enum(['public', 'private'], {
+  visibility: zod.enum(['public', 'private'], {
     required_error: 'Please select room visibility.',
   }),
 });
@@ -58,11 +60,12 @@ interface Props {
   setOpen?(open: boolean): void;
 }
 
+// TODO: Add i18n
+
 function RoomForm({ trigger, open, setOpen }: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { t } = useTranslation();
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<zod.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
@@ -71,26 +74,32 @@ function RoomForm({ trigger, open, setOpen }: Props) {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  const matrixClient = useMatrixClient();
+  const { t } = useTranslation();
+
+  async function onSubmit(values: zod.infer<typeof formSchema>) {
+    if (!matrixClient) {
+      return;
+    }
     setIsSubmitting(true);
 
     try {
-      // Here you would integrate with Matrix API to create the room
-      console.log('Creating room with values:', values);
-
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      toast('Room created successfully', {
-        description: `Room "${values.name}" has been created.`,
+      const room = await matrixClient.createRoom({
+        name: values.name,
+        topic: values.description,
+        visibility:
+          values.visibility === 'public'
+            ? Visibility.Public
+            : Visibility.Private,
       });
 
-      // Close the dialog
+      toast('Room created successfully', {
+        description: `Room "${values.name}" has been created with ID ${room.room_id}.`,
+      });
+
       if (setOpen) {
         setOpen(false);
       }
-
-      // Reset the form
       form.reset();
 
       // Redirect to the rooms list or the new room
