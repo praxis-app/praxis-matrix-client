@@ -1,4 +1,3 @@
-import { ModeToggle } from '../theme/mode-toggle';
 import { ThemeProvider } from '../theme/theme-provider';
 import { Toaster } from '../ui/sonner';
 
@@ -9,10 +8,7 @@ interface Props {
 const Layout = ({ children }: Props) => {
   return (
     <ThemeProvider>
-      <main>
-        <ModeToggle className="absolute top-4 right-4" />
-        {children}
-      </main>
+      <main>{children}</main>
       <Toaster />
     </ThemeProvider>
   );
