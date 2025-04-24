@@ -39,7 +39,7 @@
     },
     "placeholders": {
       "name": "Enter room name",
-      "description": "Enter room description",
+      "description": "Enter room description (optional)",
       "visibility": "Select room visibility"
     },
     "actions": {
@@ -49,8 +49,15 @@
       "public": "Public",
       "private": "Private"
     },
+    "descriptions": {
+      "roomName": "This is the name that will be displayed for your chat room.",
+      "roomVisibility": "Public rooms can be found in the room directory. Private rooms require an invitation."
+    },
     "prompts": {
-      "creatingRoom": "Creating..."
+      "creatingRoom": "Creating...",
+      "roomDescription": "Provide a brief description of the room's purpose.",
+      "startConversation": "Start a conversation with your friends or colleagues.",
+      "createRoom": "Create a New Chat Room"
     }
   }
 }

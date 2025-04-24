@@ -121,10 +121,10 @@ function RoomForm({ trigger, open, setOpen }: Props) {
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Create a New Chat Room</DialogTitle>
+          <DialogTitle>{t('rooms.prompts.createRoom')}</DialogTitle>
         </DialogHeader>
         <DialogDescription>
-          Start a conversation with your friends or colleagues.
+          {t('rooms.prompts.startConversation')}
         </DialogDescription>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -133,12 +133,15 @@ function RoomForm({ trigger, open, setOpen }: Props) {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Room Name</FormLabel>
+                  <FormLabel>{t('rooms.labels.name')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter room name" {...field} />
+                    <Input
+                      placeholder={t('rooms.placeholders.name')}
+                      {...field}
+                    />
                   </FormControl>
                   <FormDescription>
-                    This is the name that will be displayed for your chat room.
+                    {t('rooms.descriptions.roomName')}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -150,16 +153,16 @@ function RoomForm({ trigger, open, setOpen }: Props) {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description</FormLabel>
+                  <FormLabel>{t('rooms.labels.description')}</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Enter room description (optional)"
+                      placeholder={t('rooms.placeholders.description')}
                       className="resize-none"
                       {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    Provide a brief description of the room's purpose.
+                    {t('rooms.prompts.roomDescription')}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -193,8 +196,7 @@ function RoomForm({ trigger, open, setOpen }: Props) {
                     </SelectContent>
                   </Select>
                   <FormDescription>
-                    Public rooms can be found in the room directory. Private
-                    rooms require an invitation.
+                    {t('rooms.descriptions.roomVisibility')}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
