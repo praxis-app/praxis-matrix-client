@@ -4,7 +4,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useTheme } from '@/hooks/theme.hooks';
+import { useTheme } from '@/hooks/use-theme';
 import { cn } from '@/lib/utils';
 import { Moon, Sun } from 'lucide-react';
 import { Button } from '../ui/button/button';
