@@ -7,7 +7,7 @@ import {
 import { useTheme } from '@/hooks/theme.hooks';
 import { cn } from '@/lib/utils';
 import { Moon, Sun } from 'lucide-react';
-import { Button } from '../ui/button/button';
+import Button from '../ui/button/button';
 
 interface Props {
   className?: string;

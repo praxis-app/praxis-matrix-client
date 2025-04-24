@@ -1,5 +1,5 @@
 import RoomForm from '@/components/rooms/room-form';
-import { Button } from '@/components/ui/button/button';
+import Button from '@/components/ui/button/button';
 import { useState } from 'react';
 
 const HomePage = () => {
