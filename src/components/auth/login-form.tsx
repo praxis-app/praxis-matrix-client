@@ -1,6 +1,5 @@
 // TODO: Add remaining layout and functionality - below is a WIP
 
-import * as sdk from 'matrix-js-sdk';
 import Button from '@/components/ui/button/button';
 import {
   Card,
@@ -12,6 +11,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Loader2 } from 'lucide-react';
+import * as sdk from 'matrix-js-sdk';
 import type React from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
