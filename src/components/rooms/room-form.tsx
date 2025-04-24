@@ -2,6 +2,7 @@ import Button from '@/components/ui/button/button';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -122,6 +123,9 @@ function RoomForm({ trigger, open, setOpen }: Props) {
         <DialogHeader>
           <DialogTitle>Create a New Chat Room</DialogTitle>
         </DialogHeader>
+        <DialogDescription>
+          Start a conversation with your friends or colleagues.
+        </DialogDescription>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
