@@ -27,21 +27,12 @@ export const useMatrixClient = () => {
         initialSyncLimit: 10,
       });
 
-      // TODO: Remove when no longer needed for testing
-      // const rooms = await client.getJoinedRooms();
-      // console.log('⭐️ Rooms:', rooms);
-
-      // TODO: Remove when no longer needed for testing
+      // Make client available once it's ready
       client.once(ClientEvent.Sync, (state) => {
         if (state === SyncState.Prepared) {
-          const rooms = client.getRooms();
-          rooms.forEach((room) => {
-            console.log('⭐️ Room:', room.name, room.roomId);
-          });
+          setMatrixClient(client);
         }
       });
-
-      setMatrixClient(client);
     };
 
     initClient();

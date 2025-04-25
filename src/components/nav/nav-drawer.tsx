@@ -1,4 +1,7 @@
+import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { ArrowLeft, ChevronRight } from 'lucide-react';
+import { Room } from 'matrix-js-sdk';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import appIconImg from '../../assets/images/app-icon.png';
 import { Button } from '../ui/button/button';
@@ -16,6 +19,20 @@ interface Props {
 }
 
 export const NavDrawer = ({ trigger }: Props) => {
+  const [visibleRooms, setVisibleRooms] = useState<Room[]>([]);
+  const matrixClient = useMatrixClient();
+
+  useEffect(() => {
+    if (!matrixClient) {
+      return;
+    }
+    const init = async () => {
+      const rooms = matrixClient.getVisibleRooms();
+      setVisibleRooms(rooms);
+    };
+    init();
+  }, [matrixClient]);
+
   const { t } = useTranslation();
 
   return (
@@ -40,7 +57,11 @@ export const NavDrawer = ({ trigger }: Props) => {
           </SheetTitle>
           <SheetDescription className="text-left"></SheetDescription>
         </SheetHeader>
-        <div className="h-full w-full rounded-t-2xl bg-(--accent) p-2"></div>
+        <div className="h-full w-full rounded-t-2xl bg-(--accent) p-2">
+          {visibleRooms.map((room) => (
+            <div key={room.roomId}>{room.name}</div>
+          ))}
+        </div>
       </SheetContent>
     </Sheet>
   );
