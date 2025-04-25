@@ -29,7 +29,7 @@ export const NavDrawer = ({ trigger }: Props) => {
       </SheetTrigger>
       <SheetContent
         side="left"
-        className="min-w-[100%] px-0 pt-4"
+        className="min-w-[100%] border-r-0 px-0 pt-4"
         hideCloseButton
       >
         <SheetHeader>
