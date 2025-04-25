@@ -1,19 +1,41 @@
-import { SheetContent } from '../ui/sheet';
-
-import { Menu } from 'lucide-react';
+import { ArrowLeft, ChevronRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import appIconImg from '../../assets/images/app-icon.png';
 import { Button } from '../ui/button/button';
-import { Sheet, SheetTrigger } from '../ui/sheet';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '../ui/sheet';
 
-export const NavDrawer = () => {
+interface Props {
+  trigger?: React.ReactNode;
+}
+
+export const NavDrawer = ({ trigger }: Props) => {
+  const { t } = useTranslation();
+
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" aria-label="Menu">
-          <Menu className="h-5 w-5 text-gray-600" />
-        </Button>
+        {trigger ?? (
+          <Button variant="ghost" size="icon">
+            <ArrowLeft className="size-6" />
+          </Button>
+        )}
       </SheetTrigger>
-      <SheetContent side="left" className="w-[250px] sm:w-[300px]">
-        Content
+      <SheetContent side="left" className="min-w-[100%] pt-4" hideCloseButton>
+        <SheetHeader>
+          <SheetTitle className="flex items-center gap-2">
+            <img src={appIconImg} alt={t('brand')} className="size-9" />
+            {t('brand')}
+            <ChevronRight className="mt-0.5 size-4 stroke-(--color-neutral-400)" />
+          </SheetTitle>
+          <SheetDescription className="text-left"></SheetDescription>
+        </SheetHeader>
       </SheetContent>
     </Sheet>
   );
