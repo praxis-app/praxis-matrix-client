@@ -1,8 +1,9 @@
 import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { ArrowLeft, ChevronRight } from 'lucide-react';
 import { Room } from 'matrix-js-sdk';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import appIconImg from '../../assets/images/app-icon.png';
 import { Button } from '../ui/button/button';
 import {
@@ -15,7 +16,7 @@ import {
 } from '../ui/sheet';
 
 interface Props {
-  trigger?: React.ReactNode;
+  trigger?: ReactNode;
 }
 
 export const NavDrawer = ({ trigger }: Props) => {
@@ -60,7 +61,9 @@ export const NavDrawer = ({ trigger }: Props) => {
 
         <div className="bg-background h-full w-full rounded-t-2xl p-7 dark:bg-(--accent)">
           {visibleRooms.map((room) => (
-            <div key={room.roomId}>{room.name}</div>
+            <Link to={`/rooms/${room.roomId}`} key={room.roomId}>
+              <div>{room.name}</div>
+            </Link>
           ))}
         </div>
       </SheetContent>
