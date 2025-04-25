@@ -46,7 +46,7 @@ export const NavDrawer = ({ trigger }: Props) => {
       </SheetTrigger>
       <SheetContent
         side="left"
-        className="min-w-[100%] border-r-0 bg-zinc-900 px-0 pt-4"
+        className="min-w-[100%] border-r-0 bg-(--accent) px-0 pt-4 dark:bg-(--background)"
         hideCloseButton
       >
         <SheetHeader>
@@ -57,7 +57,8 @@ export const NavDrawer = ({ trigger }: Props) => {
           </SheetTitle>
           <SheetDescription className="text-left"></SheetDescription>
         </SheetHeader>
-        <div className="h-full w-full rounded-t-2xl bg-(--accent) p-7">
+
+        <div className="bg-background h-full w-full rounded-t-2xl p-7 dark:bg-(--accent)">
           {visibleRooms.map((room) => (
             <div key={room.roomId}>{room.name}</div>
           ))}
