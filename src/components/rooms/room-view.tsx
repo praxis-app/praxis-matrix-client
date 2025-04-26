@@ -14,7 +14,6 @@ export const RoomView = ({ room }: Props) => {
   const messages = allEvents.filter(
     (evt) => evt.getType() === 'm.room.message',
   );
-  console.log('Messages', messages);
 
   return (
     <div className="fixed top-0 right-0 bottom-0 left-0 flex">
@@ -22,6 +21,14 @@ export const RoomView = ({ room }: Props) => {
 
       <div className="flex flex-1 flex-col">
         <RoomTopNav room={room} />
+
+        <div className="flex flex-1 flex-col">
+          {messages.map((message) => (
+            <div key={message.getId()}>
+              {JSON.stringify(message.getContent())}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
