@@ -5,7 +5,7 @@ import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { translate } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Image, SendHorizonal } from 'lucide-react';
-import { EventType, MsgType } from 'matrix-js-sdk';
+import { MsgType } from 'matrix-js-sdk';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -47,15 +47,10 @@ export const MessageForm = ({ roomId }: Props) => {
     setIsSubmitting(true);
 
     try {
-      // TODO: Convert back to sendMessage
-      const messageResponse = await matrixClient.sendEvent(
-        roomId,
-        EventType.RoomMessage,
-        {
-          body: values.body,
-          msgtype: MsgType.Text,
-        },
-      );
+      const messageResponse = await matrixClient.sendMessage(roomId, {
+        body: values.body,
+        msgtype: MsgType.Text,
+      });
 
       toast('Message sent successfully', {
         description: `Message ID: ${messageResponse.event_id}`,
@@ -63,15 +58,9 @@ export const MessageForm = ({ roomId }: Props) => {
       console.log(messageResponse);
 
       form.reset();
-
-      // Redirect to the rooms list or the new room
-      // router.push("/rooms");
     } catch (error) {
-      console.error('Error creating room:', error);
-      toast('Error creating room', {
-        description:
-          'There was a problem creating your room. Please try again.',
-      });
+      toast('Error sending message', { description: 'Please try again.' });
+      console.error('Error sending message:', error);
     } finally {
       setIsSubmitting(false);
     }
