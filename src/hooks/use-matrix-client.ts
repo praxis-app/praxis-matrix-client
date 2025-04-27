@@ -1,42 +1,26 @@
-import {
-  ClientEvent,
-  createClient,
-  SyncState,
-  type MatrixClient,
-} from 'matrix-js-sdk';
-import { useEffect, useState } from 'react';
+import { MatrixClient, RoomEvent } from 'matrix-js-sdk';
+import { createContext, useContext, useEffect } from 'react';
 
-export const useMatrixClient = () => {
-  const [matrixClient, setMatrixClient] = useState<MatrixClient | null>(null);
+export const MatrixClientContext = createContext<MatrixClient | null>(null);
+
+export const useMatrixClient = (): MatrixClient => {
+  const client = useContext(MatrixClientContext);
+  if (!client) {
+    throw new Error('useMatrixClient must be inside MatrixProvider');
+  }
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('access_token');
-    const userId = localStorage.getItem('user_id');
-
-    if (matrixClient || !accessToken || !userId) {
+    if (!client) {
       return;
     }
 
-    const initClient = async () => {
-      const client = createClient({
-        baseUrl: import.meta.env.VITE_SERVER_BASE_URL,
-        accessToken,
-        userId,
-      });
-      await client.startClient({
-        initialSyncLimit: 10,
-      });
+    client.on(RoomEvent.Timeline, (event) => {
+      if (event.getType() !== 'm.room.message') {
+        return;
+      }
+      console.log('💥💥💥', event.event.content?.body);
+    });
+  }, [client]);
 
-      // Make client available once it's ready
-      client.once(ClientEvent.Sync, (state) => {
-        if (state === SyncState.Prepared) {
-          setMatrixClient(client);
-        }
-      });
-    };
-
-    initClient();
-  }, [matrixClient]);
-
-  return matrixClient;
+  return client;
 };
