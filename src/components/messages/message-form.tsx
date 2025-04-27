@@ -20,20 +20,31 @@
 // paddingY={0.2}
 // flex={1}
 
-import { Textarea } from '../ui/textarea';
+import { Image, SendHorizonal } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Button } from '../ui/button/button';
+import { Textarea } from '../ui/textarea';
 
 export const MessageForm = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="w-full overflow-y-auto border-t p-1 px-1.5">
-      <div className="bg-secondary rounded-md p-1 transition-colors duration-200">
+    <div className="w-full overflow-y-auto border-t bg-(--card) p-1 px-1.5">
+      <div className="rounded-md p-1 transition-colors duration-200">
         <Textarea
           placeholder={t('messages.placeholders.sendMessage')}
-          className="resize-none"
+          className="resize-none border-none"
           rows={1}
         />
+
+        <div className="flex justify-between">
+          <Button variant="ghost">
+            <Image />
+          </Button>
+          <Button variant="ghost">
+            <SendHorizonal />
+          </Button>
+        </div>
       </div>
     </div>
   );
