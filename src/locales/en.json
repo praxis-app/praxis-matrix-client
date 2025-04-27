@@ -59,5 +59,11 @@
       "startConversation": "Start a conversation with your friends or colleagues.",
       "createRoom": "Create a New Chat Room"
     }
+  },
+
+  "messages": {
+    "placeholders": {
+      "sendMessage": "Send a message..."
+    }
   }
 }

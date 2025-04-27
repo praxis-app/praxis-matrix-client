@@ -1,5 +1,6 @@
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Room } from 'matrix-js-sdk';
+import { MessageForm } from '../messages/message-form';
 import { LeftNav } from '../nav/left-nav';
 import { RoomTopNav } from './room-top-nav';
 
@@ -10,10 +11,10 @@ interface Props {
 export const RoomView = ({ room }: Props) => {
   const isMobile = useIsMobile();
 
-  const allEvents = room?.getLiveTimeline().getEvents() || [];
-  const messages = allEvents.filter(
-    (evt) => evt.getType() === 'm.room.message',
-  );
+  const messages = room
+    .getLiveTimeline()
+    .getEvents()
+    .filter((e) => e.getType() === 'm.room.message');
 
   return (
     <div className="fixed top-0 right-0 bottom-0 left-0 flex">
@@ -29,6 +30,8 @@ export const RoomView = ({ room }: Props) => {
             </div>
           ))}
         </div>
+
+        <MessageForm />
       </div>
     </div>
   );
