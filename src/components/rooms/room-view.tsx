@@ -25,13 +25,11 @@ export const RoomView = ({ room }: Props) => {
 
         <div className="flex flex-1 flex-col">
           {messages.map((message) => (
-            <div key={message.getId()}>
-              {JSON.stringify(message.getContent())}
-            </div>
+            <div key={message.getId()}>{message.getContent().body}</div>
           ))}
         </div>
 
-        <MessageForm />
+        <MessageForm roomId={room.roomId} />
       </div>
     </div>
   );

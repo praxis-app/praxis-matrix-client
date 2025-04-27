@@ -64,6 +64,9 @@
   "messages": {
     "placeholders": {
       "sendMessage": "Send a message..."
+    },
+    "errors": {
+      "longBody": "Message body cannot exceed 6000 characters"
     }
   }
 }
