@@ -1,8 +1,8 @@
 import { useMatrixClient } from '@/hooks/use-matrix-client';
-import { ArrowLeft, ChevronRight } from 'lucide-react';
 import { Room } from 'matrix-js-sdk';
 import { ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { LuArrowLeft, LuChevronRight } from 'react-icons/lu';
 import { Link } from 'react-router-dom';
 import appIconImg from '../../assets/images/app-icon.png';
 import { Button } from '../ui/button/button';
@@ -41,7 +41,7 @@ export const NavDrawer = ({ trigger }: Props) => {
       <SheetTrigger asChild>
         {trigger ?? (
           <Button variant="ghost" size="icon">
-            <ArrowLeft className="size-6" />
+            <LuArrowLeft className="size-[1.45rem]" />
           </Button>
         )}
       </SheetTrigger>
@@ -54,7 +54,7 @@ export const NavDrawer = ({ trigger }: Props) => {
           <SheetTitle className="flex items-center gap-2 px-6 pb-2 font-medium tracking-[0.02em]">
             <img src={appIconImg} alt={t('brand')} className="size-9" />
             {t('brand')}
-            <ChevronRight className="mt-0.5 ml-0.5 size-4 stroke-(--color-zinc-400)" />
+            <LuChevronRight className="mt-0.5 ml-0.5 size-4" />
           </SheetTitle>
           <SheetDescription className="text-left"></SheetDescription>
         </SheetHeader>

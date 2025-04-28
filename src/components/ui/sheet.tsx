@@ -1,8 +1,8 @@
 import { cn } from '@/lib/utils';
 import * as SheetPrimitive from '@radix-ui/react-dialog';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { X } from 'lucide-react';
 import * as React from 'react';
+import { LuX } from 'react-icons/lu';
 
 const Sheet = SheetPrimitive.Root;
 const SheetTrigger = SheetPrimitive.Trigger;
@@ -62,7 +62,7 @@ const SheetContent = React.forwardRef<
     >
       {!hideCloseButton && (
         <SheetPrimitive.Close className="ring-offset-background focus:ring-ring data-[state=open]:bg-secondary absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:pointer-events-none">
-          <X className="h-4 w-4" />
+          <LuX className="h-4 w-4" />
           <span className="sr-only">Close</span>
         </SheetPrimitive.Close>
       )}
