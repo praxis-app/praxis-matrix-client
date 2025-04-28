@@ -5,11 +5,11 @@ import { KeyCodes } from '@/constants/shared.constants';
 import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { translate } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Image, SendHorizonal } from 'lucide-react';
 import { MsgType } from 'matrix-js-sdk';
 import { KeyboardEventHandler, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { MdImage, MdSend } from 'react-icons/md';
 import { toast } from 'sonner';
 import * as zod from 'zod';
 import { Button } from '../ui/button/button';
@@ -119,15 +119,20 @@ export const MessageForm = ({ roomId }: Props) => {
           />
 
           <div className="flex justify-between">
-            <Button variant="ghost" disabled={form.formState.isSubmitting}>
-              <Image />
+            <Button
+              variant="ghost"
+              size="icon"
+              disabled={form.formState.isSubmitting}
+            >
+              <MdImage className="size-6" />
             </Button>
             <Button
               type="submit"
               variant="ghost"
+              size="icon"
               disabled={form.formState.isSubmitting}
             >
-              <SendHorizonal />
+              <MdSend className="size-5" />
             </Button>
           </div>
         </div>
