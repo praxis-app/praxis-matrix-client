@@ -68,7 +68,7 @@ export const MessageForm = ({ roomId }: Props) => {
   }, []);
 
   const onSubmit = async (values: zod.infer<typeof formSchema>) => {
-    if (!matrixClient) {
+    if (!matrixClient || !values.body.trim()) {
       return;
     }
 
@@ -100,9 +100,9 @@ export const MessageForm = ({ roomId }: Props) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full overflow-y-auto border-t bg-(--card) p-1 px-1.5"
+        className="w-full overflow-y-auto border-t bg-(--card) p-2 pb-4"
       >
-        <div className="rounded-md p-1 transition-colors duration-200">
+        <div className="bg-input/30 rounded-2xl p-1 transition-colors duration-200">
           <FormField
             control={form.control}
             name="body"
@@ -110,7 +110,7 @@ export const MessageForm = ({ roomId }: Props) => {
               <Textarea
                 {...field}
                 placeholder={t('messages.placeholders.sendMessage')}
-                className="resize-none border-none"
+                className="min-h-12 resize-none border-none bg-transparent shadow-none focus-visible:border-none focus-visible:ring-0 dark:bg-transparent"
                 onKeyDown={handleInputKeyDown}
                 ref={inputRef}
                 rows={1}
@@ -122,17 +122,19 @@ export const MessageForm = ({ roomId }: Props) => {
             <Button
               variant="ghost"
               size="icon"
+              className="rounded-full"
               disabled={form.formState.isSubmitting}
             >
-              <MdImage className="size-6" />
+              <MdImage className="text-muted-foreground size-6" />
             </Button>
             <Button
               type="submit"
               variant="ghost"
               size="icon"
+              className="rounded-full"
               disabled={form.formState.isSubmitting}
             >
-              <MdSend className="size-5" />
+              <MdSend className="text-muted-foreground size-5" />
             </Button>
           </div>
         </div>
