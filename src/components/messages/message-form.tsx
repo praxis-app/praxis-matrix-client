@@ -13,6 +13,7 @@ import * as zod from 'zod';
 import { Button } from '../ui/button/button';
 import { Form, FormField } from '../ui/form';
 import { Textarea } from '../ui/textarea';
+import { useEffect, useRef } from 'react';
 
 const MESSAGE_BODY_MAX = 6000;
 
@@ -27,6 +28,7 @@ interface Props {
 }
 
 export const MessageForm = ({ roomId }: Props) => {
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const matrixClient = useMatrixClient();
   const { t } = useTranslation();
 
@@ -36,6 +38,33 @@ export const MessageForm = ({ roomId }: Props) => {
       body: '',
     },
   });
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const activeElement = document.activeElement;
+      if (
+        activeElement &&
+        (activeElement.tagName === 'INPUT' ||
+          activeElement.tagName === 'TEXTAREA')
+      ) {
+        return;
+      }
+
+      if (
+        ['Space', 'Enter', 'Key', 'Digit'].some((key) =>
+          e.code.includes(key),
+        ) &&
+        // Allow for Ctrl + C to copy
+        e.code !== 'KeyC'
+      ) {
+        inputRef.current?.focus();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   async function onSubmit(values: zod.infer<typeof formSchema>) {
     if (!matrixClient) {
@@ -67,10 +96,11 @@ export const MessageForm = ({ roomId }: Props) => {
             name="body"
             render={({ field }) => (
               <Textarea
+                {...field}
                 placeholder={t('messages.placeholders.sendMessage')}
                 className="resize-none border-none"
+                ref={inputRef}
                 rows={1}
-                {...field}
               />
             )}
           />
