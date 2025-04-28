@@ -5,7 +5,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const Layout = ({ children }: Props) => {
+export const Layout = ({ children }: Props) => {
   return (
     <ThemeProvider>
       <main>{children}</main>
@@ -13,5 +13,3 @@ const Layout = ({ children }: Props) => {
     </ThemeProvider>
   );
 };
-
-export default Layout;

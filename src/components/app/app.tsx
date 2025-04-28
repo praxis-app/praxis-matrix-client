@@ -1,25 +1,14 @@
 // TODO: Add remaining layout and functionality - below is a WIP
 
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Outlet } from 'react-router-dom';
 import { useMatrixClient } from '../../hooks/use-matrix-client';
-import LoginForm from '../auth/login-form';
-import Layout from './layout';
+import { LoginForm } from '../auth/login-form';
+import { Layout } from './layout';
 
-const App = () => {
+export const App = () => {
   const matrixClient = useMatrixClient();
   const { t } = useTranslation();
-
-  useEffect(() => {
-    if (matrixClient) {
-      const init = async () => {
-        const { total_room_count_estimate } = await matrixClient.publicRooms();
-        console.log('Public room count:', total_room_count_estimate);
-      };
-      init();
-    }
-  }, [matrixClient]);
 
   // TODO: Move loading to layout
 
@@ -37,5 +26,3 @@ const App = () => {
     </Layout>
   );
 };
-
-export default App;

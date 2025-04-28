@@ -63,7 +63,7 @@ interface Props {
 
 // TODO: Add i18n
 
-function RoomForm({ trigger, open, setOpen }: Props) {
+export const RoomForm = ({ trigger, open, setOpen }: Props) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<zod.infer<typeof formSchema>>({
@@ -215,6 +215,4 @@ function RoomForm({ trigger, open, setOpen }: Props) {
       </DialogContent>
     </Dialog>
   );
-}
-
-export default RoomForm;
+};

@@ -16,7 +16,7 @@ import type React from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export default function LoginForm() {
+export const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -129,4 +129,4 @@ export default function LoginForm() {
       </CardFooter> */}
     </Card>
   );
-}
+};

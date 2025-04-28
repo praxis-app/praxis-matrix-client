@@ -1,11 +1,9 @@
-import { useState } from 'react';
-
 import { RoomView } from '@/components/rooms/room-view';
 import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { Room } from 'matrix-js-sdk';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-const HomePage = () => {
+export const HomePage = () => {
   const [room, setRoom] = useState<Room>();
   const matrixClient = useMatrixClient();
 
@@ -26,5 +24,3 @@ const HomePage = () => {
 
   return <RoomView room={room} />;
 };
-
-export default HomePage;
