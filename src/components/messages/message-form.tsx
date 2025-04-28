@@ -6,7 +6,6 @@ import { translate } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Image, SendHorizonal } from 'lucide-react';
 import { MsgType } from 'matrix-js-sdk';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -28,8 +27,6 @@ interface Props {
 }
 
 export const MessageForm = ({ roomId }: Props) => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   const matrixClient = useMatrixClient();
   const { t } = useTranslation();
 
@@ -44,26 +41,18 @@ export const MessageForm = ({ roomId }: Props) => {
     if (!matrixClient) {
       return;
     }
-    setIsSubmitting(true);
 
-    try {
-      const messageResponse = await matrixClient.sendMessage(roomId, {
+    matrixClient
+      .sendMessage(roomId, {
         body: values.body,
         msgtype: MsgType.Text,
+      })
+      .catch((error) => {
+        toast('Error sending message', { description: 'Please try again.' });
+        console.error('Error sending message:', error);
       });
 
-      toast('Message sent successfully', {
-        description: `Message ID: ${messageResponse.event_id}`,
-      });
-      console.log(messageResponse);
-
-      form.reset();
-    } catch (error) {
-      toast('Error sending message', { description: 'Please try again.' });
-      console.error('Error sending message:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
+    form.reset();
   }
 
   return (
@@ -87,10 +76,14 @@ export const MessageForm = ({ roomId }: Props) => {
           />
 
           <div className="flex justify-between">
-            <Button variant="ghost" disabled={isSubmitting}>
+            <Button variant="ghost" disabled={form.formState.isSubmitting}>
               <Image />
             </Button>
-            <Button type="submit" variant="ghost" disabled={isSubmitting}>
+            <Button
+              type="submit"
+              variant="ghost"
+              disabled={form.formState.isSubmitting}
+            >
               <SendHorizonal />
             </Button>
           </div>

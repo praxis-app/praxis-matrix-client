@@ -11,12 +11,20 @@ export const RoomPage = () => {
   const { roomId } = useParams();
 
   useEffect(() => {
-    if (roomId && matrixClient) {
+    if (!roomId || !matrixClient) {
+      return;
+    }
+    const init = async () => {
       const room = matrixClient.getRoom(roomId);
+
+      // TODO: Determine if this is needed
+      await matrixClient.roomInitialSync(roomId, 10);
+
       if (room) {
         setRoom(room);
       }
-    }
+    };
+    init();
   }, [roomId, matrixClient]);
 
   if (!room) {

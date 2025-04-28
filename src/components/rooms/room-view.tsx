@@ -1,5 +1,7 @@
+import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { Room } from 'matrix-js-sdk';
+import { MatrixEvent, Room, RoomEvent } from 'matrix-js-sdk';
+import { useEffect, useState } from 'react';
 import { MessageForm } from '../messages/message-form';
 import { LeftNav } from '../nav/left-nav';
 import { RoomTopNav } from './room-top-nav';
@@ -8,20 +10,41 @@ interface Props {
   room: Room;
 }
 
-export const RoomView = ({ room }: Props) => {
+export const RoomView = (props: Props) => {
+  const roomEvents = props.room.getLiveTimeline().getEvents();
+  const [messages, setMessages] = useState<MatrixEvent[]>(
+    roomEvents.filter((e) => e.getType() === 'm.room.message'),
+  );
+
+  const matrixClient = useMatrixClient();
   const isMobile = useIsMobile();
 
-  const messages = room
-    .getLiveTimeline()
-    .getEvents()
-    .filter((e) => e.getType() === 'm.room.message');
+  useEffect(() => {
+    if (!matrixClient) {
+      return;
+    }
+
+    matrixClient.on(RoomEvent.Timeline, (event, room, toStart) => {
+      if (
+        event.getType() !== 'm.room.message' ||
+        props.room.roomId !== room?.roomId ||
+        toStart
+      ) {
+        return;
+      }
+      setMessages((prev) => {
+        const filtered = prev.filter((e) => e.getId() !== event.getId());
+        return [...filtered, event];
+      });
+    });
+  }, [matrixClient, props.room]);
 
   return (
     <div className="fixed top-0 right-0 bottom-0 left-0 flex">
       {!isMobile && <LeftNav />}
 
       <div className="flex flex-1 flex-col">
-        <RoomTopNav room={room} />
+        <RoomTopNav room={props.room} />
 
         <div className="flex flex-1 flex-col">
           {messages.map((message) => (
@@ -29,7 +52,7 @@ export const RoomView = ({ room }: Props) => {
           ))}
         </div>
 
-        <MessageForm roomId={room.roomId} />
+        <MessageForm roomId={props.room.roomId} />
       </div>
     </div>
   );
