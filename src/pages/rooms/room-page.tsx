@@ -16,10 +16,6 @@ export const RoomPage = () => {
     }
     const init = async () => {
       const room = matrixClient.getRoom(roomId);
-
-      // TODO: Determine if this is needed
-      await matrixClient.roomInitialSync(roomId, 10);
-
       if (room) {
         setRoom(room);
       }
