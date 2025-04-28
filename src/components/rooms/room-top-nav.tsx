@@ -6,7 +6,7 @@ interface Props {
   room: Room;
 }
 
-export function RoomTopNav({ room }: Props) {
+export const RoomTopNav = ({ room }: Props) => {
   const isMobile = useIsMobile();
 
   return (
@@ -17,4 +17,4 @@ export function RoomTopNav({ room }: Props) {
       </div>
     </header>
   );
-}
+};

@@ -13,7 +13,7 @@ interface Props {
   className?: string;
 }
 
-export function ModeToggle({ className }: Props) {
+export const ModeToggle = ({ className }: Props) => {
   const { setTheme } = useTheme();
 
   return (
@@ -42,4 +42,4 @@ export function ModeToggle({ className }: Props) {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-}
+};

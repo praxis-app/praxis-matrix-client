@@ -78,7 +78,7 @@ export const RoomForm = ({ trigger, open, setOpen }: Props) => {
   const matrixClient = useMatrixClient();
   const { t } = useTranslation();
 
-  async function onSubmit(values: zod.infer<typeof formSchema>) {
+  const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     if (!matrixClient) {
       return;
     }
@@ -114,7 +114,7 @@ export const RoomForm = ({ trigger, open, setOpen }: Props) => {
     } finally {
       setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

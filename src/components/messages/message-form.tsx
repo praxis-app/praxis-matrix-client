@@ -67,7 +67,7 @@ export const MessageForm = ({ roomId }: Props) => {
     };
   }, []);
 
-  async function onSubmit(values: zod.infer<typeof formSchema>) {
+  const onSubmit = async (values: zod.infer<typeof formSchema>) => {
     if (!matrixClient) {
       return;
     }
@@ -83,7 +83,7 @@ export const MessageForm = ({ roomId }: Props) => {
       });
 
     form.reset();
-  }
+  };
 
   const handleInputKeyDown: KeyboardEventHandler = (e) => {
     if (e.code !== KeyCodes.Enter) {

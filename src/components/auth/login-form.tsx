@@ -24,7 +24,7 @@ export const LoginForm = () => {
 
   const { t } = useTranslation();
 
-  async function onSubmit(event: React.FormEvent) {
+  const onSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setIsLoading(true);
     setError('');
@@ -49,7 +49,7 @@ export const LoginForm = () => {
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   return (
     <Card className="mx-auto w-full max-w-md">
