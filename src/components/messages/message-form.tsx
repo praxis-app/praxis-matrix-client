@@ -1,11 +1,13 @@
 // TODO: Add remaining layout and functionality - below is a WIP
 // TODO: Translate for all messages
 
+import { KeyCodes } from '@/constants/shared.constants';
 import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { translate } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Image, SendHorizonal } from 'lucide-react';
 import { MsgType } from 'matrix-js-sdk';
+import { KeyboardEventHandler, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -13,7 +15,6 @@ import * as zod from 'zod';
 import { Button } from '../ui/button/button';
 import { Form, FormField } from '../ui/form';
 import { Textarea } from '../ui/textarea';
-import { useEffect, useRef } from 'react';
 
 const MESSAGE_BODY_MAX = 6000;
 
@@ -84,6 +85,17 @@ export const MessageForm = ({ roomId }: Props) => {
     form.reset();
   }
 
+  const handleInputKeyDown: KeyboardEventHandler = (e) => {
+    if (e.code !== KeyCodes.Enter) {
+      return;
+    }
+    if (e.shiftKey) {
+      return;
+    }
+    e.preventDefault();
+    form.handleSubmit(onSubmit)();
+  };
+
   return (
     <Form {...form}>
       <form
@@ -99,6 +111,7 @@ export const MessageForm = ({ roomId }: Props) => {
                 {...field}
                 placeholder={t('messages.placeholders.sendMessage')}
                 className="resize-none border-none"
+                onKeyDown={handleInputKeyDown}
                 ref={inputRef}
                 rows={1}
               />
