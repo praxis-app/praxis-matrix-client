@@ -14,6 +14,10 @@ export const RoomFeed = (props: Props) => {
     roomEvents.filter((e) => e.getType() === 'm.room.message'),
   );
 
+  const sortedMessages = messages.sort((a, b) => {
+    return b.getTs() - a.getTs();
+  });
+
   const matrixClient = useMatrixClient();
 
   useEffect(() => {
@@ -37,8 +41,8 @@ export const RoomFeed = (props: Props) => {
   }, [matrixClient, props.room]);
 
   return (
-    <div className="flex flex-1 flex-col p-2.5">
-      {messages.map((message) => (
+    <div className="flex flex-1 flex-col-reverse overflow-y-scroll p-2.5 pb-4">
+      {sortedMessages.map((message) => (
         <Message key={message.getId()} message={message} room={props.room} />
       ))}
     </div>
