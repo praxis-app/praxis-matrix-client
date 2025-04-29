@@ -1,6 +1,6 @@
-import { AuthWrapper } from '../auth/auth-wrapper';
 import { ThemeProvider } from '../theme/theme-provider';
 import { Toaster } from '../ui/sonner';
+import { MatrixProvider } from './matrix-provider';
 
 interface Props {
   children: React.ReactNode;
@@ -9,7 +9,7 @@ interface Props {
 export const Layout = ({ children }: Props) => (
   <ThemeProvider>
     <main>
-      <AuthWrapper>{children}</AuthWrapper>
+      <MatrixProvider>{children}</MatrixProvider>
     </main>
     <Toaster />
   </ThemeProvider>
