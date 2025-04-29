@@ -2,6 +2,7 @@ import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MatrixEvent, Room, RoomEvent } from 'matrix-js-sdk';
 import { useEffect, useState } from 'react';
+import { Message } from '../messages/message';
 import { MessageForm } from '../messages/message-form';
 import { LeftNav } from '../nav/left-nav';
 import { RoomTopNav } from './room-top-nav';
@@ -46,9 +47,9 @@ export const RoomView = (props: Props) => {
       <div className="flex flex-1 flex-col">
         <RoomTopNav room={props.room} />
 
-        <div className="flex flex-1 flex-col">
+        <div className="flex flex-1 flex-col p-2">
           {messages.map((message) => (
-            <div key={message.getId()}>{message.getContent().body}</div>
+            <Message key={message.getId()} message={message} />
           ))}
         </div>
 

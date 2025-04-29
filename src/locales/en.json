@@ -68,5 +68,23 @@
     "errors": {
       "longBody": "Message body cannot exceed 6000 characters"
     }
+  },
+
+  "time": {
+    "days": "{{days}}d",
+    "daysFull_one": "{{count}} day",
+    "daysFull_other": "{{count}} days",
+    "hours": "{{hours}}h",
+    "hr": "hr",
+    "infinity": "∞",
+    "min": "min",
+    "minutes": "{{minutes}}m",
+    "minutesFull_one": "{{count}} minute",
+    "minutesFull_other": "{{count}} minutes",
+    "never": "Never",
+    "weeks_one": "{{count}} week",
+    "weeks_other": "{{count}} weeks",
+    "hoursFull_one": "{{count}} hour",
+    "hoursFull_other": "{{count}} hours"
   }
 }
