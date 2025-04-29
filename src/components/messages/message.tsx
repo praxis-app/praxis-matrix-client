@@ -29,9 +29,11 @@ export const Message = ({ message, room }: Props) => {
       </Avatar>
 
       <div>
-        <div className="flex gap-1">
-          <div>{displayName}</div>
-          <div>{formattedDate}</div>
+        <div className="flex gap-1.5">
+          <div className="font-medium">{displayName}</div>
+          <div className="text-muted-foreground mt-[1px] text-sm">
+            {formattedDate}
+          </div>
         </div>
 
         <div>{body}</div>
