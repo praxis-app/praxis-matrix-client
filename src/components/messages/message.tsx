@@ -1,18 +1,26 @@
 import { timeAgo } from '@/lib/time.utils';
-import { MatrixEvent } from 'matrix-js-sdk';
+import { MatrixEvent, Room } from 'matrix-js-sdk';
 import { Avatar, AvatarFallback } from '../ui/avatar';
 
 interface Props {
   message: MatrixEvent;
+  room: Room;
 }
 
-export const Message = ({ message }: Props) => {
+export const Message = ({ message, room }: Props) => {
   const { body } = message.getContent();
 
-  const { sender } = message;
-  const avatarFallback = sender?.name?.[0].toUpperCase();
+  const userId = message.getSender();
+  const member = room?.getMember(userId ?? '');
+  const displayName = member?.name ?? userId;
+  const avatarFallback = displayName?.[0].toUpperCase();
+
   const createdAt = message.getDate()?.toString() ?? '';
   const formattedDate = timeAgo(createdAt);
+
+  if (!body) {
+    return null;
+  }
 
   return (
     <div className="flex gap-2 pb-2">
@@ -22,7 +30,7 @@ export const Message = ({ message }: Props) => {
 
       <div>
         <div className="flex gap-1">
-          <div>{sender?.name}</div>
+          <div>{displayName}</div>
           <div>{formattedDate}</div>
         </div>
 
