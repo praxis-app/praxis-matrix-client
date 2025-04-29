@@ -54,7 +54,7 @@ export const LoginForm = () => {
   return (
     <Card className="mx-auto w-full max-w-md">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold">
+        <CardTitle className="text-xl font-bold">
           {t('auth.prompts.enterCredentials')}
         </CardTitle>
         <CardDescription>{t('auth.prompts.enterCredentials')}</CardDescription>
