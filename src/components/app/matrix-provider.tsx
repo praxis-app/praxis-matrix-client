@@ -6,7 +6,7 @@ import {
   SyncState,
 } from 'matrix-js-sdk';
 import { ReactNode, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { RoomSkeleton } from '../rooms/room-skeleton';
 
 interface Props {
   children: ReactNode;
@@ -14,7 +14,6 @@ interface Props {
 
 export function MatrixProvider({ children }: Props) {
   const [matrixClient, setMatrixClient] = useState<MatrixClient | null>(null);
-  const { t } = useTranslation();
 
   useEffect(() => {
     const accessToken = localStorage.getItem('access_token');
@@ -46,7 +45,7 @@ export function MatrixProvider({ children }: Props) {
   }, [matrixClient]);
 
   if (!matrixClient) {
-    return <div>{t('prompts.loading')}</div>;
+    return <RoomSkeleton />;
   }
 
   return (
