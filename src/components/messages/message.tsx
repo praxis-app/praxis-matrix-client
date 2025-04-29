@@ -36,7 +36,7 @@ export const Message = ({ message, room }: Props) => {
   };
 
   return (
-    <div className="flex gap-4 pt-4">
+    <div className="flex items-center gap-4 pt-4">
       <Avatar>
         <AvatarFallback
           className="text-lg font-medium"
@@ -47,11 +47,9 @@ export const Message = ({ message, room }: Props) => {
       </Avatar>
 
       <div>
-        <div className="flex gap-1.5">
+        <div className="flex items-center gap-1.5">
           <div className="font-medium">{displayName}</div>
-          <div className="text-muted-foreground mt-[1px] text-sm">
-            {formattedDate}
-          </div>
+          <div className="text-muted-foreground text-sm">{formattedDate}</div>
         </div>
 
         <div>{body}</div>
