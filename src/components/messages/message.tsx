@@ -1,4 +1,6 @@
 import { timeAgo } from '@/lib/time.utils';
+import chroma from 'chroma-js';
+import ColorHash from 'color-hash';
 import { MatrixEvent, Room } from 'matrix-js-sdk';
 import { Avatar, AvatarFallback } from '../ui/avatar';
 
@@ -10,8 +12,8 @@ interface Props {
 export const Message = ({ message, room }: Props) => {
   const { body } = message.getContent();
 
-  const userId = message.getSender();
-  const member = room?.getMember(userId ?? '');
+  const userId = message.getSender() ?? '';
+  const member = room?.getMember(userId);
   const displayName = member?.name ?? userId;
   const avatarFallback = displayName?.[0].toUpperCase();
 
@@ -22,10 +24,26 @@ export const Message = ({ message, room }: Props) => {
     return null;
   }
 
+  const getStringAvatarProps = () => {
+    const colorHash = new ColorHash();
+    const baseColor = colorHash.hex(userId);
+    const color = chroma(baseColor).darken(1.3).hex();
+    const backgroundColor = chroma(baseColor).brighten(1.2).hex();
+
+    return {
+      style: { color, backgroundColor },
+    };
+  };
+
   return (
     <div className="flex gap-4 pt-4">
       <Avatar>
-        <AvatarFallback>{avatarFallback}</AvatarFallback>
+        <AvatarFallback
+          className="text-lg font-medium"
+          {...getStringAvatarProps()}
+        >
+          {avatarFallback}
+        </AvatarFallback>
       </Avatar>
 
       <div>
