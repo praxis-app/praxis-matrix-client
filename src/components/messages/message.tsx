@@ -23,7 +23,7 @@ export const Message = ({ message, room }: Props) => {
   }
 
   return (
-    <div className="flex gap-2 pb-2">
+    <div className="flex gap-4 pb-4">
       <Avatar>
         <AvatarFallback>{avatarFallback}</AvatarFallback>
       </Avatar>

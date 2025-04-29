@@ -37,7 +37,7 @@ export const RoomFeed = (props: Props) => {
   }, [matrixClient, props.room]);
 
   return (
-    <div className="flex flex-1 flex-col p-2">
+    <div className="flex flex-1 flex-col p-2.5">
       {messages.map((message) => (
         <Message key={message.getId()} message={message} room={props.room} />
       ))}
