@@ -19,7 +19,7 @@ interface Props {
   trigger?: ReactNode;
 }
 
-export const NavDrawer = ({ trigger }: Props) => {
+export const NavSheet = ({ trigger }: Props) => {
   const [visibleRooms, setVisibleRooms] = useState<Room[]>([]);
   const matrixClient = useMatrixClient();
 
