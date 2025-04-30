@@ -10,11 +10,13 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { NavigationPaths } from '@/constants/shared.constants';
 import * as sdk from 'matrix-js-sdk';
 import type React from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LuLoaderCircle } from 'react-icons/lu';
+import { useNavigate } from 'react-router-dom';
 
 export const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -23,6 +25,7 @@ export const LoginForm = () => {
   const [error, setError] = useState('');
 
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const onSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -43,6 +46,8 @@ export const LoginForm = () => {
       localStorage.setItem('user_id', user_id);
       localStorage.setItem('access_token', access_token);
       localStorage.setItem('device_id', device_id);
+
+      navigate(NavigationPaths.Home);
     } catch (error) {
       setError('Invalid email or password. Please try again.');
       console.error(error);

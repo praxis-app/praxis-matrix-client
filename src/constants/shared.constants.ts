@@ -10,3 +10,9 @@ export enum KeyCodes {
   Enter = 'Enter',
   Escape = 'Escape',
 }
+
+export enum NavigationPaths {
+  Home = '/',
+  Login = '/auth/login',
+  SignUp = '/auth/signup',
+}

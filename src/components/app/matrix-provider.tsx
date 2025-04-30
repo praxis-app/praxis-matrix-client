@@ -14,14 +14,14 @@ interface Props {
 
 export function MatrixProvider({ children }: Props) {
   const [matrixClient, setMatrixClient] = useState<MatrixClient | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('access_token');
-    const userId = localStorage.getItem('user_id');
-
-    if (matrixClient || !accessToken || !userId) {
+    if (matrixClient) {
       return;
     }
+    const accessToken = localStorage.getItem('access_token') ?? undefined;
+    const userId = localStorage.getItem('user_id') ?? undefined;
 
     const initClient = async () => {
       const client = createClient({
@@ -29,6 +29,16 @@ export function MatrixProvider({ children }: Props) {
         accessToken,
         userId,
       });
+      if (!accessToken || !userId) {
+        // TODO: Remove once no longer needed for testing
+        const test = await client.publicRooms();
+        console.log(test);
+
+        setMatrixClient(client);
+        setIsLoading(false);
+        return;
+      }
+
       await client.startClient({
         initialSyncLimit: 10,
       });
@@ -37,6 +47,7 @@ export function MatrixProvider({ children }: Props) {
       client.once(ClientEvent.Sync, (state) => {
         if (state === SyncState.Prepared) {
           setMatrixClient(client);
+          setIsLoading(false);
         }
       });
     };
@@ -44,7 +55,7 @@ export function MatrixProvider({ children }: Props) {
     initClient();
   }, [matrixClient]);
 
-  if (!matrixClient) {
+  if (isLoading) {
     return <RoomSkeleton />;
   }
 
