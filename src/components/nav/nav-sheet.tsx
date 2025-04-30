@@ -14,6 +14,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '../ui/sheet';
+import { NavDrawer } from './nav-drawer';
 
 interface Props {
   trigger?: ReactNode;
@@ -51,10 +52,14 @@ export const NavSheet = ({ trigger }: Props) => {
         hideCloseButton
       >
         <SheetHeader>
-          <SheetTitle className="flex items-center gap-2 px-6 pb-2 font-medium tracking-[0.02em]">
-            <img src={appIconImg} alt={t('brand')} className="size-9" />
-            {t('brand')}
-            <LuChevronRight className="mt-0.5 ml-0.5 size-4" />
+          <SheetTitle>
+            <NavDrawer>
+              <div className="flex cursor-pointer items-center gap-2 px-6 pb-2 font-medium tracking-[0.02em]">
+                <img src={appIconImg} alt={t('brand')} className="size-9" />
+                {t('brand')}
+                <LuChevronRight className="mt-0.5 ml-0.5 size-4" />
+              </div>
+            </NavDrawer>
           </SheetTitle>
           <SheetDescription className="text-left"></SheetDescription>
         </SheetHeader>
