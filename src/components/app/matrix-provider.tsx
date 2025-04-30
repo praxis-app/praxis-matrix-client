@@ -1,10 +1,5 @@
-import { MatrixClientContext } from '@/hooks/use-matrix-client';
-import {
-  ClientEvent,
-  createClient,
-  MatrixClient,
-  SyncState,
-} from 'matrix-js-sdk';
+import { useAppStore } from '@/store/app.store';
+import { ClientEvent, createClient, SyncState } from 'matrix-js-sdk';
 import { ReactNode, useEffect, useState } from 'react';
 import { RoomSkeleton } from '../rooms/room-skeleton';
 
@@ -13,7 +8,7 @@ interface Props {
 }
 
 export function MatrixProvider({ children }: Props) {
-  const [matrixClient, setMatrixClient] = useState<MatrixClient | null>(null);
+  const { matrixClient, setMatrixClient } = useAppStore();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -59,9 +54,5 @@ export function MatrixProvider({ children }: Props) {
     return <RoomSkeleton />;
   }
 
-  return (
-    <MatrixClientContext.Provider value={matrixClient}>
-      {children}
-    </MatrixClientContext.Provider>
-  );
+  return children;
 }

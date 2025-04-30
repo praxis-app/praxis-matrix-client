@@ -11,7 +11,10 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { NavigationPaths } from '@/constants/shared.constants';
+import { useAppStore } from '@/store/app.store';
 import * as sdk from 'matrix-js-sdk';
+import { SyncState } from 'matrix-js-sdk';
+import { ClientEvent } from 'matrix-js-sdk';
 import type React from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -19,6 +22,8 @@ import { LuLoaderCircle } from 'react-icons/lu';
 import { useNavigate } from 'react-router-dom';
 
 export const LoginForm = () => {
+  const { setMatrixClient } = useAppStore();
+
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -33,19 +38,38 @@ export const LoginForm = () => {
     setError('');
 
     try {
-      const client = sdk.createClient({
+      const baseClient = sdk.createClient({
         baseUrl: import.meta.env.VITE_SERVER_BASE_URL,
       });
 
-      const { user_id, access_token, device_id } = await client.loginRequest({
-        user: email,
-        password: password,
-        type: 'm.login.password',
-      });
+      const { user_id, access_token, device_id } =
+        await baseClient.loginRequest({
+          user: email,
+          password: password,
+          type: 'm.login.password',
+        });
 
       localStorage.setItem('user_id', user_id);
       localStorage.setItem('access_token', access_token);
       localStorage.setItem('device_id', device_id);
+
+      const authenticatedClient = sdk.createClient({
+        baseUrl: import.meta.env.VITE_SERVER_BASE_URL,
+        accessToken: access_token,
+        userId: user_id,
+        deviceId: device_id,
+      });
+
+      await authenticatedClient.startClient({
+        initialSyncLimit: 10,
+      });
+
+      // Make client available once it's ready
+      authenticatedClient.once(ClientEvent.Sync, (state) => {
+        if (state === SyncState.Prepared) {
+          setMatrixClient(authenticatedClient);
+        }
+      });
 
       navigate(NavigationPaths.Home);
     } catch (error) {
@@ -65,11 +89,6 @@ export const LoginForm = () => {
         <CardDescription>{t('auth.prompts.enterCredentials')}</CardDescription>
       </CardHeader>
       <CardContent>
-        {error && (
-          <div className="mb-4 rounded-md bg-red-50 p-3 text-sm text-red-500">
-            {error}
-          </div>
-        )}
         <form onSubmit={onSubmit} className="space-y-4">
           <div className="space-y-2">
             {/* TODO: Determine whether email or username should be used */}
@@ -111,6 +130,11 @@ export const LoginForm = () => {
               Remember me
             </Label>
           </div> */}
+
+          {error && (
+            <div className="mb-4 p-0.5 text-sm text-red-500">{error}</div>
+          )}
+
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? (
               <>

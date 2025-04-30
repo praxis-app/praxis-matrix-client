@@ -1,12 +1,9 @@
-import { MatrixClient } from 'matrix-js-sdk';
-import { createContext, useContext } from 'react';
-
-export const MatrixClientContext = createContext<MatrixClient | null>(null);
+import { useAppStore } from '@/store/app.store';
 
 export const useMatrixClient = () => {
-  const client = useContext(MatrixClientContext);
-  if (!client) {
+  const { matrixClient } = useAppStore();
+  if (!matrixClient) {
     throw new Error('useMatrixClient must be inside MatrixProvider');
   }
-  return client;
+  return matrixClient;
 };
