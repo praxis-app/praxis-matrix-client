@@ -28,7 +28,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Visibility } from 'matrix-js-sdk';
+import { Method, Visibility } from 'matrix-js-sdk';
 import { ReactNode, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -56,14 +56,14 @@ const formSchema = zod.object({
 });
 
 interface Props {
+  // TODO: Rename as "trigger"
   children: ReactNode;
-  open?: boolean;
-  setOpen?(open: boolean): void;
 }
 
 // TODO: Add i18n
 
-export const RoomFormDialog = ({ children, open, setOpen }: Props) => {
+export const RoomFormDialog = ({ children }: Props) => {
+  const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<zod.infer<typeof formSchema>>({
@@ -71,7 +71,7 @@ export const RoomFormDialog = ({ children, open, setOpen }: Props) => {
     defaultValues: {
       name: '',
       description: '',
-      visibility: 'public',
+      visibility: Visibility.Public,
     },
   });
 
@@ -88,11 +88,22 @@ export const RoomFormDialog = ({ children, open, setOpen }: Props) => {
       const room = await matrixClient.createRoom({
         name: values.name,
         topic: values.description,
-        visibility:
-          values.visibility === 'public'
-            ? Visibility.Public
-            : Visibility.Private,
+        visibility: values.visibility as Visibility,
+        room_alias_name: values.name.toLowerCase().replace(/ /g, '-'),
       });
+
+      // Ensure the room is public if requested
+      if (values.visibility === Visibility.Public) {
+        await matrixClient.http.authedRequest(
+          Method.Put,
+          `/directory/list/room/${encodeURIComponent(room.room_id)}`,
+          undefined,
+          { visibility: Visibility.Public },
+        );
+      }
+
+      // Immediately sync the room to local store
+      await matrixClient.roomInitialSync(room.room_id, 30);
 
       toast('Room created successfully', {
         description: `Room "${values.name}" has been created with ID ${room.room_id}.`,
@@ -187,10 +198,10 @@ export const RoomFormDialog = ({ children, open, setOpen }: Props) => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="public">
+                      <SelectItem value={Visibility.Public}>
                         {t('rooms.options.public')}
                       </SelectItem>
-                      <SelectItem value="private">
+                      <SelectItem value={Visibility.Private}>
                         {t('rooms.options.private')}
                       </SelectItem>
                     </SelectContent>
