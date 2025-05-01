@@ -29,7 +29,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Visibility } from 'matrix-js-sdk';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -56,14 +56,14 @@ const formSchema = zod.object({
 });
 
 interface Props {
-  trigger: React.ReactNode;
+  children: ReactNode;
   open?: boolean;
   setOpen?(open: boolean): void;
 }
 
 // TODO: Add i18n
 
-export const RoomForm = ({ trigger, open, setOpen }: Props) => {
+export const RoomFormDialog = ({ children, open, setOpen }: Props) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<zod.infer<typeof formSchema>>({
@@ -118,8 +118,8 @@ export const RoomForm = ({ trigger, open, setOpen }: Props) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-2xl">
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>{t('rooms.prompts.createRoom')}</DialogTitle>
         </DialogHeader>
@@ -180,7 +180,7 @@ export const RoomForm = ({ trigger, open, setOpen }: Props) => {
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue
                           placeholder={t('rooms.placeholders.visibility')}
                         />

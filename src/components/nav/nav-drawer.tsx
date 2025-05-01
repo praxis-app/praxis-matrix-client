@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MdAddCircle } from 'react-icons/md';
+import { RoomFormDialog } from '../rooms/room-form-dialog';
 import { Button } from '../ui/button/button';
 import {
   Drawer,
@@ -29,13 +30,15 @@ export const NavDrawer = ({ children }: Props) => {
         </DrawerHeader>
 
         <div className="flex flex-col gap-4 p-4">
-          <Button
-            variant="ghost"
-            className="text-md flex items-center gap-6 font-normal"
-          >
-            <MdAddCircle className="size-6" />
-            {t('rooms.actions.create')}
-          </Button>
+          <RoomFormDialog>
+            <Button
+              variant="ghost"
+              className="text-md flex items-center gap-6 font-normal"
+            >
+              <MdAddCircle className="size-6" />
+              {t('rooms.actions.create')}
+            </Button>
+          </RoomFormDialog>
         </div>
       </DrawerContent>
     </Drawer>
