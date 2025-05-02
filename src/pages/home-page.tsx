@@ -13,7 +13,6 @@ export const HomePage = () => {
     }
     const getRoom = async () => {
       const isGuest = matrixClient.isGuest();
-      console.log('🔥 isGuest', isGuest);
 
       if (isGuest) {
         const { chunk } = await matrixClient.publicRooms();
@@ -22,7 +21,7 @@ export const HomePage = () => {
         }
 
         const roomId = chunk[0].room_id;
-        await matrixClient.joinRoom(roomId); // TODO: Determine if this is still needed
+        await matrixClient.joinRoom(roomId);
         const room = matrixClient.getRoom(roomId);
         return room;
       }

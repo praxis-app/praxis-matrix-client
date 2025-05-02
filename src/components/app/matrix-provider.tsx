@@ -33,7 +33,6 @@ export function MatrixProvider({ children }: Props) {
         localStorage.setItem('access_token', access_token!);
         localStorage.setItem('user_id', user_id);
         localStorage.setItem('device_id', device_id!);
-        localStorage.setItem('is_guest', 'true');
 
         client = createClient({
           baseUrl: import.meta.env.VITE_SERVER_BASE_URL,
@@ -43,7 +42,7 @@ export function MatrixProvider({ children }: Props) {
         });
       }
 
-      const isGuest = localStorage.getItem('is_guest') === 'true';
+      const isGuest = localStorage.getItem('device_id') === 'guest_device';
       if (isGuest) {
         client.setGuest(true);
       }
