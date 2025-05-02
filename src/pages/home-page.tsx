@@ -1,3 +1,4 @@
+import { RoomSkeleton } from '@/components/rooms/room-skeleton';
 import { RoomView } from '@/components/rooms/room-view';
 import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { Room } from 'matrix-js-sdk';
@@ -43,7 +44,7 @@ export const HomePage = () => {
   }, [matrixClient]);
 
   if (!room) {
-    return null;
+    return <RoomSkeleton />;
   }
 
   return <RoomView room={room} />;
