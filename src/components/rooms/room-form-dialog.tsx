@@ -90,6 +90,13 @@ export const RoomFormDialog = ({ children }: Props) => {
         topic: values.description,
         visibility: values.visibility as Visibility,
         room_alias_name: values.name.toLowerCase().replace(/ /g, '-'),
+        // TODO: Test wether this enables guest access
+        initial_state: [
+          {
+            type: 'm.room.guest_access',
+            content: { guest_access: 'can_join' },
+          },
+        ],
       });
 
       // Ensure the room is public if requested

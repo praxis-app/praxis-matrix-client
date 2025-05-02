@@ -52,6 +52,7 @@ export const LoginForm = () => {
       localStorage.setItem('user_id', user_id);
       localStorage.setItem('access_token', access_token);
       localStorage.setItem('device_id', device_id);
+      localStorage.setItem('is_guest', 'false'); // TODO: Use device_id to determine if user is guest
 
       const authenticatedClient = sdk.createClient({
         baseUrl: import.meta.env.VITE_SERVER_BASE_URL,

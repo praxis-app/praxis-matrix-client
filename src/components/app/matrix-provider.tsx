@@ -17,21 +17,35 @@ export function MatrixProvider({ children }: Props) {
     }
     const accessToken = localStorage.getItem('access_token') ?? undefined;
     const userId = localStorage.getItem('user_id') ?? undefined;
+    const deviceId = localStorage.getItem('device_id') ?? undefined;
 
     const initClient = async () => {
-      const client = createClient({
+      let client = createClient({
         baseUrl: import.meta.env.VITE_SERVER_BASE_URL,
         accessToken,
+        deviceId,
         userId,
       });
       if (!accessToken || !userId) {
-        // TODO: Remove once no longer needed for testing
-        const test = await client.publicRooms();
-        console.log(test);
+        const { access_token, user_id, device_id } =
+          await client.registerGuest();
 
-        setMatrixClient(client);
-        setIsLoading(false);
-        return;
+        localStorage.setItem('access_token', access_token!);
+        localStorage.setItem('user_id', user_id);
+        localStorage.setItem('device_id', device_id!);
+        localStorage.setItem('is_guest', 'true');
+
+        client = createClient({
+          baseUrl: import.meta.env.VITE_SERVER_BASE_URL,
+          accessToken: access_token,
+          userId: user_id,
+          deviceId: device_id,
+        });
+      }
+
+      const isGuest = localStorage.getItem('is_guest') === 'true';
+      if (isGuest) {
+        client.setGuest(true);
       }
 
       await client.startClient({

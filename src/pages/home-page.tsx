@@ -4,16 +4,41 @@ import { Room } from 'matrix-js-sdk';
 import { useEffect, useState } from 'react';
 
 export const HomePage = () => {
-  const [room, setRoom] = useState<Room>();
+  const [room, setRoom] = useState<Room | null>(null);
   const matrixClient = useMatrixClient();
 
   useEffect(() => {
     if (!matrixClient) {
       return;
     }
-    const init = async () => {
+    const getRoom = async () => {
+      const isGuest = matrixClient.isGuest();
+      console.log('🔥 isGuest', isGuest);
+
+      if (isGuest) {
+        const { chunk } = await matrixClient.publicRooms();
+        if (!chunk.length) {
+          return null;
+        }
+
+        const roomId = chunk[0].room_id;
+        await matrixClient.joinRoom(roomId); // TODO: Determine if this is still needed
+        const room = matrixClient.getRoom(roomId);
+        return room;
+      }
+
       const rooms = matrixClient.getVisibleRooms();
-      setRoom(rooms[0]);
+      if (!rooms.length) {
+        return null;
+      }
+      return rooms[0];
+    };
+    const init = async () => {
+      const room = await getRoom();
+      if (!room) {
+        return;
+      }
+      setRoom(room);
     };
     init();
   }, [matrixClient]);
