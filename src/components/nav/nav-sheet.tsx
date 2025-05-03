@@ -23,6 +23,7 @@ interface Props {
 
 export const NavSheet = ({ trigger }: Props) => {
   const [visibleRooms, setVisibleRooms] = useState<Room[]>([]);
+  const [open, setOpen] = useState(false);
   const matrixClient = useMatrixClient();
 
   const user = matrixClient.getUser(matrixClient.getUserId() ?? '');
@@ -42,7 +43,7 @@ export const NavSheet = ({ trigger }: Props) => {
   const { t } = useTranslation();
 
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>{trigger}</SheetTrigger>
       <SheetContent
         side="left"
@@ -78,9 +79,13 @@ export const NavSheet = ({ trigger }: Props) => {
           <SheetDescription className="text-left"></SheetDescription>
         </SheetHeader>
 
-        <div className="bg-background h-full w-full rounded-t-2xl p-7 dark:bg-(--accent)">
+        <div className="bg-background flex h-full w-full flex-col gap-6 rounded-t-2xl p-7 dark:bg-(--accent)">
           {visibleRooms.map((room) => (
-            <Link to={`/rooms/${room.roomId}`} key={room.roomId}>
+            <Link
+              key={room.roomId}
+              to={`/rooms/${room.roomId}`}
+              onClick={() => setOpen(false)}
+            >
               <div>{room.name}</div>
             </Link>
           ))}
