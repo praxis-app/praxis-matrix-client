@@ -67,6 +67,9 @@
     },
     "errors": {
       "longBody": "Message body cannot exceed 6000 characters"
+    },
+    "names": {
+      "praxisBot": "praxis-bot"
     }
   },
 

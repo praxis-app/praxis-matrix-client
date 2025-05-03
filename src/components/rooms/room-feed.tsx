@@ -1,8 +1,8 @@
-import { MatrixEvent, Room, RoomEvent } from 'matrix-js-sdk';
-import { Message } from '../messages/message';
-import { useEffect } from 'react';
-import { useState } from 'react';
 import { useMatrixClient } from '@/hooks/use-matrix-client';
+import { MatrixEvent, Room, RoomEvent } from 'matrix-js-sdk';
+import { useEffect, useState } from 'react';
+import { Message } from '../messages/message';
+import { AuthMessage } from '../auth/auth-message';
 
 interface Props {
   room: Room;
@@ -19,12 +19,9 @@ export const RoomFeed = (props: Props) => {
   });
 
   const matrixClient = useMatrixClient();
+  const isGuest = matrixClient.isGuest();
 
   useEffect(() => {
-    if (!matrixClient) {
-      return;
-    }
-
     matrixClient.on(RoomEvent.Timeline, (event, room, toStart) => {
       if (
         event.getType() !== 'm.room.message' ||
@@ -42,6 +39,8 @@ export const RoomFeed = (props: Props) => {
 
   return (
     <div className="flex flex-1 flex-col-reverse overflow-y-scroll p-2.5 pb-4">
+      {isGuest && <AuthMessage />}
+
       {sortedMessages.map((message) => (
         <Message key={message.getId()} message={message} room={props.room} />
       ))}
