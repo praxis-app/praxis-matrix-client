@@ -1,6 +1,6 @@
 import { useAppStore } from '@/store/app.store';
 import { ClientEvent, createClient, SyncState } from 'matrix-js-sdk';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { RoomSkeleton } from '../rooms/room-skeleton';
 
 interface Props {
@@ -9,7 +9,6 @@ interface Props {
 
 export function MatrixProvider({ children }: Props) {
   const { matrixClient, setMatrixClient } = useAppStore();
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (matrixClient) {
@@ -63,7 +62,6 @@ export function MatrixProvider({ children }: Props) {
       client.on(ClientEvent.Sync, (state) => {
         if (state === SyncState.Prepared) {
           setMatrixClient(client);
-          setIsLoading(false);
         }
       });
     };
@@ -71,7 +69,7 @@ export function MatrixProvider({ children }: Props) {
     initClient();
   }, [matrixClient, setMatrixClient]);
 
-  if (isLoading) {
+  if (!matrixClient) {
     return <RoomSkeleton />;
   }
 
