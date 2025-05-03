@@ -1,8 +1,7 @@
-import * as React from 'react';
-import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
-import { LuCheck, LuChevronRight, LuCircle } from 'react-icons/lu';
-
 import { cn } from '@/lib/utils';
+import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
+import * as React from 'react';
+import { LuCheck, LuChevronRight, LuCircle } from 'react-icons/lu';
 
 function DropdownMenu({
   ...props
@@ -174,6 +173,13 @@ function DropdownMenuSeparator({
   );
 }
 
+function DropdownMenuArrow({
+  className,
+  ...props
+}: React.ComponentProps<typeof DropdownMenuPrimitive.Arrow>) {
+  return <DropdownMenuPrimitive.Arrow className={cn(className)} {...props} />;
+}
+
 function DropdownMenuShortcut({
   className,
   ...props
@@ -238,18 +244,19 @@ function DropdownMenuSubContent({
 
 export {
   DropdownMenu,
-  DropdownMenuPortal,
-  DropdownMenuTrigger,
+  DropdownMenuArrow,
+  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuGroup,
-  DropdownMenuLabel,
   DropdownMenuItem,
-  DropdownMenuCheckboxItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuSub,
-  DropdownMenuSubTrigger,
   DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
 };

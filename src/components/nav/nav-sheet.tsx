@@ -3,8 +3,15 @@ import { Room } from 'matrix-js-sdk';
 import { ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LuChevronRight } from 'react-icons/lu';
+import { MdExitToApp } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import appIconImg from '../../assets/images/app-icon.png';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
 import {
   Sheet,
   SheetContent,
@@ -49,7 +56,7 @@ export const NavSheet = ({ trigger }: Props) => {
         hideCloseButton
       >
         <SheetHeader className="space-y-4">
-          <SheetTitle className="flex items-center justify-between pr-4">
+          <SheetTitle className="flex items-center justify-between pr-6">
             <NavDrawer
               trigger={
                 <div className="flex cursor-pointer items-center gap-2 self-center px-6 font-medium tracking-[0.02em]">
@@ -63,11 +70,33 @@ export const NavSheet = ({ trigger }: Props) => {
                 </div>
               }
             />
-            <UserAvatar
-              name={displayName}
-              className="size-9"
-              fallbackClassName="text-[1.05rem]"
-            />
+
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <UserAvatar
+                  name={displayName}
+                  className="size-9"
+                  fallbackClassName="text-[1.05rem]"
+                />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                sideOffset={12}
+                className="mr-2.5 flex flex-col gap-2 p-3"
+              >
+                <DropdownMenuItem className="text-md">
+                  <UserAvatar
+                    name={displayName}
+                    className="size-5"
+                    fallbackClassName="text-[0.7rem]"
+                  />
+                  {displayName}
+                </DropdownMenuItem>
+                <DropdownMenuItem className="text-md">
+                  <MdExitToApp className="text-foreground size-5" />
+                  {t('auth.actions.logOut')}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </SheetTitle>
           <SheetDescription className="text-left"></SheetDescription>
         </SheetHeader>
