@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MdExitToApp } from 'react-icons/md';
+import { toast } from 'sonner';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,7 +25,10 @@ export const NavDropdown = ({ trigger, displayName }: Props) => {
         sideOffset={12}
         className="mr-2.5 flex flex-col gap-2 p-3"
       >
-        <DropdownMenuItem className="text-md">
+        <DropdownMenuItem
+          className="text-md"
+          onClick={() => toast(t('prompts.inDev'))}
+        >
           <UserAvatar
             name={displayName}
             className="size-5"

@@ -15,6 +15,7 @@
 
   "prompts": {
     "welcomeToPraxis": "Welcome to Praxis",
+    "inDev": "This feature is still in development.",
     "loading": "Loading..."
   },
 
