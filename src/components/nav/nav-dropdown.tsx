@@ -1,7 +1,21 @@
-import { ReactNode } from 'react';
+import { NavigationPaths } from '@/constants/shared.constants';
+import { useMatrixClient } from '@/hooks/use-matrix-client';
+import { useAppStore } from '@/store/app.store';
+import { ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MdExitToApp } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { Button } from '../ui/button/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,31 +30,67 @@ interface Props {
 }
 
 export const NavDropdown = ({ trigger, displayName }: Props) => {
+  const { setMatrixClient } = useAppStore();
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
+
+  const matrixClient = useMatrixClient();
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
+  const handleLogout = async () => {
+    await matrixClient.logout();
+    localStorage.clear();
+    setMatrixClient(null);
+    setShowLogoutDialog(false);
+    navigate(NavigationPaths.Home);
+  };
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger>{trigger}</DropdownMenuTrigger>
-      <DropdownMenuContent
-        sideOffset={12}
-        className="mr-2.5 flex flex-col gap-2 p-3"
-      >
-        <DropdownMenuItem
-          className="text-md"
-          onClick={() => toast(t('prompts.inDev'))}
+    <Dialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
+      <DropdownMenu>
+        <DropdownMenuTrigger>{trigger}</DropdownMenuTrigger>
+        <DropdownMenuContent
+          sideOffset={12}
+          className="mr-2.5 flex flex-col gap-2 p-3"
         >
-          <UserAvatar
-            name={displayName}
-            className="size-5"
-            fallbackClassName="text-[0.7rem]"
-          />
-          {displayName}
-        </DropdownMenuItem>
-        <DropdownMenuItem className="text-md">
-          <MdExitToApp className="text-foreground size-5" />
-          {t('auth.actions.logOut')}
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+          <DropdownMenuItem
+            className="text-md"
+            onClick={() => toast(t('prompts.inDev'))}
+          >
+            <UserAvatar
+              name={displayName}
+              className="size-5"
+              fallbackClassName="text-[0.7rem]"
+            />
+            {displayName}
+          </DropdownMenuItem>
+
+          <DialogTrigger asChild>
+            <DropdownMenuItem className="text-md">
+              <MdExitToApp className="text-foreground size-5" />
+              {t('auth.actions.logOut')}
+            </DropdownMenuItem>
+          </DialogTrigger>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <DialogContent>
+        <DialogHeader className="mt-9">
+          <DialogTitle className="text-md font-normal">
+            {t('auth.prompts.logOut')}
+          </DialogTitle>
+          <DialogDescription></DialogDescription>
+        </DialogHeader>
+
+        <DialogFooter className="flex flex-row gap-2 self-center">
+          <Button variant="outline" onClick={() => setShowLogoutDialog(false)}>
+            {t('actions.cancel')}
+          </Button>
+          <Button variant="destructive" onClick={handleLogout}>
+            {t('auth.actions.logOut')}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };

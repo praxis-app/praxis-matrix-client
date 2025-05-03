@@ -28,8 +28,11 @@
       "email": "name@example.com"
     },
     "prompts": {
+      "alreadyLoggedIn": "You're already signed in.",
+      "alreadyRegistered": "You have already created an account.",
+      "authenticated": "You are authenticated.",
       "enterCredentials": "Enter your email and password to access your account",
-      "loggedIn": "Logged in"
+      "logOut": "Are you sure you want to log out?"
     },
     "actions": {
       "logIn": "Log in",

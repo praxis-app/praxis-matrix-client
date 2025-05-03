@@ -69,7 +69,7 @@ export function MatrixProvider({ children }: Props) {
     };
 
     initClient();
-  }, [matrixClient]);
+  }, [matrixClient, setMatrixClient]);
 
   if (isLoading) {
     return <RoomSkeleton />;
