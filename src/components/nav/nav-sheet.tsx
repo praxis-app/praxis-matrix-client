@@ -13,6 +13,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '../ui/sheet';
+import { UserAvatar } from '../users/user-avatar';
 import { NavDrawer } from './nav-drawer';
 
 interface Props {
@@ -22,6 +23,9 @@ interface Props {
 export const NavSheet = ({ trigger }: Props) => {
   const [visibleRooms, setVisibleRooms] = useState<Room[]>([]);
   const matrixClient = useMatrixClient();
+
+  const user = matrixClient.getUser(matrixClient.getUserId() ?? '');
+  const displayName = user?.displayName ?? user?.userId ?? '';
 
   useEffect(() => {
     if (!matrixClient) {
@@ -44,16 +48,25 @@ export const NavSheet = ({ trigger }: Props) => {
         className="min-w-[100%] border-r-0 bg-(--accent) px-0 pt-4 dark:bg-(--background)"
         hideCloseButton
       >
-        <SheetHeader>
-          <SheetTitle>
+        <SheetHeader className="space-y-4">
+          <SheetTitle className="flex items-center justify-between pr-4">
             <NavDrawer
               trigger={
-                <div className="flex cursor-pointer items-center gap-2 px-6 pb-2 font-medium tracking-[0.02em]">
-                  <img src={appIconImg} alt={t('brand')} className="size-9" />
+                <div className="flex cursor-pointer items-center gap-2 self-center px-6 font-medium tracking-[0.02em]">
+                  <img
+                    src={appIconImg}
+                    alt={t('brand')}
+                    className="size-9 self-center"
+                  />
                   {t('brand')}
                   <LuChevronRight className="mt-0.5 ml-0.5 size-4" />
                 </div>
               }
+            />
+            <UserAvatar
+              name={displayName}
+              className="size-9"
+              fallbackClassName="text-[1.05rem]"
             />
           </SheetTitle>
           <SheetDescription className="text-left"></SheetDescription>

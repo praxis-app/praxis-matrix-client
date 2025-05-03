@@ -6,15 +6,21 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 interface Props {
   name: string;
   className?: string;
+  fallbackClassName?: string;
   imageSrc?: string;
 }
 
-export const UserAvatar = ({ name, className, imageSrc }: Props) => {
+export const UserAvatar = ({
+  name,
+  className,
+  imageSrc,
+  fallbackClassName,
+}: Props) => {
   const getStringAvatarProps = () => {
     const colorHash = new ColorHash();
     const baseColor = colorHash.hex(name);
-    const color = chroma(baseColor).darken(1.2).hex();
-    const backgroundColor = chroma(baseColor).brighten(1.4).hex();
+    const color = chroma(baseColor).darken(1.4).hex();
+    const backgroundColor = chroma(baseColor).brighten(1.1).hex();
 
     return {
       style: { color, backgroundColor },
@@ -26,7 +32,7 @@ export const UserAvatar = ({ name, className, imageSrc }: Props) => {
       <AvatarImage src={imageSrc} alt={name} />
 
       <AvatarFallback
-        className="text-lg font-medium"
+        className={cn('text-lg font-medium', fallbackClassName)}
         {...getStringAvatarProps()}
       >
         {name[0].toUpperCase()}
