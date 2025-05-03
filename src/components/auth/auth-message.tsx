@@ -3,9 +3,12 @@
 import { useTranslation } from 'react-i18next';
 import { BotMessage } from '../messages/bot-message';
 import { Button } from '../ui/button/button';
+import { useNavigate } from 'react-router-dom';
+import { NavigationPaths } from '@/constants/shared.constants';
 
 export const AuthMessage = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   return (
     <BotMessage>
@@ -16,7 +19,11 @@ export const AuthMessage = () => {
       <div className="pb-2.5">{t('welcome.messages.projectDescription2')}</div>
       <div className="pb-2.5">{t('welcome.messages.inDev')}</div>
 
-      <Button variant="secondary" className="mb-1 uppercase">
+      <Button
+        variant="secondary"
+        className="mb-1 uppercase"
+        onClick={() => navigate(NavigationPaths.Login)}
+      >
         {t('auth.actions.logIn')}
       </Button>
     </BotMessage>
