@@ -13,20 +13,6 @@ export const HomePage = () => {
       return;
     }
     const getRoom = async () => {
-      const isGuest = matrixClient.isGuest();
-
-      if (isGuest) {
-        const { chunk } = await matrixClient.publicRooms();
-        if (!chunk.length) {
-          return null;
-        }
-
-        const roomId = chunk[0].room_id;
-        await matrixClient.joinRoom(roomId);
-        const room = matrixClient.getRoom(roomId);
-        return room;
-      }
-
       const rooms = matrixClient.getVisibleRooms();
       if (!rooms.length) {
         return null;
@@ -35,9 +21,6 @@ export const HomePage = () => {
     };
     const init = async () => {
       const room = await getRoom();
-      if (!room) {
-        return;
-      }
       setRoom(room);
     };
     init();

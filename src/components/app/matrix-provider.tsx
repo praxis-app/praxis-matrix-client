@@ -44,6 +44,12 @@ export function MatrixProvider({ children }: Props) {
 
       const isGuest = localStorage.getItem('device_id') === 'guest_device';
       if (isGuest) {
+        // Join a public room if the user is a guest
+        const { chunk } = await client.publicRooms();
+        if (chunk.length) {
+          const roomId = chunk[0].room_id;
+          await client.joinRoom(roomId);
+        }
         client.setGuest(true);
       }
 
@@ -52,7 +58,7 @@ export function MatrixProvider({ children }: Props) {
       });
 
       // Make client available once it's ready
-      client.once(ClientEvent.Sync, (state) => {
+      client.on(ClientEvent.Sync, (state) => {
         if (state === SyncState.Prepared) {
           setMatrixClient(client);
           setIsLoading(false);
