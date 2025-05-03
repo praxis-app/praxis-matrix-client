@@ -1,4 +1,4 @@
-const LeftNav = () => {
+export const LeftNavDesktop = () => {
   return (
     <div className="flex h-full w-[240px] flex-col border-r border-[--color-border] bg-(--card)">
       <div className="h-[55px] border-b border-[--color-border]"></div>
@@ -7,5 +7,3 @@ const LeftNav = () => {
     </div>
   );
 };
-
-export { LeftNav };

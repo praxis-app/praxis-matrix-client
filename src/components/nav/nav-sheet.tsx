@@ -3,15 +3,8 @@ import { Room } from 'matrix-js-sdk';
 import { ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LuChevronRight } from 'react-icons/lu';
-import { MdExitToApp } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import appIconImg from '../../assets/images/app-icon.png';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '../ui/dropdown-menu';
 import {
   Sheet,
   SheetContent,
@@ -22,6 +15,7 @@ import {
 } from '../ui/sheet';
 import { UserAvatar } from '../users/user-avatar';
 import { NavDrawer } from './nav-drawer';
+import { NavDropdown } from './nav-dropdown';
 
 interface Props {
   trigger: ReactNode;
@@ -70,33 +64,16 @@ export const NavSheet = ({ trigger }: Props) => {
                 </div>
               }
             />
-
-            <DropdownMenu>
-              <DropdownMenuTrigger>
+            <NavDropdown
+              trigger={
                 <UserAvatar
                   name={displayName}
                   className="size-9"
                   fallbackClassName="text-[1.05rem]"
                 />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                sideOffset={12}
-                className="mr-2.5 flex flex-col gap-2 p-3"
-              >
-                <DropdownMenuItem className="text-md">
-                  <UserAvatar
-                    name={displayName}
-                    className="size-5"
-                    fallbackClassName="text-[0.7rem]"
-                  />
-                  {displayName}
-                </DropdownMenuItem>
-                <DropdownMenuItem className="text-md">
-                  <MdExitToApp className="text-foreground size-5" />
-                  {t('auth.actions.logOut')}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+              }
+              displayName={displayName}
+            />
           </SheetTitle>
           <SheetDescription className="text-left"></SheetDescription>
         </SheetHeader>
