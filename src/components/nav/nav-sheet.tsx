@@ -2,10 +2,9 @@ import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { Room } from 'matrix-js-sdk';
 import { ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { LuArrowLeft, LuChevronRight } from 'react-icons/lu';
+import { LuChevronRight } from 'react-icons/lu';
 import { Link } from 'react-router-dom';
 import appIconImg from '../../assets/images/app-icon.png';
-import { Button } from '../ui/button/button';
 import {
   Sheet,
   SheetContent,
@@ -17,7 +16,7 @@ import {
 import { NavDrawer } from './nav-drawer';
 
 interface Props {
-  trigger?: ReactNode;
+  trigger: ReactNode;
 }
 
 export const NavSheet = ({ trigger }: Props) => {
@@ -39,13 +38,7 @@ export const NavSheet = ({ trigger }: Props) => {
 
   return (
     <Sheet>
-      <SheetTrigger asChild>
-        {trigger ?? (
-          <Button variant="ghost" size="icon">
-            <LuArrowLeft className="size-[1.45rem]" />
-          </Button>
-        )}
-      </SheetTrigger>
+      <SheetTrigger asChild>{trigger}</SheetTrigger>
       <SheetContent
         side="left"
         className="min-w-[100%] border-r-0 bg-(--accent) px-0 pt-4 dark:bg-(--background)"
@@ -53,13 +46,15 @@ export const NavSheet = ({ trigger }: Props) => {
       >
         <SheetHeader>
           <SheetTitle>
-            <NavDrawer>
-              <div className="flex cursor-pointer items-center gap-2 px-6 pb-2 font-medium tracking-[0.02em]">
-                <img src={appIconImg} alt={t('brand')} className="size-9" />
-                {t('brand')}
-                <LuChevronRight className="mt-0.5 ml-0.5 size-4" />
-              </div>
-            </NavDrawer>
+            <NavDrawer
+              trigger={
+                <div className="flex cursor-pointer items-center gap-2 px-6 pb-2 font-medium tracking-[0.02em]">
+                  <img src={appIconImg} alt={t('brand')} className="size-9" />
+                  {t('brand')}
+                  <LuChevronRight className="mt-0.5 ml-0.5 size-4" />
+                </div>
+              }
+            />
           </SheetTitle>
           <SheetDescription className="text-left"></SheetDescription>
         </SheetHeader>

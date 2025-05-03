@@ -56,13 +56,12 @@ const formSchema = zod.object({
 });
 
 interface Props {
-  // TODO: Rename as "trigger"
-  children: ReactNode;
+  trigger: ReactNode;
 }
 
 // TODO: Add i18n
 
-export const RoomFormDialog = ({ children }: Props) => {
+export const RoomFormDialog = ({ trigger }: Props) => {
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -136,7 +135,7 @@ export const RoomFormDialog = ({ children }: Props) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{t('rooms.prompts.createRoom')}</DialogTitle>

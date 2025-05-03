@@ -13,15 +13,15 @@ import {
 } from '../ui/drawer';
 
 interface Props {
-  children: ReactNode;
+  trigger: ReactNode;
 }
 
-export const NavDrawer = ({ children }: Props) => {
+export const NavDrawer = ({ trigger }: Props) => {
   const { t } = useTranslation();
 
   return (
     <Drawer>
-      <DrawerTrigger asChild>{children}</DrawerTrigger>
+      <DrawerTrigger asChild>{trigger}</DrawerTrigger>
       <DrawerContent className="flex min-h-[calc(100vh-68px)] flex-col items-start rounded-t-2xl border-0">
         {/* TODO: Determine how to handle header requirements */}
         <DrawerHeader className="hidden">
@@ -30,15 +30,17 @@ export const NavDrawer = ({ children }: Props) => {
         </DrawerHeader>
 
         <div className="flex flex-col gap-4 p-4">
-          <RoomFormDialog>
-            <Button
-              variant="ghost"
-              className="text-md flex items-center gap-6 font-normal"
-            >
-              <MdAddCircle className="size-6" />
-              {t('rooms.actions.create')}
-            </Button>
-          </RoomFormDialog>
+          <RoomFormDialog
+            trigger={
+              <Button
+                variant="ghost"
+                className="text-md flex items-center gap-6 font-normal"
+              >
+                <MdAddCircle className="size-6" />
+                {t('rooms.actions.create')}
+              </Button>
+            }
+          />
         </div>
       </DrawerContent>
     </Drawer>
