@@ -27,7 +27,7 @@ export const RoomFeed = (props: Props) => {
   useEffect(() => {
     matrixClient.on(RoomEvent.Timeline, (event, room, toStart) => {
       if (
-        event.getType() !== 'm.room.message' ||
+        event.getType() !== EventType.RoomMessage ||
         props.room.roomId !== room?.roomId ||
         toStart
       ) {

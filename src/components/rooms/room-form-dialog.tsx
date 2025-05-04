@@ -28,7 +28,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Method, Visibility } from 'matrix-js-sdk';
+import { EventType, Method, Visibility } from 'matrix-js-sdk';
 import { ReactNode, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -92,7 +92,7 @@ export const RoomFormDialog = ({ trigger }: Props) => {
         // TODO: Test wether this enables guest access
         initial_state: [
           {
-            type: 'm.room.guest_access',
+            type: EventType.RoomGuestAccess,
             content: { guest_access: 'can_join' },
           },
         ],
