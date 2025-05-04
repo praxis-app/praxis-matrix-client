@@ -10,13 +10,20 @@
     "edit": "Edit",
     "remove": "Remove",
     "save": "Save",
-    "submit": "Submit"
+    "submit": "Submit",
+    "goToHome": "Back to home",
+    "refresh": "Refresh"
   },
 
   "prompts": {
     "welcomeToPraxis": "Welcome to Praxis",
     "inDev": "This feature is still in development.",
     "loading": "Loading..."
+  },
+
+  "errors": {
+    "pageNotFound": "Page not found.",
+    "somethingWentWrong": "Something went wrong."
   },
 
   "auth": {
@@ -51,9 +58,9 @@
 
   "rooms": {
     "labels": {
-      "name": "Room Name",
+      "name": "Room name",
       "description": "Description",
-      "visibility": "Room Visibility"
+      "visibility": "Room visibility"
     },
     "placeholders": {
       "name": "Enter room name",
