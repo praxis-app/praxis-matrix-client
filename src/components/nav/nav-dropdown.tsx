@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { MdExitToApp } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { Button } from '../ui/button/button';
+import { Button } from '../ui/button';
 import {
   Dialog,
   DialogContent,

@@ -2,7 +2,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { Room } from 'matrix-js-sdk';
 import { LuArrowLeft } from 'react-icons/lu';
 import { NavSheet } from '../nav/nav-sheet';
-import { Button } from '../ui/button/button';
+import { Button } from '../ui/button';
 
 interface Props {
   room: Room;

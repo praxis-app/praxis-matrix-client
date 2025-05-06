@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MdAddCircle } from 'react-icons/md';
 import { RoomFormDialog } from '../rooms/room-form-dialog';
-import { Button } from '../ui/button/button';
+import { Button } from '../ui/button';
 import {
   Drawer,
   DrawerContent,

@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { MdImage, MdSend } from 'react-icons/md';
 import { toast } from 'sonner';
 import * as zod from 'zod';
-import { Button } from '../ui/button/button';
+import { Button } from '../ui/button';
 import { Form, FormField } from '../ui/form';
 import { Textarea } from '../ui/textarea';
 

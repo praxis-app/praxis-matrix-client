@@ -1,6 +1,6 @@
 // TODO: Add remaining layout and functionality - below is a WIP
 
-import { Button } from '@/components/ui/button/button';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,

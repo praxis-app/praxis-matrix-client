@@ -2,7 +2,7 @@
 
 import { useTranslation } from 'react-i18next';
 import { BotMessage } from '../messages/bot-message';
-import { Button } from '../ui/button/button';
+import { Button } from '../ui/button';
 import { useNavigate } from 'react-router-dom';
 import { NavigationPaths } from '@/constants/shared.constants';
 

@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { MdExpandMore } from 'react-icons/md';
 import { Link, useParams } from 'react-router-dom';
 import appIconImg from '../../assets/images/app-icon.png';
-import { Button } from '../ui/button/button';
+import { Button } from '../ui/button';
 
 export const LeftNavDesktop = () => {
   const [visibleRooms, setVisibleRooms] = useState<Room[]>([]);

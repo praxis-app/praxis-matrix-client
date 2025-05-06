@@ -7,7 +7,7 @@ import {
 import { useTheme } from '@/hooks/use-theme';
 import { cn } from '@/lib/utils';
 import { LuMoon, LuSun } from 'react-icons/lu';
-import { Button } from '../ui/button/button';
+import { Button } from '../ui/button';
 
 interface Props {
   className?: string;
