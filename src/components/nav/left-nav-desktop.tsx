@@ -3,10 +3,16 @@ import { cn } from '@/lib/utils';
 import { Room } from 'matrix-js-sdk';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { MdExpandMore } from 'react-icons/md';
+import { MdAddCircle, MdExpandMore } from 'react-icons/md';
 import { Link, useParams } from 'react-router-dom';
 import appIconImg from '../../assets/images/app-icon.png';
 import { Button } from '../ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
 
 export const LeftNavDesktop = () => {
   const [visibleRooms, setVisibleRooms] = useState<Room[]>([]);
@@ -30,23 +36,36 @@ export const LeftNavDesktop = () => {
 
   return (
     <div className="flex h-full w-[240px] flex-col border-r border-[--color-border] bg-(--card)">
-      <Button
-        variant="ghost"
-        className="flex h-[55px] justify-between rounded-none border-b border-[--color-border] has-[>svg]:pl-3.5"
-      >
-        <div className="flex items-center gap-2">
-          <img
-            src={appIconImg}
-            alt={t('brand')}
-            className="size-[1.55rem] self-center"
-          />
-          <div className="self-center text-base/tight font-medium tracking-[0.02em]">
-            {t('brand')}
-          </div>
-        </div>
+      <DropdownMenu>
+        <DropdownMenuTrigger className="focus:outline-none">
+          {
+            <Button
+              variant="ghost"
+              className="flex h-[55px] w-full justify-between rounded-none border-b border-[--color-border] has-[>svg]:pl-3.5"
+            >
+              <div className="flex items-center gap-2">
+                <img
+                  src={appIconImg}
+                  alt={t('brand')}
+                  className="size-[1.55rem] self-center"
+                />
+                <div className="self-center text-base/tight font-medium tracking-[0.02em]">
+                  {t('brand')}
+                </div>
+              </div>
 
-        <MdExpandMore className="size-[1.4rem] self-center" />
-      </Button>
+              <MdExpandMore className="size-[1.4rem] self-center" />
+            </Button>
+          }
+        </DropdownMenuTrigger>
+        <DropdownMenuContent sideOffset={10} className="w-52">
+          <DropdownMenuItem className="text-md">
+            <MdAddCircle className="text-foreground size-5" />
+            {t('rooms.actions.create')}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
       <div className="flex flex-1 flex-col overflow-y-scroll py-2">
         {visibleRooms.map((room) => (
           <Link
