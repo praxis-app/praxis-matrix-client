@@ -6,7 +6,16 @@ import { useTranslation } from 'react-i18next';
 import { MdAddCircle, MdExpandMore } from 'react-icons/md';
 import { Link, useParams } from 'react-router-dom';
 import appIconImg from '../../assets/images/app-icon.png';
-import { Button } from '../ui/button';
+import { RoomForm, RoomFormSubmitButton } from '../rooms/room-form';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,7 +25,7 @@ import {
 
 export const LeftNavDesktop = () => {
   const [visibleRooms, setVisibleRooms] = useState<Room[]>([]);
-
+  const [showRoomFormDialog, setShowRoomFormDialog] = useState(false);
   const matrixClient = useMatrixClient();
   const { t } = useTranslation();
 
@@ -36,35 +45,49 @@ export const LeftNavDesktop = () => {
 
   return (
     <div className="flex h-full w-[240px] flex-col border-r border-[--color-border] bg-(--card)">
-      <DropdownMenu>
-        <DropdownMenuTrigger className="focus:outline-none">
-          {
-            <Button
-              variant="ghost"
-              className="flex h-[55px] w-full justify-between rounded-none border-b border-[--color-border] has-[>svg]:pl-3.5"
-            >
-              <div className="flex items-center gap-2">
-                <img
-                  src={appIconImg}
-                  alt={t('brand')}
-                  className="size-[1.55rem] self-center"
-                />
-                <div className="self-center text-base/tight font-medium tracking-[0.02em]">
-                  {t('brand')}
-                </div>
+      <Dialog open={showRoomFormDialog} onOpenChange={setShowRoomFormDialog}>
+        <DropdownMenu>
+          <DropdownMenuTrigger className="hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 flex h-[55px] w-full cursor-pointer justify-between border-b border-[--color-border] pr-3 pl-4 focus:outline-none">
+            <div className="flex items-center gap-2">
+              <img
+                src={appIconImg}
+                alt={t('brand')}
+                className="size-[1.55rem] self-center"
+              />
+              <div className="self-center text-base/tight font-medium tracking-[0.02em]">
+                {t('brand')}
               </div>
+            </div>
 
-              <MdExpandMore className="size-[1.4rem] self-center" />
-            </Button>
-          }
-        </DropdownMenuTrigger>
-        <DropdownMenuContent sideOffset={10} className="w-52">
-          <DropdownMenuItem className="text-md">
-            <MdAddCircle className="text-foreground size-5" />
-            {t('rooms.actions.create')}
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+            <MdExpandMore className="size-[1.4rem] self-center" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent sideOffset={10} className="w-52">
+            <DialogTrigger asChild>
+              <DropdownMenuItem className="text-md">
+                <MdAddCircle className="text-foreground size-5" />
+                {t('rooms.actions.create')}
+              </DropdownMenuItem>
+            </DialogTrigger>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t('rooms.prompts.createRoom')}</DialogTitle>
+          </DialogHeader>
+          <DialogDescription>
+            {t('rooms.prompts.startConversation')}
+          </DialogDescription>
+          <RoomForm
+            submitButton={(props) => (
+              <DialogFooter>
+                <RoomFormSubmitButton {...props} />
+              </DialogFooter>
+            )}
+            onSubmit={() => setShowRoomFormDialog(false)}
+          />
+        </DialogContent>
+      </Dialog>
 
       <div className="flex flex-1 flex-col overflow-y-scroll py-2">
         {visibleRooms.map((room) => (

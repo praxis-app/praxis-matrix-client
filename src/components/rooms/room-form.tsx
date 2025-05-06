@@ -123,9 +123,8 @@ export const RoomForm = ({ submitButton, onSubmit }: RoomFormProps) => {
         description: `Room "${values.name}" has been created with ID ${room.room_id}.`,
       });
 
-      onSubmit();
-
       form.reset();
+      onSubmit();
 
       // Redirect to the rooms list or the new room
       // router.push("/rooms");
