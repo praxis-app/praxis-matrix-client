@@ -1,8 +1,17 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MdAddCircle } from 'react-icons/md';
-import { RoomFormDialog } from '../rooms/room-form-dialog';
+import { RoomForm, RoomFormSubmitButton } from '../rooms/room-form';
 import { Button } from '../ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
 import {
   Drawer,
   DrawerContent,
@@ -17,6 +26,7 @@ interface Props {
 }
 
 export const NavDrawer = ({ trigger }: Props) => {
+  const [showRoomFormDialog, setShowRoomFormDialog] = useState(false);
   const { t } = useTranslation();
 
   return (
@@ -30,8 +40,11 @@ export const NavDrawer = ({ trigger }: Props) => {
         </DrawerHeader>
 
         <div className="flex flex-col gap-4 p-4">
-          <RoomFormDialog
-            trigger={
+          <Dialog
+            open={showRoomFormDialog}
+            onOpenChange={setShowRoomFormDialog}
+          >
+            <DialogTrigger asChild>
               <Button
                 variant="ghost"
                 className="text-md flex items-center gap-6 font-normal"
@@ -39,8 +52,24 @@ export const NavDrawer = ({ trigger }: Props) => {
                 <MdAddCircle className="size-6" />
                 {t('rooms.actions.create')}
               </Button>
-            }
-          />
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>{t('rooms.prompts.createRoom')}</DialogTitle>
+              </DialogHeader>
+              <DialogDescription>
+                {t('rooms.prompts.startConversation')}
+              </DialogDescription>
+              <RoomForm
+                submitButton={(props) => (
+                  <DialogFooter>
+                    <RoomFormSubmitButton {...props} />
+                  </DialogFooter>
+                )}
+                onSubmit={() => setShowRoomFormDialog(false)}
+              />
+            </DialogContent>
+          </Dialog>
         </div>
       </DrawerContent>
     </Drawer>
