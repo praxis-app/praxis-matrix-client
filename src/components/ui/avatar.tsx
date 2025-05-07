@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils';
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
+import { cva, VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
 const Avatar = React.forwardRef<
@@ -8,10 +9,7 @@ const Avatar = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AvatarPrimitive.Root
     ref={ref}
-    className={cn(
-      'relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full',
-      className,
-    )}
+    className={cn('relative flex h-10 w-10 shrink-0 rounded-full', className)}
     {...props}
   />
 ));
@@ -23,7 +21,7 @@ const AvatarImage = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AvatarPrimitive.Image
     ref={ref}
-    className={cn('aspect-square h-full w-full', className)}
+    className={cn('aspect-square h-full w-full rounded-full', className)}
     {...props}
   />
 ));
@@ -44,4 +42,38 @@ const AvatarFallback = React.forwardRef<
 ));
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName;
 
-export { Avatar, AvatarFallback, AvatarImage };
+const avatarBadgeVariants = cva(
+  'absolute w-3 h-3 rounded-full bg-background flex items-stretch justify-stretch [&>*]:grow [&>*]:rounded-full',
+  {
+    variants: {
+      position: {
+        bottomLeft: 'bottom-0 -left-1',
+        bottomRight: '-bottom-1 -right-1',
+        topLeft: 'top-0 -left-1',
+        topRight: 'top-0 -right-1',
+      },
+    },
+    defaultVariants: {
+      position: 'bottomLeft',
+    },
+  },
+);
+
+export interface AvatarBadgeProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof avatarBadgeVariants> {
+  children?:
+    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+    | null
+    | never[];
+}
+
+const AvatarBadge = ({ className, position, ...props }: AvatarBadgeProps) => (
+  <div
+    className={cn(avatarBadgeVariants({ position }), className)}
+    {...props}
+  />
+);
+AvatarBadge.displayName = 'AvatarBadge';
+
+export { Avatar, AvatarBadge, AvatarFallback, AvatarImage };

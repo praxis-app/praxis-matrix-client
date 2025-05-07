@@ -56,6 +56,13 @@
     }
   },
 
+  "users": {
+    "presence": {
+      "online": "Online",
+      "offline": "Offline"
+    }
+  },
+
   "rooms": {
     "labels": {
       "name": "Room name",

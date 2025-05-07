@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import chroma from 'chroma-js';
 import ColorHash from 'color-hash';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { Avatar, AvatarBadge, AvatarFallback, AvatarImage } from '../ui/avatar';
 
 interface Props {
   name: string;
@@ -9,6 +9,9 @@ interface Props {
   className?: string;
   fallbackClassName?: string;
   imageSrc?: string;
+  isOnline?: boolean;
+  showOnlineStatus?: boolean;
+  animateOnlineStatus?: boolean;
 }
 
 export const UserAvatar = ({
@@ -17,6 +20,9 @@ export const UserAvatar = ({
   className,
   imageSrc,
   fallbackClassName,
+  isOnline,
+  showOnlineStatus,
+  animateOnlineStatus,
 }: Props) => {
   const getStringAvatarProps = () => {
     const colorHash = new ColorHash();
@@ -39,6 +45,20 @@ export const UserAvatar = ({
       >
         {name[0].toUpperCase()}
       </AvatarFallback>
+
+      {showOnlineStatus && isOnline && (
+        <AvatarBadge
+          position="bottomRight"
+          className="border-card h-[15px] w-[15px] border-[2.5px]"
+        >
+          <span className="relative">
+            {animateOnlineStatus && (
+              <span className="absolute h-full w-full animate-ping rounded-full bg-(--online) opacity-75"></span>
+            )}
+            <span className="absolute h-full w-full rounded-full bg-(--online)"></span>
+          </span>
+        </AvatarBadge>
+      )}
     </Avatar>
   );
 };

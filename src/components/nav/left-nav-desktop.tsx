@@ -3,10 +3,11 @@ import { cn } from '@/lib/utils';
 import { Room } from 'matrix-js-sdk';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { MdAddCircle, MdExpandMore } from 'react-icons/md';
+import { MdAddCircle, MdExpandMore, MdSettings } from 'react-icons/md';
 import { Link, useParams } from 'react-router-dom';
 import appIconImg from '../../assets/images/app-icon.png';
 import { RoomForm, RoomFormSubmitButton } from '../rooms/room-form';
+import { Button } from '../ui/button';
 import {
   Dialog,
   DialogContent,
@@ -22,15 +23,22 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
+import { UserAvatar } from '../users/user-avatar';
 
 export const LeftNavDesktop = () => {
   const [visibleRooms, setVisibleRooms] = useState<Room[]>([]);
   const [showRoomFormDialog, setShowRoomFormDialog] = useState(false);
+
   const matrixClient = useMatrixClient();
   const { t } = useTranslation();
 
   const { roomId } = useParams();
   const activeRoomId = roomId ?? visibleRooms[0]?.roomId;
+
+  const userId = matrixClient.getUserId();
+  const user = matrixClient.getUser(userId ?? '');
+  const displayName = user?.displayName ?? userId ?? '';
+  const isOnline = user?.presence === 'online';
 
   useEffect(() => {
     if (!matrixClient) {
@@ -103,7 +111,31 @@ export const LeftNavDesktop = () => {
           </Link>
         ))}
       </div>
-      <div className="h-[55px] border-t border-[--color-border]"></div>
+
+      <div className="flex h-[58px] items-center justify-between border-t border-[--color-border] px-3">
+        <div className="flex items-center gap-2">
+          <UserAvatar
+            name={displayName}
+            userId={userId}
+            className="size-8"
+            fallbackClassName="text-sm"
+            isOnline={isOnline}
+            showOnlineStatus
+          />
+          <div className="flex flex-col">
+            <div className="text-sm/tight">{displayName}</div>
+            <div className="text-muted-foreground text-xs/tight">
+              {isOnline
+                ? t('users.presence.online')
+                : t('users.presence.offline')}
+            </div>
+          </div>
+        </div>
+
+        <Button variant="ghost" size="icon">
+          <MdSettings className="text-muted-foreground size-6" />
+        </Button>
+      </div>
     </div>
   );
 };
