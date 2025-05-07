@@ -26,8 +26,9 @@ export const NavSheet = ({ trigger }: Props) => {
   const [open, setOpen] = useState(false);
   const matrixClient = useMatrixClient();
 
-  const user = matrixClient.getUser(matrixClient.getUserId() ?? '');
-  const displayName = user?.displayName ?? user?.userId ?? '';
+  const userId = matrixClient.getUserId();
+  const user = matrixClient.getUser(userId ?? '');
+  const displayName = user?.displayName ?? userId ?? '';
 
   useEffect(() => {
     if (!matrixClient) {
@@ -69,6 +70,7 @@ export const NavSheet = ({ trigger }: Props) => {
               trigger={
                 <UserAvatar
                   name={displayName}
+                  userId={userId}
                   className="size-9"
                   fallbackClassName="text-[1.05rem]"
                 />

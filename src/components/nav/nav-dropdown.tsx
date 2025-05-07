@@ -37,6 +37,8 @@ export const NavDropdown = ({ trigger, displayName }: Props) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
+  const userId = matrixClient.getUserId();
+
   const handleLogout = async () => {
     await matrixClient.logout();
     localStorage.clear();
@@ -59,6 +61,7 @@ export const NavDropdown = ({ trigger, displayName }: Props) => {
           >
             <UserAvatar
               name={displayName}
+              userId={userId}
               className="size-5"
               fallbackClassName="text-[0.7rem]"
             />

@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 
 interface Props {
   name: string;
+  userId?: string | null;
   className?: string;
   fallbackClassName?: string;
   imageSrc?: string;
@@ -12,15 +13,16 @@ interface Props {
 
 export const UserAvatar = ({
   name,
+  userId,
   className,
   imageSrc,
   fallbackClassName,
 }: Props) => {
   const getStringAvatarProps = () => {
     const colorHash = new ColorHash();
-    const baseColor = colorHash.hex(name);
-    const color = chroma(baseColor).darken(1.4).hex();
-    const backgroundColor = chroma(baseColor).brighten(1.1).hex();
+    const baseColor = colorHash.hex(userId ?? name);
+    const color = chroma(baseColor).brighten(1.5).hex();
+    const backgroundColor = chroma(baseColor).darken(1.35).hex();
 
     return {
       style: { color, backgroundColor },

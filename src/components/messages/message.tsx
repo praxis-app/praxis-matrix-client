@@ -23,7 +23,7 @@ export const Message = ({ message, room }: Props) => {
 
   return (
     <div className="flex gap-4 pt-4">
-      <UserAvatar name={name} className="mt-0.5" />
+      <UserAvatar name={name} userId={userId} className="mt-0.5" />
 
       <div>
         <div className="flex items-center gap-1.5">
