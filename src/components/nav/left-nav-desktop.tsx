@@ -112,8 +112,11 @@ export const LeftNavDesktop = () => {
         ))}
       </div>
 
-      <div className="flex h-[58px] items-center justify-between border-t border-[--color-border] px-3">
-        <div className="flex items-center gap-2">
+      <div className="flex h-[60px] items-center justify-between border-t border-[--color-border] px-1.5">
+        <Button
+          variant="ghost"
+          className="mr-1 flex h-11.5 flex-1 items-center justify-start px-2 text-left"
+        >
           <UserAvatar
             name={displayName}
             userId={userId}
@@ -122,15 +125,15 @@ export const LeftNavDesktop = () => {
             isOnline={isOnline}
             showOnlineStatus
           />
-          <div className="flex flex-col">
-            <div className="text-sm/tight">{displayName}</div>
-            <div className="text-muted-foreground text-xs/tight">
+          <div className="flex flex-col pt-[0.16rem]">
+            <div className="text-[0.81rem]/tight">{displayName}</div>
+            <div className="text-muted-foreground text-[0.7rem]/[0.9rem] font-light">
               {isOnline
                 ? t('users.presence.online')
                 : t('users.presence.offline')}
             </div>
           </div>
-        </div>
+        </Button>
 
         <Button variant="ghost" size="icon">
           <MdSettings className="text-muted-foreground size-6" />
