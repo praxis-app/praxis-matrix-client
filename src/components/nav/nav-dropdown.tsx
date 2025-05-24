@@ -6,16 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { MdExitToApp } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { Button } from '../ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '../ui/dialog';
+import LogOutDialogContent from '../auth/log-out-dialog-content';
+import { Dialog, DialogTrigger } from '../ui/dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -77,23 +69,10 @@ export const NavDropdown = ({ trigger, displayName }: Props) => {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <DialogContent>
-        <DialogHeader className="mt-9">
-          <DialogTitle className="text-md font-normal">
-            {t('auth.prompts.logOut')}
-          </DialogTitle>
-          <DialogDescription></DialogDescription>
-        </DialogHeader>
-
-        <DialogFooter className="flex flex-row gap-2 self-center">
-          <Button variant="outline" onClick={() => setShowLogoutDialog(false)}>
-            {t('actions.cancel')}
-          </Button>
-          <Button variant="destructive" onClick={handleLogout}>
-            {t('auth.actions.logOut')}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
+      <LogOutDialogContent
+        setShowLogoutDialog={setShowLogoutDialog}
+        handleLogout={handleLogout}
+      />
     </Dialog>
   );
 };
