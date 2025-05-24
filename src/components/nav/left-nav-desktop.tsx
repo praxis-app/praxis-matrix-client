@@ -3,7 +3,12 @@ import { cn } from '@/lib/utils';
 import { Room } from 'matrix-js-sdk';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { MdAddCircle, MdExpandMore, MdSettings } from 'react-icons/md';
+import {
+  MdAddCircle,
+  MdExitToApp,
+  MdExpandMore,
+  MdSettings,
+} from 'react-icons/md';
 import { Link, useParams } from 'react-router-dom';
 import appIconImg from '../../assets/images/app-icon.png';
 import { RoomForm, RoomFormSubmitButton } from '../rooms/room-form';
@@ -55,7 +60,7 @@ export const LeftNavDesktop = () => {
     <div className="flex h-full w-[240px] flex-col border-r border-[--color-border] bg-(--card)">
       <Dialog open={showRoomFormDialog} onOpenChange={setShowRoomFormDialog}>
         <DropdownMenu>
-          <DropdownMenuTrigger className="hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 flex h-[55px] w-full cursor-pointer justify-between border-b border-[--color-border] pr-3 pl-4 focus:outline-none">
+          <DropdownMenuTrigger className="hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 flex h-[55px] w-full cursor-pointer justify-between border-b border-[--color-border] pr-3 pl-4 select-none focus:outline-none">
             <div className="flex items-center gap-2">
               <img
                 src={appIconImg}
@@ -97,7 +102,7 @@ export const LeftNavDesktop = () => {
         </DialogContent>
       </Dialog>
 
-      <div className="flex flex-1 flex-col overflow-y-scroll py-2">
+      <div className="flex flex-1 flex-col overflow-y-scroll py-2 select-none">
         {visibleRooms.map((room) => (
           <Link
             className={cn(
@@ -113,27 +118,38 @@ export const LeftNavDesktop = () => {
       </div>
 
       <div className="flex h-[60px] items-center justify-between border-t border-[--color-border] px-1.5">
-        <Button
-          variant="ghost"
-          className="mr-1 flex h-11.5 flex-1 items-center justify-start px-2 text-left"
-        >
-          <UserAvatar
-            name={displayName}
-            userId={userId}
-            className="size-8"
-            fallbackClassName="text-sm"
-            isOnline={isOnline}
-            showOnlineStatus
-          />
-          <div className="flex flex-col pt-[0.16rem]">
-            <div className="text-[0.81rem]/tight">{displayName}</div>
-            <div className="text-muted-foreground text-[0.7rem]/[0.9rem] font-light">
-              {isOnline
-                ? t('users.presence.online')
-                : t('users.presence.offline')}
+        <DropdownMenu>
+          <DropdownMenuTrigger className="hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 mr-1 flex h-11.5 w-full cursor-pointer items-center justify-start gap-2 rounded-[4px] px-2 text-left select-none focus:outline-none">
+            <UserAvatar
+              name={displayName}
+              userId={userId}
+              className="size-8"
+              fallbackClassName="text-sm"
+              isOnline={isOnline}
+              showOnlineStatus
+            />
+            <div className="flex flex-col pt-[0.16rem]">
+              <div className="text-[0.81rem]/tight">{displayName}</div>
+              <div className="text-muted-foreground text-[0.7rem]/[0.9rem] font-light">
+                {isOnline
+                  ? t('users.presence.online')
+                  : t('users.presence.offline')}
+              </div>
             </div>
-          </div>
-        </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            className="w-52"
+            align="start"
+            alignOffset={10}
+            side="top"
+            sideOffset={18}
+          >
+            <DropdownMenuItem className="text-md">
+              <MdExitToApp className="text-foreground size-5" />
+              {t('auth.actions.logOut')}
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
 
         <Button variant="ghost" size="icon">
           <MdSettings className="text-muted-foreground size-6" />
