@@ -83,7 +83,7 @@
   /* Overrides for scrollbar */
   scrollbar-color: #d1d1d1 #f0f0f0;
   @media (prefers-color-scheme: dark) {
-    scrollbar-color: #6b6b6b;
+    scrollbar-color: #6b6b6b #2c2c2c;
   }
 }
 
