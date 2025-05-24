@@ -40,7 +40,7 @@ export const UserAvatar = ({
       <AvatarImage src={imageSrc} alt={name} />
 
       <AvatarFallback
-        className={cn('text-lg font-medium', fallbackClassName)}
+        className={cn('text-lg font-light', fallbackClassName)}
         {...getStringAvatarProps()}
       >
         {name[0].toUpperCase()}

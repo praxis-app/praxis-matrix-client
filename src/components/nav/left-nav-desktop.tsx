@@ -10,6 +10,7 @@ import {
   MdSettings,
 } from 'react-icons/md';
 import { Link, useParams } from 'react-router-dom';
+import { toast } from 'sonner';
 import appIconImg from '../../assets/images/app-icon.png';
 import { RoomForm, RoomFormSubmitButton } from '../rooms/room-form';
 import { Button } from '../ui/button';
@@ -121,10 +122,10 @@ export const LeftNavDesktop = () => {
         <DropdownMenu>
           <DropdownMenuTrigger className="hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 mr-1 flex h-11.5 w-full cursor-pointer items-center justify-start gap-2 rounded-[4px] px-2 text-left select-none focus:outline-none">
             <UserAvatar
-              name={displayName}
-              userId={userId}
               className="size-8"
               fallbackClassName="text-sm"
+              name={displayName}
+              userId={userId}
               isOnline={isOnline}
               showOnlineStatus
             />
@@ -144,6 +145,19 @@ export const LeftNavDesktop = () => {
             side="top"
             sideOffset={18}
           >
+            <DropdownMenuItem
+              className="text-md"
+              onClick={() => toast(t('prompts.inDev'))}
+            >
+              <UserAvatar
+                name={displayName}
+                userId={userId}
+                className="size-5"
+                fallbackClassName="text-[0.65rem]"
+                isOnline={isOnline}
+              />
+              {displayName}
+            </DropdownMenuItem>
             <DropdownMenuItem className="text-md">
               <MdExitToApp className="text-foreground size-5" />
               {t('auth.actions.logOut')}
@@ -151,7 +165,11 @@ export const LeftNavDesktop = () => {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <Button variant="ghost" size="icon">
+        <Button
+          onClick={() => toast(t('prompts.inDev'))}
+          variant="ghost"
+          size="icon"
+        >
           <MdSettings className="text-muted-foreground size-6" />
         </Button>
       </div>
