@@ -15,6 +15,7 @@ import {
   DrawerTrigger,
 } from '../ui/drawer';
 import { Separator } from '../ui/separator';
+import RoomSettingsSheet from './room-settings-sheet';
 
 interface Props {
   room: Room;
@@ -61,18 +62,22 @@ export const RoomTopNav = ({ room }: Props) => {
 
             <Separator />
 
-            <Button
-              variant="secondary"
-              className="text-primary mx-auto mt-6 h-[3.2rem] w-[92%] justify-between"
-              size="lg"
-            >
-              <div className="flex items-center gap-3">
-                <MdSettings className="text-muted-foreground size-6.5" />
-                <div>{t('rooms.labels.settings')}</div>
-              </div>
+            <RoomSettingsSheet
+              trigger={
+                <Button
+                  className="text-primary mx-auto mt-6 h-[3.2rem] w-[92%] justify-between"
+                  variant="secondary"
+                  size="lg"
+                >
+                  <div className="flex items-center gap-3">
+                    <MdSettings className="text-muted-foreground size-6.5" />
+                    <div>{t('rooms.labels.settings')}</div>
+                  </div>
 
-              <MdChevronRight className="text-muted-foreground size-5.5" />
-            </Button>
+                  <MdChevronRight className="text-muted-foreground size-5.5" />
+                </Button>
+              }
+            />
           </DrawerContent>
         </Drawer>
       </div>
