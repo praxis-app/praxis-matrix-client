@@ -2,7 +2,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { EventTimeline, Room } from 'matrix-js-sdk';
 import { useTranslation } from 'react-i18next';
 import { LuArrowLeft } from 'react-icons/lu';
-import { MdChevronRight, MdSearch } from 'react-icons/md';
+import { MdChevronRight, MdSearch, MdSettings } from 'react-icons/md';
 import { toast } from 'sonner';
 import { NavSheet } from '../nav/nav-sheet';
 import { Button } from '../ui/button';
@@ -52,7 +52,7 @@ export const RoomTopNav = ({ room }: Props) => {
           </DrawerTrigger>
 
           <DrawerContent className="flex min-h-[calc(100vh-55px)] flex-col items-start rounded-t-2xl border-0">
-            <DrawerHeader className="w-full pt-6 pb-7">
+            <DrawerHeader className="w-full pt-5 pb-6">
               <DrawerTitle className="text-center text-[1.3rem]">
                 {room.name}
               </DrawerTitle>
@@ -60,6 +60,19 @@ export const RoomTopNav = ({ room }: Props) => {
             </DrawerHeader>
 
             <Separator />
+
+            <Button
+              variant="secondary"
+              className="text-primary mx-auto mt-6 h-[3.2rem] w-[92%] justify-between"
+              size="lg"
+            >
+              <div className="flex items-center gap-3">
+                <MdSettings className="text-muted-foreground size-6.5" />
+                <div>{t('rooms.labels.settings')}</div>
+              </div>
+
+              <MdChevronRight className="text-muted-foreground size-5.5" />
+            </Button>
           </DrawerContent>
         </Drawer>
       </div>

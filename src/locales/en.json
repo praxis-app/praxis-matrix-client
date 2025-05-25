@@ -67,7 +67,8 @@
     "labels": {
       "name": "Room name",
       "description": "Description",
-      "visibility": "Room visibility"
+      "visibility": "Room visibility",
+      "settings": "Room Settings"
     },
     "placeholders": {
       "name": "Enter room name",
