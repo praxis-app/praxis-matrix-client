@@ -1,20 +1,12 @@
-import { NavigationPaths } from '@/constants/shared.constants';
 import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { cn } from '@/lib/utils';
-import { useAppStore } from '@/store/app.store';
 import { Room } from 'matrix-js-sdk';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  MdAddCircle,
-  MdExitToApp,
-  MdExpandMore,
-  MdSettings,
-} from 'react-icons/md';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { MdAddCircle, MdExpandMore, MdSettings } from 'react-icons/md';
+import { Link, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import appIconImg from '../../assets/images/app-icon.png';
-import LogOutDialogContent from '../auth/log-out-dialog-content';
 import {
   CreateRoomForm,
   RoomFormSubmitButton,
@@ -35,25 +27,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
-import { UserAvatar } from '../users/user-avatar';
+import LeftNavUserMenu from './left-nav-user-menu';
 
 export const LeftNavDesktop = () => {
-  const { setMatrixClient } = useAppStore();
   const [visibleRooms, setVisibleRooms] = useState<Room[]>([]);
   const [showRoomFormDialog, setShowRoomFormDialog] = useState(false);
-  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
   const matrixClient = useMatrixClient();
-  const navigate = useNavigate();
   const { t } = useTranslation();
 
   const { roomId } = useParams();
   const activeRoomId = roomId ?? visibleRooms[0]?.roomId;
-
-  const userId = matrixClient.getUserId();
-  const user = matrixClient.getUser(userId ?? '');
-  const displayName = user?.displayName ?? userId ?? '';
-  const isOnline = user?.presence === 'online';
 
   useEffect(() => {
     if (!matrixClient) {
@@ -65,14 +49,6 @@ export const LeftNavDesktop = () => {
     };
     init();
   }, [matrixClient]);
-
-  const handleLogout = async () => {
-    await matrixClient.logout();
-    localStorage.clear();
-    setMatrixClient(null);
-    setShowLogoutDialog(false);
-    navigate(NavigationPaths.Home);
-  };
 
   return (
     <div className="flex h-full w-[240px] flex-col border-r border-[--color-border] bg-(--card)">
@@ -136,60 +112,7 @@ export const LeftNavDesktop = () => {
       </div>
 
       <div className="flex h-[60px] items-center justify-between border-t border-[--color-border] px-1.5">
-        <Dialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
-          <DropdownMenu>
-            <DropdownMenuTrigger className="hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 mr-1 flex h-11.5 w-full cursor-pointer items-center justify-start gap-2 rounded-[4px] px-2 text-left select-none focus:outline-none">
-              <UserAvatar
-                className="size-8"
-                fallbackClassName="text-sm"
-                name={displayName}
-                userId={userId}
-                isOnline={isOnline}
-                showOnlineStatus
-              />
-              <div className="flex flex-col pt-[0.16rem]">
-                <div className="text-[0.81rem]/tight">{displayName}</div>
-                <div className="text-muted-foreground text-[0.7rem]/[0.9rem] font-light">
-                  {isOnline
-                    ? t('users.presence.online')
-                    : t('users.presence.offline')}
-                </div>
-              </div>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              className="w-52"
-              align="start"
-              alignOffset={10}
-              side="top"
-              sideOffset={18}
-            >
-              <DropdownMenuItem
-                className="text-md"
-                onClick={() => toast(t('prompts.inDev'))}
-              >
-                <UserAvatar
-                  name={displayName}
-                  userId={userId}
-                  className="size-5"
-                  fallbackClassName="text-[0.65rem]"
-                  isOnline={isOnline}
-                />
-                {displayName}
-              </DropdownMenuItem>
-              <DialogTrigger asChild>
-                <DropdownMenuItem className="text-md">
-                  <MdExitToApp className="text-foreground size-5" />
-                  {t('auth.actions.logOut')}
-                </DropdownMenuItem>
-              </DialogTrigger>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <LogOutDialogContent
-            setShowLogoutDialog={setShowLogoutDialog}
-            handleLogout={handleLogout}
-          />
-        </Dialog>
+        <LeftNavUserMenu />
 
         <Button
           onClick={() => toast(t('prompts.inDev'))}
