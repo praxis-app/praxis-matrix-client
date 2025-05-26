@@ -47,10 +47,10 @@ const formSchema = zod.object({
     .max(50, {
       message: t('rooms.errors.roomNameMax'),
     }),
-  description: zod
+  topic: zod
     .string()
     .max(500, {
-      message: t('rooms.errors.roomDescriptionMax'),
+      message: t('rooms.errors.roomTopicMax'),
     })
     .optional(),
   visibility: zod.enum(['public', 'private'], {
@@ -81,7 +81,7 @@ export const CreateRoomForm = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
-      description: '',
+      topic: '',
       visibility: Visibility.Public,
     },
   });
@@ -98,7 +98,7 @@ export const CreateRoomForm = ({
     try {
       const room = await matrixClient.createRoom({
         name: values.name,
-        topic: values.description,
+        topic: values.topic,
         room_alias_name: values.name.toLowerCase().replace(/ /g, '-'),
 
         // TODO: Test wether this is actually needed
@@ -171,20 +171,18 @@ export const CreateRoomForm = ({
 
         <FormField
           control={form.control}
-          name="description"
+          name="topic"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('rooms.labels.description')}</FormLabel>
+              <FormLabel>{t('rooms.labels.topic')}</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder={t('rooms.placeholders.description')}
+                  placeholder={t('rooms.placeholders.topic')}
                   className="resize-none"
                   {...field}
                 />
               </FormControl>
-              <FormDescription>
-                {t('rooms.prompts.roomDescription')}
-              </FormDescription>
+              <FormDescription>{t('rooms.prompts.roomTopic')}</FormDescription>
               <FormMessage />
             </FormItem>
           )}

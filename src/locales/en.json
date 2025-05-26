@@ -66,13 +66,13 @@
   "rooms": {
     "labels": {
       "name": "Room name",
-      "description": "Description",
+      "topic": "Room topic",
       "visibility": "Room visibility",
       "settings": "Room Settings"
     },
     "placeholders": {
       "name": "Enter room name",
-      "description": "Enter room description (optional)",
+      "topic": "Enter room topic (optional)",
       "visibility": "Select room visibility"
     },
     "actions": {
@@ -88,7 +88,7 @@
     },
     "prompts": {
       "creatingRoom": "Creating...",
-      "roomDescription": "Provide a brief description of the room's purpose.",
+      "roomTopic": "Provide a brief description of the room's purpose.",
       "startConversation": "Start a conversation with your friends or colleagues.",
       "createRoom": "Create a New Chat Room"
     },
@@ -103,7 +103,7 @@
     "errors": {
       "roomNameMin": "Room name must be at least 3 characters.",
       "roomNameMax": "Room name must not exceed 50 characters.",
-      "roomDescriptionMax": "Description must not exceed 500 characters.",
+      "roomTopicMax": "Description must not exceed 500 characters.",
       "roomVisibility": "Please select room visibility."
     }
   },
