@@ -84,7 +84,8 @@
     },
     "descriptions": {
       "roomName": "This is the name that will be displayed for your chat room.",
-      "roomVisibility": "Public rooms can be found in the room directory. Private rooms require an invitation."
+      "roomVisibility": "Public rooms can be found in the room directory. Private rooms require an invitation.",
+      "roomSettings": "Manage the settings for your chat room."
     },
     "prompts": {
       "creatingRoom": "Creating...",

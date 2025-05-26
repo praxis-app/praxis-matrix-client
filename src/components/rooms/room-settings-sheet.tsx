@@ -45,6 +45,7 @@ const RoomSettingsSheet = ({ trigger, room }: Props) => {
             <SheetDescription></SheetDescription>
           </SheetHeader>
 
+          {/* TODO: Make this a submit button */}
           <Button variant="ghost">{t('actions.save')}</Button>
         </div>
 
