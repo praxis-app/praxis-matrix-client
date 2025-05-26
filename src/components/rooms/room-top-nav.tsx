@@ -1,5 +1,6 @@
 import { useIsMobile } from '@/hooks/use-mobile';
 import { EventTimeline, Room } from 'matrix-js-sdk';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LuArrowLeft } from 'react-icons/lu';
 import { MdChevronRight, MdSearch, MdSettings } from 'react-icons/md';
@@ -22,6 +23,8 @@ interface Props {
 }
 
 export const RoomTopNav = ({ room }: Props) => {
+  const [navSheetOpen, setNavSheetOpen] = useState(false);
+
   const { t } = useTranslation();
   const isMobile = useIsMobile();
 
@@ -39,6 +42,8 @@ export const RoomTopNav = ({ room }: Props) => {
                 <LuArrowLeft className="size-6" />
               </Button>
             }
+            open={navSheetOpen}
+            setOpen={setNavSheetOpen}
           />
         )}
 

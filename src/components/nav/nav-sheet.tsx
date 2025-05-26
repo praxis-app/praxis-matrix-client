@@ -19,11 +19,12 @@ import { NavDropdown } from './nav-dropdown';
 
 interface Props {
   trigger: ReactNode;
+  open: boolean;
+  setOpen: (open: boolean) => void;
 }
 
-export const NavSheet = ({ trigger }: Props) => {
+export const NavSheet = ({ trigger, open, setOpen }: Props) => {
   const [visibleRooms, setVisibleRooms] = useState<Room[]>([]);
-  const [open, setOpen] = useState(false);
   const matrixClient = useMatrixClient();
 
   const userId = matrixClient.getUserId();

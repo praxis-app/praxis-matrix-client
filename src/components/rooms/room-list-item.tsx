@@ -31,7 +31,12 @@ const RoomListItem = ({ activeRoomId, room }: Props) => {
       </Link>
       {showSettingsBtn && (
         <Link to={`${roomPath}/settings`}>
-          <MdSettings className="hover:text-foreground text-muted-foreground size-4.5" />
+          <MdSettings
+            className={cn(
+              'hover:text-foreground text-muted-foreground size-4.5',
+              isActive && 'text-foreground',
+            )}
+          />
         </Link>
       )}
     </div>

@@ -11,6 +11,14 @@ export enum KeyCodes {
   Escape = 'Escape',
 }
 
+export enum BrowserEvents {
+  Keydown = 'keydown',
+  MouseDown = 'mousedown',
+  MouseUp = 'mouseup',
+  Resize = 'resize',
+  Scroll = 'scroll',
+}
+
 export enum NavigationPaths {
   Home = '/',
   Login = '/auth/login',
