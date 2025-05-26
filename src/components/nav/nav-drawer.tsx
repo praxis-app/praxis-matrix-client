@@ -1,7 +1,10 @@
 import { ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MdAddCircle } from 'react-icons/md';
-import { RoomForm, RoomFormSubmitButton } from '../rooms/room-form';
+import {
+  CreateRoomForm,
+  RoomFormSubmitButton,
+} from '../rooms/create-room-form';
 import { Button } from '../ui/button';
 import {
   Dialog,
@@ -60,7 +63,7 @@ export const NavDrawer = ({ trigger }: Props) => {
               <DialogDescription>
                 {t('rooms.prompts.startConversation')}
               </DialogDescription>
-              <RoomForm
+              <CreateRoomForm
                 submitButton={(props) => (
                   <DialogFooter>
                     <RoomFormSubmitButton {...props} />

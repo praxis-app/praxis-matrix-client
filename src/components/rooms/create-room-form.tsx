@@ -28,13 +28,13 @@ import { toast } from 'sonner';
 import * as zod from 'zod';
 import { Button } from '../ui/button';
 
-interface RoomFormProps {
-  submitButton: (props: RoomFormSubmitButtonProps) => ReactNode;
-  onSubmit(): void;
+interface CreateRoomFormSubmitButtonProps {
+  isSubmitting: boolean;
 }
 
-interface RoomFormSubmitButtonProps {
-  isSubmitting: boolean;
+interface CreateRoomFormProps {
+  submitButton: (props: CreateRoomFormSubmitButtonProps) => ReactNode;
+  onSubmit(): void;
 }
 
 const formSchema = zod.object({
@@ -59,7 +59,7 @@ const formSchema = zod.object({
 
 export const RoomFormSubmitButton = ({
   isSubmitting,
-}: RoomFormSubmitButtonProps) => {
+}: CreateRoomFormSubmitButtonProps) => {
   const { t } = useTranslation();
   return (
     <Button type="submit" disabled={isSubmitting}>
@@ -70,7 +70,10 @@ export const RoomFormSubmitButton = ({
   );
 };
 
-export const RoomForm = ({ submitButton, onSubmit }: RoomFormProps) => {
+export const CreateRoomForm = ({
+  submitButton,
+  onSubmit,
+}: CreateRoomFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<zod.infer<typeof formSchema>>({

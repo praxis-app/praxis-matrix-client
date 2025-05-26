@@ -15,7 +15,10 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import appIconImg from '../../assets/images/app-icon.png';
 import LogOutDialogContent from '../auth/log-out-dialog-content';
-import { RoomForm, RoomFormSubmitButton } from '../rooms/room-form';
+import {
+  CreateRoomForm,
+  RoomFormSubmitButton,
+} from '../rooms/create-room-form';
 import { Button } from '../ui/button';
 import {
   Dialog,
@@ -106,7 +109,7 @@ export const LeftNavDesktop = () => {
           <DialogDescription>
             {t('rooms.prompts.startConversation')}
           </DialogDescription>
-          <RoomForm
+          <CreateRoomForm
             submitButton={(props) => (
               <DialogFooter>
                 <RoomFormSubmitButton {...props} />
