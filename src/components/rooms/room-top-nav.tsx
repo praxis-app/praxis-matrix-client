@@ -77,6 +77,7 @@ export const RoomTopNav = ({ room }: Props) => {
                   <MdChevronRight className="text-muted-foreground size-5.5" />
                 </Button>
               }
+              room={room}
             />
           </DrawerContent>
         </Drawer>

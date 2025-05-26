@@ -91,6 +91,14 @@
       "roomDescription": "Provide a brief description of the room's purpose.",
       "startConversation": "Start a conversation with your friends or colleagues.",
       "createRoom": "Create a New Chat Room"
+    },
+    "toasts": {
+      "roomCreated": "Room created successfully",
+      "roomCreatedError": "Failed to create room",
+      "roomCreatedErrorDescription": "There was a problem creating your room. Please try again.",
+      "roomUpdated": "Room updated successfully",
+      "roomUpdatedError": "Failed to update room",
+      "roomUpdatedErrorDescription": "There was a problem updating your room. Please try again."
     }
   },
 

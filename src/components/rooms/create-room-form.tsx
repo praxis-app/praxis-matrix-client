@@ -1,4 +1,4 @@
-// TODO: Add i18n
+// TODO: Add i18n for all messages
 
 import {
   Form,
@@ -122,7 +122,7 @@ export const CreateRoomForm = ({
       // Immediately sync the room to local store
       await matrixClient.roomInitialSync(room.room_id, 30);
 
-      toast('Room created successfully', {
+      toast(t('rooms.toasts.roomCreated'), {
         description: `Room "${values.name}" has been created with ID ${room.room_id}.`,
       });
 
@@ -133,9 +133,8 @@ export const CreateRoomForm = ({
       // router.push("/rooms");
     } catch (error) {
       console.error('Error creating room:', error);
-      toast('Error creating room', {
-        description:
-          'There was a problem creating your room. Please try again.',
+      toast(t('rooms.toasts.roomCreatedError'), {
+        description: t('rooms.toasts.roomCreatedErrorDescription'),
       });
     } finally {
       setIsSubmitting(false);
@@ -152,7 +151,11 @@ export const CreateRoomForm = ({
             <FormItem>
               <FormLabel>{t('rooms.labels.name')}</FormLabel>
               <FormControl>
-                <Input placeholder={t('rooms.placeholders.name')} {...field} />
+                <Input
+                  placeholder={t('rooms.placeholders.name')}
+                  autoComplete="off"
+                  {...field}
+                />
               </FormControl>
               <FormDescription>
                 {t('rooms.descriptions.roomName')}
