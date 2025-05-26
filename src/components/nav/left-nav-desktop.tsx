@@ -1,16 +1,16 @@
 import { useMatrixClient } from '@/hooks/use-matrix-client';
-import { cn } from '@/lib/utils';
 import { Room } from 'matrix-js-sdk';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MdAddCircle, MdExpandMore, MdSettings } from 'react-icons/md';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import appIconImg from '../../assets/images/app-icon.png';
 import {
   CreateRoomForm,
   RoomFormSubmitButton,
 } from '../rooms/create-room-form';
+import RoomListItem from '../rooms/room-list-item';
 import { Button } from '../ui/button';
 import {
   Dialog,
@@ -98,16 +98,11 @@ export const LeftNavDesktop = () => {
 
       <div className="flex flex-1 flex-col overflow-y-scroll py-2 select-none">
         {visibleRooms.map((room) => (
-          <Link
-            className={cn(
-              'text-muted-foreground hover:bg-accent mx-2 mb-0.5 rounded-[4px] px-2.5 py-0.5',
-              room.roomId === activeRoomId && 'bg-accent text-foreground',
-            )}
+          <RoomListItem
             key={room.roomId}
-            to={`/rooms/${room.roomId}`}
-          >
-            <div>{room.name}</div>
-          </Link>
+            activeRoomId={activeRoomId}
+            room={room}
+          />
         ))}
       </div>
 
