@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useMatrixClient } from '@/hooks/use-matrix-client';
+import { t } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { EventType, Method, Visibility } from 'matrix-js-sdk';
 import { ReactNode, useState } from 'react';
@@ -41,19 +42,19 @@ const formSchema = zod.object({
   name: zod
     .string()
     .min(3, {
-      message: 'Room name must be at least 3 characters.',
+      message: t('rooms.errors.roomNameMin'),
     })
     .max(50, {
-      message: 'Room name must not exceed 50 characters.',
+      message: t('rooms.errors.roomNameMax'),
     }),
   description: zod
     .string()
     .max(500, {
-      message: 'Description must not exceed 500 characters.',
+      message: t('rooms.errors.roomDescriptionMax'),
     })
     .optional(),
   visibility: zod.enum(['public', 'private'], {
-    required_error: 'Please select room visibility.',
+    required_error: t('rooms.errors.roomVisibility'),
   }),
 });
 
@@ -98,8 +99,11 @@ export const CreateRoomForm = ({
       const room = await matrixClient.createRoom({
         name: values.name,
         topic: values.description,
-        visibility: values.visibility as Visibility,
         room_alias_name: values.name.toLowerCase().replace(/ /g, '-'),
+
+        // TODO: Test wether this is actually needed
+        visibility: values.visibility as Visibility,
+
         // TODO: Test wether this enables guest access
         initial_state: [
           {

@@ -1,26 +1,26 @@
 import { Time } from '@/constants/shared.constants';
 import dayjs from 'dayjs';
-import { translate } from './utils';
+import { t } from './utils';
 
 export const formatDate = (timeStamp: string) =>
   dayjs(timeStamp).format('MMMM D, YYYY');
 
 export const timeMessage = (timeStamp: string, timeDifference: number) => {
   if (timeDifference < Time.Minute) {
-    return translate('time.minutes', { minutes: 1 });
+    return t('time.minutes', { minutes: 1 });
   }
   if (timeDifference < Time.Hour) {
-    return translate('time.minutes', {
+    return t('time.minutes', {
       minutes: Math.round(timeDifference / Time.Minute),
     });
   }
   if (timeDifference < Time.Day) {
-    return translate('time.hours', {
+    return t('time.hours', {
       hours: Math.round(timeDifference / Time.Hour),
     });
   }
   if (timeDifference < Time.Month) {
-    return translate('time.days', {
+    return t('time.days', {
       days: Math.round(timeDifference / Time.Day),
     });
   }

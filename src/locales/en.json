@@ -99,6 +99,12 @@
       "roomUpdated": "Room updated successfully",
       "roomUpdatedError": "Failed to update room",
       "roomUpdatedErrorDescription": "There was a problem updating your room. Please try again."
+    },
+    "errors": {
+      "roomNameMin": "Room name must be at least 3 characters.",
+      "roomNameMax": "Room name must not exceed 50 characters.",
+      "roomDescriptionMax": "Description must not exceed 500 characters.",
+      "roomVisibility": "Please select room visibility."
     }
   },
 
