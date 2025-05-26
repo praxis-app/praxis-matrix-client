@@ -217,9 +217,15 @@ const RoomSettingsForm = ({ room }: Props) => {
           )}
         />
 
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
-          {t('actions.save')}
-        </Button>
+        <div className="flex justify-end">
+          <Button
+            disabled={isSubmitting || !form.formState.isDirty}
+            className="w-22"
+            type="submit"
+          >
+            {t('actions.save')}
+          </Button>
+        </div>
       </form>
     </Form>
   );
