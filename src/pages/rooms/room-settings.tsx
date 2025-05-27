@@ -1,7 +1,5 @@
-// Add top nav
-
 import { TopNav } from '@/components/nav/top-nav';
-import RoomSettingsForm from '@/components/rooms/room-settings-form';
+import { RoomSettingsForm } from '@/components/rooms/room-settings-form';
 import {
   Card,
   CardContent,

@@ -14,7 +14,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '../ui/sheet';
-import RoomSettingsForm from './room-settings-form';
+import { RoomSettingsForm } from './room-settings-form';
 
 interface Props {
   trigger: ReactNode;

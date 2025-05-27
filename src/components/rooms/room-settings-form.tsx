@@ -60,7 +60,7 @@ interface Props {
   room: Room;
 }
 
-const RoomSettingsForm = ({ room }: Props) => {
+export const RoomSettingsForm = ({ room }: Props) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isVisibilityLoading, setIsVisibilityLoading] = useState(true);
 
@@ -230,5 +230,3 @@ const RoomSettingsForm = ({ room }: Props) => {
     </Form>
   );
 };
-
-export default RoomSettingsForm;
