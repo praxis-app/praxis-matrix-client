@@ -1,5 +1,9 @@
+import { NavigationPaths } from '@/constants/shared.constants';
+import { useMatrixClient } from '@/hooks/use-matrix-client';
+import { Room } from 'matrix-js-sdk';
 import { ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '../ui/button';
 import {
   Dialog,
@@ -13,11 +17,22 @@ import {
 
 interface Props {
   trigger: ReactNode;
+  room: Room;
 }
 
-export const LeaveRoomDialog = ({ trigger }: Props) => {
+export const LeaveRoomDialog = ({ trigger, room }: Props) => {
   const [showLeaveRoomDialog, setShowLeaveRoomDialog] = useState(false);
+
   const { t } = useTranslation();
+  const matrixClient = useMatrixClient();
+  const navigate = useNavigate();
+
+  const handleLeaveRoom = async () => {
+    await matrixClient.leave(room.roomId);
+    matrixClient.store.removeRoom(room.roomId);
+    setShowLeaveRoomDialog(false);
+    navigate(NavigationPaths.Home);
+  };
 
   return (
     <Dialog open={showLeaveRoomDialog} onOpenChange={setShowLeaveRoomDialog}>
@@ -42,7 +57,11 @@ export const LeaveRoomDialog = ({ trigger }: Props) => {
           >
             {t('actions.cancel')}
           </Button>
-          <Button variant="destructive" className="flex-1">
+          <Button
+            variant="destructive"
+            className="flex-1"
+            onClick={handleLeaveRoom}
+          >
             {t('rooms.actions.leave')}
           </Button>
         </DialogFooter>

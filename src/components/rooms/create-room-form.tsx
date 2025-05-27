@@ -82,7 +82,7 @@ export const CreateRoomForm = ({
     defaultValues: {
       name: '',
       topic: '',
-      visibility: Visibility.Public,
+      visibility: Visibility.Private,
     },
   });
 

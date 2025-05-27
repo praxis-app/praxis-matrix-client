@@ -71,6 +71,7 @@ export const RoomDetailsDrawer = ({ room, trigger }: Props) => {
               {t('rooms.actions.leaveRoom')}
             </Button>
           }
+          room={room}
         />
       </DrawerContent>
     </Drawer>
