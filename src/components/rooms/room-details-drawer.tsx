@@ -1,9 +1,10 @@
 import { EventTimeline, Room } from 'matrix-js-sdk';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BiDoorOpen } from 'react-icons/bi';
 import { MdChevronRight, MdSettings } from 'react-icons/md';
 import { Button } from '../ui/button';
+import { Dialog, DialogTrigger } from '../ui/dialog';
 import {
   Drawer,
   DrawerContent,
@@ -13,7 +14,7 @@ import {
   DrawerTrigger,
 } from '../ui/drawer';
 import { Separator } from '../ui/separator';
-import { LeaveRoomDialog } from './leave-room-dialog';
+import { LeaveRoomDialogContent } from './leave-room-dialog-content';
 import RoomSettingsSheet from './room-settings-sheet';
 
 interface Props {
@@ -22,6 +23,8 @@ interface Props {
 }
 
 export const RoomDetailsDrawer = ({ room, trigger }: Props) => {
+  const [showLeaveRoomDialog, setShowLeaveRoomDialog] = useState(false);
+
   const { t } = useTranslation();
 
   const roomState = room.getLiveTimeline().getState(EventTimeline.FORWARDS);
@@ -60,8 +63,11 @@ export const RoomDetailsDrawer = ({ room, trigger }: Props) => {
           room={room}
         />
 
-        <LeaveRoomDialog
-          trigger={
+        <Dialog
+          open={showLeaveRoomDialog}
+          onOpenChange={setShowLeaveRoomDialog}
+        >
+          <DialogTrigger asChild>
             <Button
               className="text-destructive mx-auto mt-6 h-[3.2rem] w-[92%] justify-start gap-3"
               variant="secondary"
@@ -70,9 +76,13 @@ export const RoomDetailsDrawer = ({ room, trigger }: Props) => {
               <BiDoorOpen className="size-6.5" />
               {t('rooms.actions.leaveRoom')}
             </Button>
-          }
-          room={room}
-        />
+          </DialogTrigger>
+
+          <LeaveRoomDialogContent
+            setShowLeaveRoomDialog={setShowLeaveRoomDialog}
+            room={room}
+          />
+        </Dialog>
       </DrawerContent>
     </Drawer>
   );
