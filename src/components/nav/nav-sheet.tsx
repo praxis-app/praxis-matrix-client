@@ -1,6 +1,5 @@
 import { useMatrixClient } from '@/hooks/use-matrix-client';
-import { Room } from 'matrix-js-sdk';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LuChevronRight } from 'react-icons/lu';
 import { Link } from 'react-router-dom';
@@ -24,23 +23,13 @@ interface Props {
 }
 
 export const NavSheet = ({ trigger, open, setOpen }: Props) => {
-  const [visibleRooms, setVisibleRooms] = useState<Room[]>([]);
   const matrixClient = useMatrixClient();
 
   const userId = matrixClient.getUserId();
   const user = matrixClient.getUser(userId ?? '');
   const displayName = user?.displayName ?? userId ?? '';
 
-  useEffect(() => {
-    if (!matrixClient) {
-      return;
-    }
-    const init = async () => {
-      const rooms = matrixClient.getVisibleRooms();
-      setVisibleRooms(rooms);
-    };
-    init();
-  }, [matrixClient]);
+  const visibleRooms = matrixClient.getVisibleRooms();
 
   const { t } = useTranslation();
 
