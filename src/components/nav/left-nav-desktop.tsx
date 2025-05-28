@@ -1,6 +1,5 @@
 import { useMatrixClient } from '@/hooks/use-matrix-client';
-import { Room } from 'matrix-js-sdk';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MdAddCircle, MdExpandMore, MdSettings } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
@@ -30,25 +29,14 @@ import {
 import LeftNavUserMenu from './left-nav-user-menu';
 
 export const LeftNavDesktop = () => {
-  const [visibleRooms, setVisibleRooms] = useState<Room[]>([]);
   const [showRoomFormDialog, setShowRoomFormDialog] = useState(false);
 
   const matrixClient = useMatrixClient();
   const { t } = useTranslation();
-
   const { roomId } = useParams();
-  const activeRoomId = roomId ?? visibleRooms[0]?.roomId;
 
-  useEffect(() => {
-    if (!matrixClient) {
-      return;
-    }
-    const init = async () => {
-      const rooms = matrixClient.getVisibleRooms();
-      setVisibleRooms(rooms);
-    };
-    init();
-  }, [matrixClient]);
+  const visibleRooms = matrixClient.getVisibleRooms();
+  const activeRoomId = roomId ?? visibleRooms[0]?.roomId;
 
   return (
     <div className="flex h-full w-[240px] flex-col border-r border-[--color-border] bg-(--card)">

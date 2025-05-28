@@ -123,9 +123,6 @@ export const CreateRoomForm = ({
         );
       }
 
-      // Immediately sync the room to local store
-      await matrixClient.roomInitialSync(room.room_id, 30);
-
       toast(t('rooms.toasts.roomCreated'), {
         description: `Room "${values.name}" has been created with ID ${room.room_id}.`,
       });
