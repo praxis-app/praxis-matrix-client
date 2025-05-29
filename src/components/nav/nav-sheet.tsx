@@ -1,3 +1,4 @@
+import { useJoinedRooms } from '@/hooks/use-joined-rooms';
 import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -28,8 +29,7 @@ export const NavSheet = ({ trigger, open, setOpen }: Props) => {
   const userId = matrixClient.getUserId();
   const user = matrixClient.getUser(userId ?? '');
   const displayName = user?.displayName ?? userId ?? '';
-
-  const visibleRooms = matrixClient.getVisibleRooms();
+  const joinedRooms = useJoinedRooms();
 
   const { t } = useTranslation();
 
@@ -72,7 +72,7 @@ export const NavSheet = ({ trigger, open, setOpen }: Props) => {
         </SheetHeader>
 
         <div className="bg-background flex h-full w-full flex-col gap-6 rounded-t-2xl p-7 dark:bg-(--accent)">
-          {visibleRooms.map((room) => (
+          {joinedRooms.map((room) => (
             <Link
               key={room.roomId}
               to={`/rooms/${room.roomId}`}
