@@ -1,30 +1,10 @@
 import { RoomSkeleton } from '@/components/rooms/room-skeleton';
 import { RoomView } from '@/components/rooms/room-view';
-import { useMatrixClient } from '@/hooks/use-matrix-client';
-import { Room } from 'matrix-js-sdk';
-import { useEffect, useState } from 'react';
+import { useJoinedRooms } from '@/hooks/use-joined-rooms';
 
 export const HomePage = () => {
-  const [room, setRoom] = useState<Room | null>(null);
-  const matrixClient = useMatrixClient();
-
-  useEffect(() => {
-    if (!matrixClient) {
-      return;
-    }
-    const getRoom = async () => {
-      const rooms = matrixClient.getVisibleRooms();
-      if (!rooms.length) {
-        return null;
-      }
-      return rooms[0];
-    };
-    const init = async () => {
-      const room = await getRoom();
-      setRoom(room);
-    };
-    init();
-  }, [matrixClient]);
+  const joinedRooms = useJoinedRooms();
+  const room = joinedRooms[0];
 
   if (!room) {
     return <RoomSkeleton />;
