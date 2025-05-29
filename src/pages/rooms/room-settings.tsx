@@ -7,19 +7,21 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { NavigationPaths } from '@/constants/shared.constants';
 import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { Room } from 'matrix-js-sdk';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MdClose } from 'react-icons/md';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export const RoomSettings = () => {
   const [room, setRoom] = useState<Room>();
 
   const matrixClient = useMatrixClient();
-  const { t } = useTranslation();
+  const navigate = useNavigate();
   const { roomId } = useParams();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!roomId || !matrixClient) {
@@ -41,6 +43,7 @@ export const RoomSettings = () => {
   return (
     <>
       <TopNav
+        onBackClick={() => navigate(`${NavigationPaths.Rooms}/${roomId}`)}
         backBtnIcon={<MdClose className="size-6" />}
         header={t('rooms.labels.settings')}
       />

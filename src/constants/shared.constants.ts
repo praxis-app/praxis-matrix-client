@@ -23,4 +23,5 @@ export enum NavigationPaths {
   Home = '/',
   Login = '/auth/login',
   SignUp = '/auth/signup',
+  Rooms = '/rooms',
 }
