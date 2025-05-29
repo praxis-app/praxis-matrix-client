@@ -29,11 +29,12 @@ interface Props {
 }
 
 export const NavDrawer = ({ trigger }: Props) => {
+  const [showNavDrawer, setShowNavDrawer] = useState(false);
   const [showRoomFormDialog, setShowRoomFormDialog] = useState(false);
   const { t } = useTranslation();
 
   return (
-    <Drawer>
+    <Drawer open={showNavDrawer} onOpenChange={setShowNavDrawer}>
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
       <DrawerContent className="flex min-h-[calc(100vh-68px)] flex-col items-start rounded-t-2xl border-0">
         {/* TODO: Determine how to handle header requirements */}
@@ -69,7 +70,10 @@ export const NavDrawer = ({ trigger }: Props) => {
                     <RoomFormSubmitButton {...props} />
                   </DialogFooter>
                 )}
-                onSubmit={() => setShowRoomFormDialog(false)}
+                onSubmit={() => {
+                  setShowNavDrawer(false);
+                  setShowRoomFormDialog(false);
+                }}
               />
             </DialogContent>
           </Dialog>

@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { NavigationPaths } from '@/constants/shared.constants';
 import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { t } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -25,6 +26,7 @@ import { EventType, Method, Visibility } from 'matrix-js-sdk';
 import { ReactNode, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import * as zod from 'zod';
 import { Button } from '../ui/button';
@@ -87,6 +89,7 @@ export const CreateRoomForm = ({
   });
 
   const matrixClient = useMatrixClient();
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
   const handleSubmit = async (values: zod.infer<typeof formSchema>) => {
@@ -130,8 +133,7 @@ export const CreateRoomForm = ({
       form.reset();
       onSubmit();
 
-      // Redirect to the rooms list or the new room
-      // router.push("/rooms");
+      navigate(`${NavigationPaths.Rooms}/${room.room_id}`);
     } catch (error) {
       console.error('Error creating room:', error);
       toast(t('rooms.toasts.roomCreatedError'), {
