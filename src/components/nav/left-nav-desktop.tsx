@@ -1,5 +1,5 @@
 import { useMatrixClient } from '@/hooks/use-matrix-client';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MdAddCircle, MdExpandMore, MdSettings } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
@@ -27,8 +27,10 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import LeftNavUserMenu from './left-nav-user-menu';
+import { Room } from 'matrix-js-sdk';
 
 export const LeftNavDesktop = () => {
+  const [joinedRooms, setJoinedRooms] = useState<Room[]>([]);
   const [showRoomFormDialog, setShowRoomFormDialog] = useState(false);
 
   const matrixClient = useMatrixClient();
@@ -36,7 +38,32 @@ export const LeftNavDesktop = () => {
   const { roomId } = useParams();
 
   const visibleRooms = matrixClient.getVisibleRooms();
-  const activeRoomId = roomId ?? visibleRooms[0]?.roomId;
+
+  const filteredRooms = useMemo(
+    () =>
+      visibleRooms.filter((room) =>
+        joinedRooms.some((joinedRoom) => joinedRoom.roomId === room.roomId),
+      ),
+    [visibleRooms, joinedRooms],
+  );
+
+  const activeRoomId = roomId ?? filteredRooms[0]?.roomId;
+
+  useEffect(() => {
+    const init = async () => {
+      const { joined_rooms } = await matrixClient.getJoinedRooms();
+
+      const rooms = joined_rooms.reduce<Room[]>((acc, roomId) => {
+        const room = matrixClient.getRoom(roomId);
+        if (room) {
+          acc.push(room);
+        }
+        return acc;
+      }, []);
+      setJoinedRooms(rooms);
+    };
+    init();
+  }, [matrixClient]);
 
   return (
     <div className="flex h-full w-[240px] flex-col border-r border-[--color-border] bg-(--card)">
@@ -85,7 +112,7 @@ export const LeftNavDesktop = () => {
       </Dialog>
 
       <div className="flex flex-1 flex-col overflow-y-scroll py-2 select-none">
-        {visibleRooms.map((room) => (
+        {filteredRooms.map((room) => (
           <RoomListItem
             key={room.roomId}
             activeRoomId={activeRoomId}
