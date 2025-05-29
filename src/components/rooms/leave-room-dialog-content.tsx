@@ -41,7 +41,7 @@ export const LeaveRoomDialogContent = ({
       </DialogHeader>
 
       <DialogDescription className="pb-2">
-        {t('rooms.prompts.leaveRoom')}
+        {t('rooms.prompts.leaveRoom', { roomName: room.name })}
       </DialogDescription>
 
       <DialogFooter className="flex w-full flex-row gap-2 self-center">

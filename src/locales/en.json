@@ -97,7 +97,7 @@
       "roomTopic": "Provide a brief description of the room's purpose.",
       "startConversation": "Start a conversation with your friends or colleagues.",
       "createRoom": "Create a New Chat Room",
-      "leaveRoom": "Are you sure you want to leave the room? You'll stop receiving messages and will need to be re-invited if the room is private."
+      "leaveRoom": "Are you sure you want to leave {{roomName}}? You'll need to be re-invited if the room is private."
     },
     "toasts": {
       "roomCreated": "Room created successfully",
