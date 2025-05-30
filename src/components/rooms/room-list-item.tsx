@@ -1,3 +1,4 @@
+import { useRoomName } from '@/hooks/use-room-name';
 import { cn } from '@/lib/utils';
 import { Room } from 'matrix-js-sdk';
 import { useState } from 'react';
@@ -21,6 +22,7 @@ interface Props {
 const RoomListItem = ({ activeRoomId, room }: Props) => {
   const [showLeaveRoomDialog, setShowLeaveRoomDialog] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
+  const roomName = useRoomName(room);
 
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -48,7 +50,7 @@ const RoomListItem = ({ activeRoomId, room }: Props) => {
               to={roomPath}
               className="mr-1.5 flex-1 truncate py-0.5 pl-2.5"
             >
-              {room.name}
+              {roomName}
             </Link>
             {showSettingsBtn && (
               <Link to={settingsPath}>
