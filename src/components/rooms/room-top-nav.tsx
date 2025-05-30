@@ -1,4 +1,5 @@
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useRoomName } from '@/hooks/use-room-name';
 import { Room } from 'matrix-js-sdk';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,6 +16,7 @@ interface Props {
 
 export const RoomTopNav = ({ room }: Props) => {
   const [navSheetOpen, setNavSheetOpen] = useState(false);
+  const roomName = useRoomName(room);
 
   const { t } = useTranslation();
   const isMobile = useIsMobile();
@@ -38,7 +40,7 @@ export const RoomTopNav = ({ room }: Props) => {
           room={room}
           trigger={
             <div className="flex flex-1 items-center text-[15px] font-medium">
-              {room.name}
+              {roomName}
               {isMobile && (
                 <MdChevronRight className="text-muted-foreground mt-[0.07rem] size-5" />
               )}
