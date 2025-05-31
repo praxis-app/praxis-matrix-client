@@ -39,7 +39,7 @@ export const RoomTopNav = ({ room }: Props) => {
         <RoomDetailsDrawer
           room={room}
           trigger={
-            <div className="flex flex-1 items-center text-[15px] font-medium">
+            <div className="flex flex-1 items-center text-[15px] font-medium select-none">
               {roomName}
               {isMobile && (
                 <MdChevronRight className="text-muted-foreground mt-[0.07rem] size-5" />
