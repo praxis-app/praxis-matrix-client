@@ -1,25 +1,11 @@
 import { RoomSkeleton } from '@/components/rooms/room-skeleton';
 import { RoomView } from '@/components/rooms/room-view';
-import { useRoomStore } from '@/store/room.store';
-import { Room } from 'matrix-js-sdk';
-import { useEffect, useState } from 'react';
+import { useRoom } from '@/hooks/use-room';
 import { useParams } from 'react-router-dom';
 
 export const RoomPage = () => {
-  const [room, setRoom] = useState<Room | null>(null);
-  const { waitForRoom } = useRoomStore();
   const { roomId } = useParams();
-
-  useEffect(() => {
-    if (!roomId) {
-      return;
-    }
-    const init = async () => {
-      const room = await waitForRoom(roomId);
-      setRoom(room);
-    };
-    init();
-  }, [roomId, waitForRoom]);
+  const room = useRoom(roomId);
 
   if (!room) {
     return <RoomSkeleton />;
