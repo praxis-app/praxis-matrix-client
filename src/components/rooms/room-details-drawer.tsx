@@ -1,3 +1,4 @@
+import { useIsMobile } from '@/hooks/use-mobile';
 import { EventTimeline, Room } from 'matrix-js-sdk';
 import { ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -26,6 +27,7 @@ export const RoomDetailsDrawer = ({ room, trigger }: Props) => {
   const [showLeaveRoomDialog, setShowLeaveRoomDialog] = useState(false);
 
   const { t } = useTranslation();
+  const isMobile = useIsMobile();
 
   const roomState = room.getLiveTimeline().getState(EventTimeline.FORWARDS);
   const topicEvent = roomState?.getStateEvents('m.room.topic', '');
@@ -33,7 +35,7 @@ export const RoomDetailsDrawer = ({ room, trigger }: Props) => {
 
   return (
     <Drawer>
-      <DrawerTrigger asChild>{trigger}</DrawerTrigger>
+      {isMobile ? <DrawerTrigger asChild>{trigger}</DrawerTrigger> : trigger}
 
       <DrawerContent className="flex min-h-[calc(100vh-55px)] flex-col items-start rounded-t-2xl border-0">
         <DrawerHeader className="w-full pt-5 pb-6">
