@@ -1,5 +1,6 @@
 import { useJoinedRooms } from '@/hooks/use-joined-rooms';
 import { useMatrixClient } from '@/hooks/use-matrix-client';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LuChevronRight } from 'react-icons/lu';
@@ -68,10 +69,14 @@ export const NavSheet = ({ trigger, open, setOpen }: Props) => {
               displayName={displayName}
             />
           </SheetTitle>
-          <SheetDescription className="text-left"></SheetDescription>
+          <VisuallyHidden>
+            <SheetDescription>
+              {t('navigation.descriptions.navSheet')}
+            </SheetDescription>
+          </VisuallyHidden>
         </SheetHeader>
 
-        <div className="bg-background flex h-full w-full flex-col gap-6 rounded-t-2xl p-7 dark:bg-(--accent)">
+        <div className="bg-background flex h-full w-full flex-col gap-6 overflow-y-auto rounded-t-2xl p-7 dark:bg-(--accent)">
           {joinedRooms.map((room) => (
             <Link
               key={room.roomId}

@@ -134,7 +134,8 @@
       "navDrawer": "Navigation drawer"
     },
     "descriptions": {
-      "navDrawer": "Navigate to your rooms, settings, and more."
+      "navDrawer": "Create a new room, join a room, or view your settings.",
+      "navSheet": "Navigate to your rooms, profile, and more."
     }
   },
 
