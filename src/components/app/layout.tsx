@@ -1,6 +1,5 @@
 import { ThemeProvider } from '../theme/theme-provider';
 import { Toaster } from '../ui/sonner';
-import { MatrixProvider } from './matrix-provider';
 
 interface Props {
   children: React.ReactNode;
@@ -8,9 +7,7 @@ interface Props {
 
 export const Layout = ({ children }: Props) => (
   <ThemeProvider>
-    <main>
-      <MatrixProvider>{children}</MatrixProvider>
-    </main>
+    <main>{children}</main>
     <Toaster />
   </ThemeProvider>
 );
