@@ -128,8 +128,7 @@ export const CreateRoomForm = ({
       onSubmit();
 
       navigate(`${NavigationPaths.Rooms}/${room.room_id}`);
-    } catch (error) {
-      console.error('Error creating room:', error);
+    } catch {
       toast(t('rooms.toasts.roomCreatedError'), {
         description: t('rooms.toasts.roomCreatedErrorDescription'),
       });
