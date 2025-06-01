@@ -61,7 +61,6 @@ interface Props {
 }
 
 export const RoomSettingsForm = ({ room }: Props) => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isVisibilityLoading, setIsVisibilityLoading] = useState(true);
 
   const matrixClient = useMatrixClient();
@@ -90,11 +89,6 @@ export const RoomSettingsForm = ({ room }: Props) => {
   });
 
   const handleSubmit = async (values: zod.infer<typeof formSchema>) => {
-    if (!matrixClient) {
-      return;
-    }
-    setIsSubmitting(true);
-
     try {
       if (values.name !== room.name) {
         await matrixClient.sendStateEvent(
@@ -131,8 +125,6 @@ export const RoomSettingsForm = ({ room }: Props) => {
       toast(t('rooms.toasts.roomUpdatedError'), {
         description: t('rooms.toasts.roomUpdatedErrorDescription'),
       });
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -219,7 +211,7 @@ export const RoomSettingsForm = ({ room }: Props) => {
 
         <div className="flex justify-end">
           <Button
-            disabled={isSubmitting || !form.formState.isDirty}
+            disabled={form.formState.isSubmitting || !form.formState.isDirty}
             className="w-22"
             type="submit"
           >
