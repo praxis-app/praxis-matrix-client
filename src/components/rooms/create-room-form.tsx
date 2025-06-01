@@ -1,5 +1,3 @@
-// TODO: Add i18n for all messages
-
 import {
   Form,
   FormControl,
@@ -125,10 +123,6 @@ export const CreateRoomForm = ({
           { visibility: Visibility.Public },
         );
       }
-
-      toast(t('rooms.toasts.roomCreated'), {
-        description: `Room "${values.name}" has been created with ID ${room.room_id}.`,
-      });
 
       form.reset();
       onSubmit();
