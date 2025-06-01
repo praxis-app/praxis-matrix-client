@@ -46,7 +46,6 @@ export function MatrixProvider({ children }: Props) {
         // Join public rooms if the user is a guest
         const { chunk } = await client.publicRooms();
         if (chunk.length) {
-          // TODO: Figure out why only one room is being returned
           for (const { room_id } of chunk) {
             await client.joinRoom(room_id);
           }
