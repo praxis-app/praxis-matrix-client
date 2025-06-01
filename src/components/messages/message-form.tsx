@@ -1,5 +1,4 @@
 // TODO: Add remaining layout and functionality - below is a WIP
-// TODO: Translate for all messages
 
 import { KeyCodes } from '@/constants/shared.constants';
 import { useMatrixClient } from '@/hooks/use-matrix-client';
@@ -71,17 +70,16 @@ export const MessageForm = ({ roomId }: Props) => {
     if (!matrixClient || !values.body.trim()) {
       return;
     }
-
-    matrixClient
-      .sendMessage(roomId, {
+    try {
+      await matrixClient.sendMessage(roomId, {
         body: values.body,
         msgtype: MsgType.Text,
-      })
-      .catch((error) => {
-        toast('Error sending message', { description: 'Please try again.' });
-        console.error('Error sending message:', error);
       });
-
+    } catch {
+      toast(t('messages.errors.errorSendingMessage'), {
+        description: t('prompts.tryAgain'),
+      });
+    }
     form.reset();
   };
 

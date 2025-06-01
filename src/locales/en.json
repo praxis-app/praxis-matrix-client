@@ -18,6 +18,7 @@
   "prompts": {
     "welcomeToPraxis": "Welcome to Praxis",
     "inDev": "This feature is still in development.",
+    "tryAgain": "Please try again.",
     "loading": "Loading..."
   },
 
@@ -120,7 +121,8 @@
       "sendMessage": "Send a message..."
     },
     "errors": {
-      "longBody": "Message body cannot exceed 6000 characters"
+      "longBody": "Message body cannot exceed 6000 characters",
+      "errorSendingMessage": "Error sending message"
     },
     "names": {
       "praxisBot": "praxis-bot"
