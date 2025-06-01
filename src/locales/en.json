@@ -49,14 +49,6 @@
     }
   },
 
-  "welcome": {
-    "messages": {
-      "projectDescription1": "Praxis is an open source messaging platform designed for collaborative decision making. Proposals take center stage, offering a diverse range of voting models, with consensus as the default.",
-      "projectDescription2": "With Praxis, communities are empowered to collectively shape crucial aspects such as server name, settings, roles, and the planning of real-world events. This flexibility allows for diverse and dynamic social structures tailored to meet the specific needs of your community as it evolves over time.",
-      "inDev": "This project is still in development and is not yet intended for serious use outside of testing or research purposes."
-    }
-  },
-
   "users": {
     "presence": {
       "online": "Online",
@@ -126,6 +118,23 @@
     },
     "names": {
       "praxisBot": "praxis-bot"
+    }
+  },
+
+  "welcome": {
+    "messages": {
+      "projectDescription1": "Praxis is an open source messaging platform designed for collaborative decision making. Proposals take center stage, offering a diverse range of voting models, with consensus as the default.",
+      "projectDescription2": "With Praxis, communities are empowered to collectively shape crucial aspects such as server name, settings, roles, and the planning of real-world events. This flexibility allows for diverse and dynamic social structures tailored to meet the specific needs of your community as it evolves over time.",
+      "inDev": "This project is still in development and is not yet intended for serious use outside of testing or research purposes."
+    }
+  },
+
+  "navigation": {
+    "titles": {
+      "navDrawer": "Navigation drawer"
+    },
+    "descriptions": {
+      "navDrawer": "Navigate to your rooms, settings, and more."
     }
   },
 

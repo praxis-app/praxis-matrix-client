@@ -1,3 +1,4 @@
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MdAddCircle } from 'react-icons/md';
@@ -37,11 +38,14 @@ export const NavDrawer = ({ trigger }: Props) => {
     <Drawer open={showNavDrawer} onOpenChange={setShowNavDrawer}>
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
       <DrawerContent className="flex min-h-[calc(100vh-68px)] flex-col items-start rounded-t-2xl border-0">
-        {/* TODO: Determine how to handle header requirements */}
-        <DrawerHeader className="hidden">
-          <DrawerTitle></DrawerTitle>
-          <DrawerDescription></DrawerDescription>
-        </DrawerHeader>
+        <VisuallyHidden>
+          <DrawerHeader>
+            <DrawerTitle>{t('navigation.titles.navDrawer')}</DrawerTitle>
+            <DrawerDescription>
+              {t('navigation.descriptions.navDrawer')}
+            </DrawerDescription>
+          </DrawerHeader>
+        </VisuallyHidden>
 
         <div className="flex flex-col gap-4 p-4">
           <Dialog
