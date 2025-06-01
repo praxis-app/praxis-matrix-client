@@ -1,5 +1,3 @@
-// TODO: Add i18n for all messages
-
 import { Room } from 'matrix-js-sdk';
 import { ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';

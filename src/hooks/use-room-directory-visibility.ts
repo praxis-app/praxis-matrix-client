@@ -7,7 +7,6 @@ interface UseRoomDirectoryVisibilityProps {
   onSuccess?(visibility: Visibility | undefined): void;
 }
 
-// TODO: Decide whether this is needed
 export const useRoomDirectoryVisibility = ({
   roomId,
   onSuccess,
