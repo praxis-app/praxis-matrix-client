@@ -5,7 +5,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useTheme } from '@/hooks/use-theme';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/shared.utils';
 import { LuMoon, LuSun } from 'react-icons/lu';
 import { Button } from '../ui/button';
 

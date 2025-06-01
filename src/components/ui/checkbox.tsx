@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/shared.utils';
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import * as React from 'react';
 import { LuCheck } from 'react-icons/lu';

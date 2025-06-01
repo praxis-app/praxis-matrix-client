@@ -3,7 +3,7 @@
 
 import { KeyCodes } from '@/constants/shared.constants';
 import { useMatrixClient } from '@/hooks/use-matrix-client';
-import { t } from '@/lib/utils';
+import { t } from '@/lib/shared.utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { MsgType } from 'matrix-js-sdk';
 import { KeyboardEventHandler, useEffect, useRef } from 'react';

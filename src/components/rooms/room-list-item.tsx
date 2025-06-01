@@ -1,5 +1,5 @@
 import { useRoomName } from '@/hooks/use-room-name';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/shared.utils';
 import { Room } from 'matrix-js-sdk';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';

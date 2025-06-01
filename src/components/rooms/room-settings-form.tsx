@@ -1,6 +1,6 @@
 import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { useRoomDirectoryVisibility } from '@/hooks/use-room-directory-visibility';
-import { t } from '@/lib/utils';
+import { t } from '@/lib/shared.utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   EventTimeline,

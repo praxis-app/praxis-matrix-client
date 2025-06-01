@@ -1,6 +1,6 @@
 import { Time } from '@/constants/shared.constants';
 import dayjs from 'dayjs';
-import { t } from './utils';
+import { t } from './shared.utils';
 
 export const formatDate = (timeStamp: string) =>
   dayjs(timeStamp).format('MMMM D, YYYY');

@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/shared.utils';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import {
   ComponentPropsWithoutRef,

@@ -20,7 +20,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { NavigationPaths } from '@/constants/shared.constants';
 import { useMatrixClient } from '@/hooks/use-matrix-client';
-import { t } from '@/lib/utils';
+import { t } from '@/lib/shared.utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { EventType, Method, Visibility } from 'matrix-js-sdk';
 import { ReactNode, useState } from 'react';

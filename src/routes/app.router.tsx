@@ -6,8 +6,6 @@ import { App } from '../components/app/app';
 import { authRouter } from './auth.router';
 import { roomRouter } from './room.router';
 
-// TODO: Add error and 404 pages
-
 export const appRouter = createBrowserRouter([
   {
     path: '/',

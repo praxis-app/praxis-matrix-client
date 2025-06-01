@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/shared.utils';
 import chroma from 'chroma-js';
 import ColorHash from 'color-hash';
 import { Avatar, AvatarBadge, AvatarFallback, AvatarImage } from '../ui/avatar';

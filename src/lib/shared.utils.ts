@@ -1,5 +1,3 @@
-// TODO: Rename this file to shared.utils.ts
-
 import { clsx, type ClassValue } from 'clsx';
 import { t as translate } from 'i18next';
 import { Namespace, TFunction } from 'react-i18next';

@@ -1,6 +1,6 @@
 // Ref: https://ui.shadcn.com/docs/components/sheet
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/shared.utils';
 import * as SheetPrimitive from '@radix-ui/react-dialog';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';

@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/shared.utils';
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
 import { cva, VariantProps } from 'class-variance-authority';
 import * as React from 'react';

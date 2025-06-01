@@ -4,7 +4,7 @@ import * as ContextMenuPrimitive from '@radix-ui/react-context-menu';
 import * as React from 'react';
 import { LuCheck, LuChevronRight, LuCircle } from 'react-icons/lu';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/shared.utils';
 
 const ContextMenu = ContextMenuPrimitive.Root;
 const ContextMenuTrigger = ContextMenuPrimitive.Trigger;
