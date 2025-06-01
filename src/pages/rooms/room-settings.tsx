@@ -1,5 +1,6 @@
 import { TopNav } from '@/components/nav/top-nav';
-import { RoomSettingsForm } from '@/components/rooms/room-settings-form';
+import { RoomSettingsForm } from '@/components/rooms/room-settings-form/room-settings-form';
+import { useRoomSettingsForm } from '@/components/rooms/room-settings-form/use-room-settings-form';
 import {
   Card,
   CardContent,
@@ -8,42 +9,30 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { NavigationPaths } from '@/constants/shared.constants';
-import { useMatrixClient } from '@/hooks/use-matrix-client';
+import { useRoom } from '@/hooks/use-room';
 import { Room } from 'matrix-js-sdk';
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MdClose } from 'react-icons/md';
 import { useNavigate, useParams } from 'react-router-dom';
 
-export const RoomSettings = () => {
-  const [room, setRoom] = useState<Room>();
+interface RoomSettingsContentProps {
+  room: Room;
+}
 
-  const matrixClient = useMatrixClient();
+const RoomSettingsContent = ({ room }: RoomSettingsContentProps) => {
+  const { form, handleSubmit, isInitializing } = useRoomSettingsForm(room);
+
   const navigate = useNavigate();
-  const { roomId } = useParams();
   const { t } = useTranslation();
 
-  useEffect(() => {
-    if (!roomId || !matrixClient) {
-      return;
-    }
-    const init = async () => {
-      const room = matrixClient.getRoom(roomId);
-      if (room) {
-        setRoom(room);
-      }
-    };
-    init();
-  }, [roomId, matrixClient]);
-
-  if (!room) {
+  if (isInitializing) {
     return null;
   }
 
   return (
     <>
       <TopNav
-        onBackClick={() => navigate(`${NavigationPaths.Rooms}/${roomId}`)}
+        onBackClick={() => navigate(`${NavigationPaths.Rooms}/${room.roomId}`)}
         backBtnIcon={<MdClose className="size-6" />}
         header={t('rooms.labels.settings')}
       />
@@ -60,10 +49,21 @@ export const RoomSettings = () => {
           </CardHeader>
 
           <CardContent>
-            <RoomSettingsForm room={room} />
+            <RoomSettingsForm form={form} handleSubmit={handleSubmit} />
           </CardContent>
         </Card>
       </div>
     </>
   );
+};
+
+export const RoomSettings = () => {
+  const { roomId } = useParams();
+  const room = useRoom(roomId);
+
+  if (!room) {
+    return null;
+  }
+
+  return <RoomSettingsContent room={room} />;
 };

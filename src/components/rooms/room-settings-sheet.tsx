@@ -12,7 +12,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '../ui/sheet';
-import { RoomSettingsForm } from './room-settings-form';
+import { RoomSettingsForm } from './room-settings-form/room-settings-form';
+import { useRoomSettingsForm } from './room-settings-form/use-room-settings-form';
 
 interface Props {
   trigger: ReactNode;
@@ -20,9 +21,14 @@ interface Props {
 }
 
 const RoomSettingsSheet = ({ trigger, room }: Props) => {
+  const { form, handleSubmit, isInitializing } = useRoomSettingsForm(room);
   const [open, setOpen] = useState(false);
 
   const { t } = useTranslation();
+
+  if (isInitializing) {
+    return null;
+  }
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -43,13 +49,18 @@ const RoomSettingsSheet = ({ trigger, room }: Props) => {
             <SheetDescription></SheetDescription>
           </SheetHeader>
 
-          {/* TODO: Make this a submit button */}
-          <Button variant="ghost">{t('actions.save')}</Button>
+          <Button
+            onClick={() => form.handleSubmit(handleSubmit)()}
+            disabled={form.formState.isSubmitting}
+            variant="ghost"
+          >
+            {t('actions.save')}
+          </Button>
         </div>
 
         <Separator className="mb-7" />
 
-        <RoomSettingsForm room={room} />
+        <RoomSettingsForm form={form} handleSubmit={handleSubmit} />
       </SheetContent>
     </Sheet>
   );

@@ -1,20 +1,8 @@
-import { useMatrixClient } from '@/hooks/use-matrix-client';
-import { useRoomDirectoryVisibility } from '@/hooks/use-room-directory-visibility';
-import { t } from '@/lib/shared.utils';
-import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  EventTimeline,
-  EventType,
-  Method,
-  Room,
-  Visibility,
-} from 'matrix-js-sdk';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Visibility } from 'matrix-js-sdk';
+import { UseFormReturn } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'sonner';
 import * as zod from 'zod';
-import { Button } from '../ui/button';
+import { Button } from '../../ui/button';
 import {
   Form,
   FormControl,
@@ -23,114 +11,25 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '../ui/form';
-import { Input } from '../ui/input';
+} from '../../ui/form';
+import { Input } from '../../ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../ui/select';
-import { Textarea } from '../ui/textarea';
-
-const formSchema = zod.object({
-  name: zod
-    .string()
-    .min(3, {
-      message: t('rooms.errors.roomNameMin'),
-    })
-    .max(50, {
-      message: t('rooms.errors.roomNameMax'),
-    }),
-  topic: zod
-    .string()
-    .max(500, {
-      message: t('rooms.errors.roomTopicMax'),
-    })
-    .optional(),
-  visibility: zod
-    .enum(['public', 'private'], {
-      required_error: t('rooms.errors.roomVisibility'),
-    })
-    .optional(),
-});
+} from '../../ui/select';
+import { Textarea } from '../../ui/textarea';
+import { roomSettingsFormSchema } from './use-room-settings-form';
 
 interface Props {
-  room: Room;
+  form: UseFormReturn<zod.infer<typeof roomSettingsFormSchema>>;
+  handleSubmit: (values: zod.infer<typeof roomSettingsFormSchema>) => void;
 }
 
-export const RoomSettingsForm = ({ room }: Props) => {
-  const [isVisibilityLoading, setIsVisibilityLoading] = useState(true);
-
-  const matrixClient = useMatrixClient();
+export const RoomSettingsForm = ({ form, handleSubmit }: Props) => {
   const { t } = useTranslation();
-
-  const roomState = room.getLiveTimeline().getState(EventTimeline.FORWARDS);
-  const topicEvent = roomState?.getStateEvents(EventType.RoomTopic, '');
-  const topic: string | undefined = topicEvent
-    ? topicEvent.getContent().topic
-    : undefined;
-
-  const form = useForm<zod.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: room.name,
-      topic,
-    },
-  });
-
-  const visibility = useRoomDirectoryVisibility({
-    roomId: room.roomId,
-    onSuccess: (visibility) => {
-      form.setValue('visibility', visibility);
-      setIsVisibilityLoading(false);
-    },
-  });
-
-  const handleSubmit = async (values: zod.infer<typeof formSchema>) => {
-    try {
-      if (values.name !== room.name) {
-        await matrixClient.sendStateEvent(
-          room.roomId,
-          EventType.RoomName,
-          {
-            name: values.name,
-          },
-          '',
-        );
-      }
-      const currentTopic = topic || '';
-      const newTopic = values.topic || '';
-      if (newTopic !== currentTopic) {
-        await matrixClient.sendStateEvent(
-          room.roomId,
-          EventType.RoomTopic,
-          {
-            topic: newTopic,
-          },
-          '',
-        );
-      }
-      if (values.visibility !== visibility) {
-        const url = `/directory/list/room/${encodeURIComponent(room.roomId)}`;
-        await matrixClient.http.authedRequest(Method.Put, url, undefined, {
-          visibility: values.visibility,
-        });
-      }
-
-      toast(t('rooms.toasts.roomUpdated'));
-    } catch (error) {
-      console.error('Error updating room:', error);
-      toast(t('rooms.toasts.roomUpdatedError'), {
-        description: t('rooms.toasts.roomUpdatedErrorDescription'),
-      });
-    }
-  };
-
-  if (isVisibilityLoading) {
-    return null;
-  }
 
   return (
     <Form {...form}>
