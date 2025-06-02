@@ -38,7 +38,7 @@ export const LeftNavDesktop = () => {
   const activeRoomId = roomId ?? rooms[0]?.roomId;
 
   return (
-    <div className="flex h-full w-[240px] flex-col border-r border-[--color-border] bg-(--card)">
+    <div className="bg-card flex h-full w-[240px] flex-col border-r border-[--color-border]">
       <Dialog open={showRoomFormDialog} onOpenChange={setShowRoomFormDialog}>
         <DropdownMenu>
           <DropdownMenuTrigger className="hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 flex h-[55px] w-full cursor-pointer justify-between border-b border-[--color-border] pr-3 pl-4 select-none focus:outline-none">

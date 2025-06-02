@@ -98,7 +98,7 @@ export const MessageForm = ({ roomId }: Props) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full overflow-y-auto border-t bg-(--card) p-2 pb-4"
+        className="bg-card w-full overflow-y-auto border-t p-2 pb-4"
       >
         <div className="bg-input/30 rounded-2xl p-1 transition-colors duration-200">
           <FormField

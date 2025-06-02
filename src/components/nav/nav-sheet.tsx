@@ -39,7 +39,7 @@ export const NavSheet = ({ trigger, open, setOpen }: Props) => {
       <SheetTrigger asChild>{trigger}</SheetTrigger>
       <SheetContent
         side="left"
-        className="min-w-[100%] border-r-0 bg-(--accent) px-0 pt-4 dark:bg-(--background)"
+        className="bg-accent dark:bg-background min-w-[100%] border-r-0 px-0 pt-4"
         hideCloseButton
       >
         <SheetHeader className="space-y-4">
@@ -76,7 +76,7 @@ export const NavSheet = ({ trigger, open, setOpen }: Props) => {
           </VisuallyHidden>
         </SheetHeader>
 
-        <div className="bg-background flex h-full w-full flex-col gap-6 overflow-y-auto rounded-t-2xl p-7 pb-12 dark:bg-(--accent)">
+        <div className="bg-background dark:bg-accent flex h-full w-full flex-col gap-6 overflow-y-auto rounded-t-2xl p-7 pb-12">
           {joinedRooms.map((room) => (
             <Link
               key={room.roomId}
