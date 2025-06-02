@@ -37,7 +37,7 @@ export const NavDrawer = ({ trigger }: Props) => {
   return (
     <Drawer open={showNavDrawer} onOpenChange={setShowNavDrawer}>
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
-      <DrawerContent className="flex min-h-[calc(100vh-68px)] flex-col items-start rounded-t-2xl border-0">
+      <DrawerContent className="flex min-h-[calc(100%-68px)] flex-col items-start rounded-t-2xl border-0">
         <VisuallyHidden>
           <DrawerHeader>
             <DrawerTitle>{t('navigation.titles.navDrawer')}</DrawerTitle>
