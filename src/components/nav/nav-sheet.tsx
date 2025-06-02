@@ -76,7 +76,7 @@ export const NavSheet = ({ trigger, open, setOpen }: Props) => {
           </VisuallyHidden>
         </SheetHeader>
 
-        <div className="bg-background dark:bg-accent flex h-full w-full flex-col gap-6 overflow-y-auto rounded-t-2xl p-7 pb-12">
+        <div className="bg-background dark:bg-card flex h-full w-full flex-col gap-6 overflow-y-auto rounded-t-2xl p-7 pb-12">
           {joinedRooms.map((room) => (
             <Link
               key={room.roomId}
