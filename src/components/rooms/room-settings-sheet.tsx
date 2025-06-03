@@ -21,7 +21,7 @@ interface Props {
 }
 
 const RoomSettingsSheet = ({ trigger, room }: Props) => {
-  const { form, handleSubmit, isInitializing } = useRoomSettingsForm(room);
+  const { form, handleSubmit, isInitializing } = useRoomSettingsForm({ room });
   const [open, setOpen] = useState(false);
 
   const { t } = useTranslation();

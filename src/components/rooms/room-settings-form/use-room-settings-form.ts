@@ -9,6 +9,11 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import * as zod from 'zod';
 
+interface UseRoomSettingsFormProps {
+  room: Room;
+  onSuccess?(): void;
+}
+
 export const roomSettingsFormSchema = zod.object({
   name: zod
     .string()
@@ -31,7 +36,10 @@ export const roomSettingsFormSchema = zod.object({
     .optional(),
 });
 
-export const useRoomSettingsForm = (room: Room) => {
+export const useRoomSettingsForm = ({
+  room,
+  onSuccess,
+}: UseRoomSettingsFormProps) => {
   const [isVisibilityLoading, setIsVisibilityLoading] = useState(true);
 
   const matrixClient = useMatrixClient();
@@ -93,6 +101,7 @@ export const useRoomSettingsForm = (room: Room) => {
       }
 
       toast(t('rooms.toasts.roomUpdated'));
+      onSuccess?.();
     } catch (error) {
       console.error('Error updating room:', error);
       toast(t('rooms.toasts.roomUpdatedError'), {

@@ -15,17 +15,34 @@ import { useTranslation } from 'react-i18next';
 import { MdClose } from 'react-icons/md';
 import { useNavigate, useParams } from 'react-router-dom';
 
-interface RoomSettingsContentProps {
+interface RoomSettingsFormContainerProps {
   room: Room;
 }
 
-const RoomSettingsContent = ({ room }: RoomSettingsContentProps) => {
-  const { form, handleSubmit, isInitializing } = useRoomSettingsForm(room);
-
+const RoomSettingsFormContainer = ({
+  room,
+}: RoomSettingsFormContainerProps) => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { form, handleSubmit, isInitializing } = useRoomSettingsForm({
+    onSuccess: () => navigate(`${NavigationPaths.Rooms}/${room.roomId}`),
+    room,
+  });
 
   if (isInitializing) {
+    return null;
+  }
+
+  return <RoomSettingsForm form={form} handleSubmit={handleSubmit} />;
+};
+
+export const RoomSettings = () => {
+  const navigate = useNavigate();
+  const { roomId } = useParams();
+  const { t } = useTranslation();
+
+  const room = useRoom(roomId);
+
+  if (!room) {
     return null;
   }
 
@@ -49,21 +66,10 @@ const RoomSettingsContent = ({ room }: RoomSettingsContentProps) => {
           </CardHeader>
 
           <CardContent>
-            <RoomSettingsForm form={form} handleSubmit={handleSubmit} />
+            <RoomSettingsFormContainer room={room} />
           </CardContent>
         </Card>
       </div>
     </>
   );
-};
-
-export const RoomSettings = () => {
-  const { roomId } = useParams();
-  const room = useRoom(roomId);
-
-  if (!room) {
-    return null;
-  }
-
-  return <RoomSettingsContent room={room} />;
 };
