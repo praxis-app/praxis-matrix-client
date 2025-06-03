@@ -105,7 +105,6 @@ export const CreateRoomForm = ({
         // TODO: Test wether this is actually needed
         visibility: values.visibility as Visibility,
 
-        // TODO: Test wether this enables guest access
         initial_state: [
           {
             type: EventType.RoomGuestAccess,

@@ -46,8 +46,10 @@ export function MatrixProvider({ children }: Props) {
         // Join public rooms if the user is a guest
         const { chunk } = await client.publicRooms();
         if (chunk.length) {
-          for (const { room_id } of chunk) {
-            await client.joinRoom(room_id);
+          for (const { room_id, guest_can_join } of chunk) {
+            if (guest_can_join) {
+              await client.joinRoom(room_id);
+            }
           }
         }
         client.setGuest(true);
