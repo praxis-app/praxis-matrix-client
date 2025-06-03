@@ -20,7 +20,7 @@ import { NavigationPaths } from '@/constants/shared.constants';
 import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { t } from '@/lib/shared.utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { EventType, Method, Visibility } from 'matrix-js-sdk';
+import { EventType, Visibility } from 'matrix-js-sdk';
 import { ReactNode, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -109,17 +109,6 @@ export const CreateRoomForm = ({
           },
         ],
       });
-
-      // TODO: Test wether this is still needed
-      // Ensure the room is public if requested
-      if (values.visibility === Visibility.Public) {
-        await matrixClient.http.authedRequest(
-          Method.Put,
-          `/directory/list/room/${encodeURIComponent(room.room_id)}`,
-          undefined,
-          { visibility: Visibility.Public },
-        );
-      }
 
       form.reset();
       onSubmit();

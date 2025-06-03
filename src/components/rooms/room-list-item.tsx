@@ -1,3 +1,4 @@
+import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { useRoomName } from '@/hooks/use-room-name';
 import { cn } from '@/lib/shared.utils';
 import { Room } from 'matrix-js-sdk';
@@ -26,9 +27,11 @@ const RoomListItem = ({ activeRoomId, room }: Props) => {
 
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const matrixClient = useMatrixClient();
 
   const isActive = room.roomId === activeRoomId;
-  const showSettingsBtn = isHovering || isActive;
+  const isGuest = matrixClient.isGuest();
+  const showSettingsBtn = (isHovering || isActive) && !isGuest;
 
   const roomPath = `/rooms/${room.roomId}`;
   const settingsPath = `${roomPath}/settings`;
@@ -66,9 +69,11 @@ const RoomListItem = ({ activeRoomId, room }: Props) => {
         </ContextMenuTrigger>
 
         <ContextMenuContent>
-          <ContextMenuItem onClick={() => navigate(settingsPath)}>
-            {t('rooms.labels.settings')}
-          </ContextMenuItem>
+          {showSettingsBtn && (
+            <ContextMenuItem onClick={() => navigate(settingsPath)}>
+              {t('rooms.labels.settings')}
+            </ContextMenuItem>
+          )}
 
           <DialogTrigger asChild>
             <ContextMenuItem className="text-destructive">
