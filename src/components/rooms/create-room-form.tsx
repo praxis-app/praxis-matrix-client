@@ -20,7 +20,7 @@ import { NavigationPaths } from '@/constants/shared.constants';
 import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { t } from '@/lib/shared.utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { EventType, Visibility } from 'matrix-js-sdk';
+import { EventType, GuestAccess, Visibility } from 'matrix-js-sdk';
 import { ReactNode, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -53,7 +53,7 @@ const formSchema = zod.object({
       message: t('rooms.errors.roomTopicMax'),
     })
     .optional(),
-  visibility: zod.enum(['public', 'private'], {
+  visibility: zod.enum([Visibility.Public, Visibility.Private], {
     required_error: t('rooms.errors.roomVisibility'),
   }),
 });
@@ -101,11 +101,11 @@ export const CreateRoomForm = ({
         name: values.name,
         topic: values.topic,
         room_alias_name: values.name.toLowerCase().replace(/ /g, '-'),
-        visibility: values.visibility as Visibility,
+        visibility: values.visibility,
         initial_state: [
           {
             type: EventType.RoomGuestAccess,
-            content: { guest_access: 'can_join' },
+            content: { guest_access: GuestAccess.CanJoin },
           },
         ],
       });
