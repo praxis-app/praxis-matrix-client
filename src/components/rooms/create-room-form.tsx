@@ -101,10 +101,7 @@ export const CreateRoomForm = ({
         name: values.name,
         topic: values.topic,
         room_alias_name: values.name.toLowerCase().replace(/ /g, '-'),
-
-        // TODO: Test wether this is actually needed
         visibility: values.visibility as Visibility,
-
         initial_state: [
           {
             type: EventType.RoomGuestAccess,
@@ -113,6 +110,7 @@ export const CreateRoomForm = ({
         ],
       });
 
+      // TODO: Test wether this is still needed
       // Ensure the room is public if requested
       if (values.visibility === Visibility.Public) {
         await matrixClient.http.authedRequest(
