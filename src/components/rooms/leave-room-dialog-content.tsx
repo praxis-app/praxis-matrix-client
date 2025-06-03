@@ -40,6 +40,7 @@ export const LeaveRoomDialogContent = ({
         </DialogTitle>
       </DialogHeader>
 
+      {/* TODO: Move into DialogHeader or determine if this is needed */}
       <DialogDescription className="pb-2">
         {t('rooms.prompts.leaveRoom', { roomName: room.name })}
       </DialogDescription>

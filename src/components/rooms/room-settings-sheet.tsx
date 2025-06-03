@@ -21,8 +21,11 @@ interface Props {
 }
 
 const RoomSettingsSheet = ({ trigger, room }: Props) => {
-  const { form, handleSubmit, isInitializing } = useRoomSettingsForm({ room });
-  const [open, setOpen] = useState(false);
+  const [showRoomSettingsSheet, setShowRoomSettingsSheet] = useState(false);
+  const { form, handleSubmit, isInitializing } = useRoomSettingsForm({
+    onSuccess: () => setShowRoomSettingsSheet(false),
+    room,
+  });
 
   const { t } = useTranslation();
 
@@ -31,14 +34,18 @@ const RoomSettingsSheet = ({ trigger, room }: Props) => {
   }
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
+    <Sheet open={showRoomSettingsSheet} onOpenChange={setShowRoomSettingsSheet}>
       <SheetTrigger asChild>{trigger}</SheetTrigger>
       <SheetContent
         className="mt-14 min-w-[100%] rounded-t-2xl border-0 px-0 pt-3.5"
         hideCloseButton
       >
         <div className="flex justify-between px-2 pb-3.5">
-          <Button variant="ghost" size="icon" onClick={() => setOpen(false)}>
+          <Button
+            onClick={() => setShowRoomSettingsSheet(false)}
+            variant="ghost"
+            size="icon"
+          >
             <MdClose className="size-6" />
           </Button>
 
@@ -46,6 +53,7 @@ const RoomSettingsSheet = ({ trigger, room }: Props) => {
             <SheetTitle className="text-md mb-0 font-medium">
               {t('rooms.labels.settings')}
             </SheetTitle>
+            {/* TODO: Add description here for accessibility - VisuallyHidden */}
             <SheetDescription></SheetDescription>
           </SheetHeader>
 

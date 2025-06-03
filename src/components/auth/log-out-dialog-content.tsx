@@ -22,6 +22,7 @@ const LogOutDialogContent = ({ setShowLogoutDialog, handleLogout }: Props) => {
         <DialogTitle className="text-md font-normal">
           {t('auth.prompts.logOut')}
         </DialogTitle>
+        {/* TODO: Add description here for accessibility - VisuallyHidden */}
         <DialogDescription></DialogDescription>
       </DialogHeader>
 
