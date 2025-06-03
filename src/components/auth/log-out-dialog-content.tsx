@@ -1,3 +1,4 @@
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { useTranslation } from 'react-i18next';
 import { Button } from '../ui/button';
 import {
@@ -22,8 +23,11 @@ const LogOutDialogContent = ({ setShowLogoutDialog, handleLogout }: Props) => {
         <DialogTitle className="text-md font-normal">
           {t('auth.prompts.logOut')}
         </DialogTitle>
-        {/* TODO: Add description here for accessibility - VisuallyHidden */}
-        <DialogDescription></DialogDescription>
+        <VisuallyHidden>
+          <DialogDescription>
+            {t('auth.descriptions.confirmLogOut')}
+          </DialogDescription>
+        </VisuallyHidden>
       </DialogHeader>
 
       <DialogFooter className="flex flex-row gap-2 self-center">

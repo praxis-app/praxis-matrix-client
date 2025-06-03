@@ -1,3 +1,4 @@
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { Room } from 'matrix-js-sdk';
 import { ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -53,8 +54,11 @@ const RoomSettingsSheet = ({ trigger, room }: Props) => {
             <SheetTitle className="text-md mb-0 font-medium">
               {t('rooms.labels.settings')}
             </SheetTitle>
-            {/* TODO: Add description here for accessibility - VisuallyHidden */}
-            <SheetDescription></SheetDescription>
+            <VisuallyHidden>
+              <SheetDescription>
+                {t('rooms.descriptions.roomSettings')}
+              </SheetDescription>
+            </VisuallyHidden>
           </SheetHeader>
 
           <Button
