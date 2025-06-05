@@ -3,7 +3,7 @@ import { useRoomDirectoryVisibility } from '@/hooks/use-room-directory-visibilit
 import { useRoomName } from '@/hooks/use-room-name';
 import { t } from '@/lib/shared.utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { EventTimeline, EventType, Method, Room } from 'matrix-js-sdk';
+import { EventTimeline, EventType, Room, Visibility } from 'matrix-js-sdk';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -31,7 +31,7 @@ export const roomSettingsFormSchema = zod.object({
     })
     .optional(),
   visibility: zod
-    .enum(['public', 'private'], {
+    .enum([Visibility.Public, Visibility.Private], {
       required_error: t('rooms.errors.roomVisibility'),
     })
     .optional(),
@@ -101,11 +101,11 @@ export const useRoomSettingsForm = ({
           '',
         );
       }
-      if (values.visibility !== roomVisibility) {
-        const url = `/directory/list/room/${encodeURIComponent(room.roomId)}`;
-        await matrixClient.http.authedRequest(Method.Put, url, undefined, {
-          visibility: values.visibility,
-        });
+      if (values.visibility && values.visibility !== roomVisibility) {
+        await matrixClient.setRoomDirectoryVisibility(
+          room.roomId,
+          values.visibility,
+        );
       }
 
       toast(t('rooms.toasts.roomUpdated'));
