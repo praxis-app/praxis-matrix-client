@@ -1,5 +1,6 @@
 import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { useRoomDirectoryVisibility } from '@/hooks/use-room-directory-visibility';
+import { useRoomName } from '@/hooks/use-room-name';
 import { t } from '@/lib/shared.utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { EventTimeline, EventType, Method, Room } from 'matrix-js-sdk';
@@ -59,8 +60,15 @@ export const useRoomSettingsForm = ({
     },
   });
 
-  const visibility = useRoomDirectoryVisibility({
-    roomId: room.roomId,
+  const roomName = useRoomName({
+    room,
+    onSuccess: (name) => {
+      form.setValue('name', name);
+    },
+  });
+
+  const roomVisibility = useRoomDirectoryVisibility({
+    room,
     onSuccess: (visibility) => {
       form.setValue('visibility', visibility);
       setIsVisibilityLoading(false);
@@ -71,7 +79,7 @@ export const useRoomSettingsForm = ({
     values: zod.infer<typeof roomSettingsFormSchema>,
   ) => {
     try {
-      if (values.name !== room.name) {
+      if (values.name !== roomName) {
         await matrixClient.sendStateEvent(
           room.roomId,
           EventType.RoomName,
@@ -93,7 +101,7 @@ export const useRoomSettingsForm = ({
           '',
         );
       }
-      if (values.visibility !== visibility) {
+      if (values.visibility !== roomVisibility) {
         const url = `/directory/list/room/${encodeURIComponent(room.roomId)}`;
         await matrixClient.http.authedRequest(Method.Put, url, undefined, {
           visibility: values.visibility,

@@ -2,18 +2,30 @@ import { Room, RoomEvent } from 'matrix-js-sdk';
 import { useEffect, useState } from 'react';
 import { useEventEmitter } from './use-event-emitter';
 
-const getRoomName = (room?: Room): string => room?.name || '';
+const EMPTY_ROOM_NAME = 'Empty room';
 
-export function useRoomName(room?: Room): string {
-  const [name, setName] = useState(getRoomName(room));
+const getRoomName = (room?: Room) => room?.name || '';
+
+interface UseRoomNameProps {
+  room?: Room;
+  onSuccess?: (name: string) => void;
+}
+
+export function useRoomName({ room, onSuccess }: UseRoomNameProps) {
+  const [roomName, setRoomName] = useState(getRoomName(room));
 
   useEventEmitter(room, RoomEvent.Name, () => {
-    setName(getRoomName(room));
+    setRoomName(getRoomName(room));
+    onSuccess?.(getRoomName(room));
   });
 
   useEffect(() => {
-    setName(getRoomName(room));
+    setRoomName(getRoomName(room));
   }, [room]);
 
-  return name;
+  if (roomName === EMPTY_ROOM_NAME) {
+    return '';
+  }
+
+  return roomName;
 }

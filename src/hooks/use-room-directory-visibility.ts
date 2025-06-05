@@ -1,32 +1,33 @@
+import { Room, Visibility } from 'matrix-js-sdk';
 import { useEffect, useState } from 'react';
 import { useMatrixClient } from './use-matrix-client';
-import { Visibility } from 'matrix-js-sdk';
 
 interface UseRoomDirectoryVisibilityProps {
-  roomId: string;
+  room: Room;
   onSuccess?(visibility: Visibility | undefined): void;
 }
 
 export const useRoomDirectoryVisibility = ({
-  roomId,
+  room,
   onSuccess,
 }: UseRoomDirectoryVisibilityProps) => {
   const [visibility, setVisibility] = useState<Visibility>();
   const matrixClient = useMatrixClient();
 
   useEffect(() => {
-    if (!roomId || visibility) {
+    if (!room.roomId || visibility) {
       return;
     }
 
     const init = async () => {
-      const { visibility } =
-        await matrixClient.getRoomDirectoryVisibility(roomId);
+      const { visibility } = await matrixClient.getRoomDirectoryVisibility(
+        room.roomId,
+      );
       setVisibility(visibility);
       onSuccess?.(visibility);
     };
     init();
-  }, [roomId, matrixClient, onSuccess]);
+  }, [room.roomId, matrixClient, onSuccess, visibility]);
 
   return visibility;
 };
