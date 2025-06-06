@@ -23,7 +23,7 @@ interface Props {
 const RoomListItem = ({ activeRoomId, room }: Props) => {
   const [showLeaveRoomDialog, setShowLeaveRoomDialog] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
-  const roomName = useRoomName({ room });
+  const roomName = useRoomName(room);
 
   const { t } = useTranslation();
   const navigate = useNavigate();

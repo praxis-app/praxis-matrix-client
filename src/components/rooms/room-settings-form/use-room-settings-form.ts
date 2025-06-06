@@ -62,30 +62,26 @@ export const useRoomSettingsForm = (
     },
   });
 
-  const roomName = useRoomName({
-    room,
+  const roomName = useRoomName(room, {
     onSuccess: (name) => {
       form.setValue('name', name);
     },
   });
 
-  const roomTopic = useRoomTopic({
-    room,
+  const roomTopic = useRoomTopic(room, {
     onSuccess: (topic) => {
       form.setValue('topic', topic);
     },
   });
 
-  const roomJoinRule = useRoomJoinRule({
-    room,
+  const roomJoinRule = useRoomJoinRule(room, {
     onSuccess: (joinRule) => {
       // TODO: Account for other join rules
       form.setValue('joinRule', joinRule as RoomSettingsFormValues['joinRule']);
     },
   });
 
-  const roomVisibility = useRoomDirectoryVisibility({
-    room,
+  const roomVisibility = useRoomDirectoryVisibility(room, {
     onSuccess: (visibility) => {
       form.setValue('visibility', visibility);
       setIsVisibilityLoading(false);

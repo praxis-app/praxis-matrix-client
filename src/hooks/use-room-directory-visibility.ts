@@ -2,16 +2,14 @@ import { Room, Visibility } from 'matrix-js-sdk';
 import { useEffect, useState } from 'react';
 import { useMatrixClient } from './use-matrix-client';
 
-interface UseRoomDirectoryVisibilityProps {
-  room: Room;
-  onSuccess?(visibility: Visibility): void;
+interface UseRoomDirectoryVisibilityOptions {
+  onSuccess?: (visibility: Visibility) => void;
 }
 
-// TODO: Refactor params where `room` is the first param
-export const useRoomDirectoryVisibility = ({
-  room,
-  onSuccess,
-}: UseRoomDirectoryVisibilityProps) => {
+export const useRoomDirectoryVisibility = (
+  room: Room,
+  { onSuccess }: UseRoomDirectoryVisibilityOptions = {},
+) => {
   const [visibility, setVisibility] = useState<Visibility>();
   const matrixClient = useMatrixClient();
 

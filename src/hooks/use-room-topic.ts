@@ -3,12 +3,14 @@ import { Room, RoomStateEvent } from 'matrix-js-sdk';
 import { useEffect, useState } from 'react';
 import { useEventEmitter } from './use-event-emitter';
 
-interface UseRoomTopicProps {
-  room?: Room;
-  onSuccess?: (name: string) => void;
+interface UseRoomTopicOptions {
+  onSuccess?: (topic: string) => void;
 }
 
-export function useRoomTopic({ room, onSuccess }: UseRoomTopicProps) {
+export function useRoomTopic(
+  room: Room,
+  { onSuccess }: UseRoomTopicOptions = {},
+) {
   const [roomTopic, setRoomTopic] = useState(getRoomTopic(room));
   const roomState = getRoomState(room);
 

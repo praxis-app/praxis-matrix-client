@@ -16,7 +16,7 @@ interface Props {
 
 export const RoomTopNav = ({ room }: Props) => {
   const [navSheetOpen, setNavSheetOpen] = useState(false);
-  const roomName = useRoomName({ room });
+  const roomName = useRoomName(room);
 
   const { t } = useTranslation();
   const isMobile = useIsMobile();

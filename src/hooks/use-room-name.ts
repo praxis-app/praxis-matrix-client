@@ -6,12 +6,14 @@ const EMPTY_ROOM_NAME = 'Empty room';
 
 const getRoomName = (room?: Room) => room?.name || '';
 
-interface UseRoomNameProps {
-  room?: Room;
+interface UseRoomNameOptions {
   onSuccess?: (name: string) => void;
 }
 
-export function useRoomName({ room, onSuccess }: UseRoomNameProps) {
+export function useRoomName(
+  room: Room,
+  { onSuccess }: UseRoomNameOptions = {},
+) {
   const [roomName, setRoomName] = useState(getRoomName(room));
 
   useEventEmitter(room, RoomEvent.Name, () => {

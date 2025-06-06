@@ -3,12 +3,14 @@ import { JoinRule, Room, RoomStateEvent } from 'matrix-js-sdk';
 import { useEffect, useState } from 'react';
 import { useEventEmitter } from './use-event-emitter';
 
-interface UseRoomJoinRuleProps {
-  room?: Room;
+interface UseRoomJoinRuleOptions {
   onSuccess?: (joinRule: JoinRule) => void;
 }
 
-export function useRoomJoinRule({ room, onSuccess }: UseRoomJoinRuleProps) {
+export function useRoomJoinRule(
+  room: Room,
+  { onSuccess }: UseRoomJoinRuleOptions = {},
+) {
   const [roomJoinRule, setRoomJoinRule] = useState(room?.getJoinRule());
   const roomState = getRoomState(room);
 
