@@ -122,8 +122,7 @@ export const RoomSettingsForm = ({
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t('rooms.labels.discoverability')}</FormLabel>
-              {/* TODO: Determine if we should use `defaultValue` or `value` here */}
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
                   <SelectTrigger className="w-full">
                     <SelectValue

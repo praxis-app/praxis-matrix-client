@@ -23,14 +23,12 @@ const RoomSettingsFormContainer = ({
   room,
 }: RoomSettingsFormContainerProps) => {
   const navigate = useNavigate();
-  const { form, handleSubmit, isInitializing, hasUnsupportedJoinRule } =
-    useRoomSettingsForm(room, {
+  const { form, handleSubmit, hasUnsupportedJoinRule } = useRoomSettingsForm(
+    room,
+    {
       onSuccess: () => navigate(`${NavigationPaths.Rooms}/${room.roomId}`),
-    });
-
-  if (isInitializing) {
-    return null;
-  }
+    },
+  );
 
   return (
     <RoomSettingsForm

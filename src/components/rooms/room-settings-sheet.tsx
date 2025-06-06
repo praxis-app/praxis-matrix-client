@@ -23,16 +23,12 @@ interface Props {
 
 const RoomSettingsSheet = ({ trigger, room }: Props) => {
   const [showRoomSettingsSheet, setShowRoomSettingsSheet] = useState(false);
-  const { form, handleSubmit, isInitializing, hasUnsupportedJoinRule } =
-    useRoomSettingsForm(room, {
-      onSuccess: () => setShowRoomSettingsSheet(false),
-    });
+  const { form, handleSubmit, hasUnsupportedJoinRule } = useRoomSettingsForm(
+    room,
+    { onSuccess: () => setShowRoomSettingsSheet(false) },
+  );
 
   const { t } = useTranslation();
-
-  if (isInitializing) {
-    return null;
-  }
 
   return (
     <Sheet open={showRoomSettingsSheet} onOpenChange={setShowRoomSettingsSheet}>

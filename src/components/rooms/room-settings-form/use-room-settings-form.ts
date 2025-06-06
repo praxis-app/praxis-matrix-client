@@ -9,7 +9,6 @@ import { getRoomTopic } from '@/lib/room.utilts';
 import { t } from '@/lib/shared.utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { EventType, JoinRule, Room, Visibility } from 'matrix-js-sdk';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -27,7 +26,7 @@ const roomSettingsFormSchema = zod.object({
   topic: zod.string().max(500, {
     message: t('rooms.errors.roomTopicMax'),
   }),
-  visibility: zod.enum([Visibility.Public, Visibility.Private], {
+  visibility: zod.enum([Visibility.Public, Visibility.Private, ''], {
     required_error: t('rooms.errors.roomVisibility'),
   }),
   joinRule: zod.enum([JoinRule.Public, JoinRule.Invite], {
@@ -41,8 +40,6 @@ export const useRoomSettingsForm = (
   room: Room,
   { onSuccess }: { onSuccess?: () => void } = {},
 ) => {
-  const [isVisibilityLoading, setIsVisibilityLoading] = useState(true);
-
   const matrixClient = useMatrixClient();
   const { t } = useTranslation();
 
@@ -52,28 +49,19 @@ export const useRoomSettingsForm = (
       name: room.name,
       topic: getRoomTopic(room),
       joinRule: room.getJoinRule() as RoomSettingsFormValues['joinRule'],
+      visibility: '',
     },
   });
 
   const roomName = useRoomName(room, {
-    onSuccess: (name) => {
-      form.setValue('name', name);
-    },
+    onSuccess: (name) => form.setValue('name', name),
   });
-
   const roomTopic = useRoomTopic(room, {
-    onSuccess: (topic) => {
-      form.setValue('topic', topic);
-    },
+    onSuccess: (topic) => form.setValue('topic', topic),
   });
-
   const roomVisibility = useRoomDirectoryVisibility(room, {
-    onSuccess: (visibility) => {
-      form.setValue('visibility', visibility);
-      setIsVisibilityLoading(false);
-    },
+    onSuccess: (visibility) => form.setValue('visibility', visibility),
   });
-
   const roomJoinRule = useRoomJoinRule(room, {
     onSuccess: (joinRule) => {
       if (joinRule === JoinRule.Public || joinRule === JoinRule.Invite) {
@@ -105,7 +93,6 @@ export const useRoomSettingsForm = (
           '',
         );
       }
-
       if (values.joinRule && values.joinRule !== roomJoinRule) {
         await matrixClient.sendStateEvent(
           room.roomId,
@@ -122,8 +109,7 @@ export const useRoomSettingsForm = (
 
       toast(t('rooms.toasts.roomUpdated'));
       onSuccess?.();
-    } catch (error) {
-      console.error('Error updating room:', error);
+    } catch {
       toast(t('rooms.toasts.roomUpdatedError'), {
         description: t('rooms.toasts.roomUpdatedErrorDescription'),
       });
@@ -133,7 +119,6 @@ export const useRoomSettingsForm = (
   return {
     form,
     handleSubmit,
-    isInitializing: isVisibilityLoading,
     hasUnsupportedJoinRule,
   };
 };
