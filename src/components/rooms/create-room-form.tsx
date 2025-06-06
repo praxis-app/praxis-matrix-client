@@ -38,7 +38,7 @@ interface CreateRoomFormProps {
   onSubmit(): void;
 }
 
-const formSchema = zod.object({
+const createRoomFormSchema = zod.object({
   name: zod
     .string()
     .min(3, {
@@ -77,8 +77,8 @@ export const CreateRoomForm = ({
 }: CreateRoomFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const form = useForm<zod.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<zod.infer<typeof createRoomFormSchema>>({
+    resolver: zodResolver(createRoomFormSchema),
     defaultValues: {
       name: '',
       topic: '',
@@ -90,7 +90,9 @@ export const CreateRoomForm = ({
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const handleSubmit = async (values: zod.infer<typeof formSchema>) => {
+  const handleSubmit = async (
+    values: zod.infer<typeof createRoomFormSchema>,
+  ) => {
     if (!matrixClient) {
       return;
     }

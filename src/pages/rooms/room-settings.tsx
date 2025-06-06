@@ -23,9 +23,8 @@ const RoomSettingsFormContainer = ({
   room,
 }: RoomSettingsFormContainerProps) => {
   const navigate = useNavigate();
-  const { form, handleSubmit, isInitializing } = useRoomSettingsForm({
+  const { form, handleSubmit, isInitializing } = useRoomSettingsForm(room, {
     onSuccess: () => navigate(`${NavigationPaths.Rooms}/${room.roomId}`),
-    room,
   });
 
   if (isInitializing) {

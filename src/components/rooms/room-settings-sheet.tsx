@@ -23,9 +23,8 @@ interface Props {
 
 const RoomSettingsSheet = ({ trigger, room }: Props) => {
   const [showRoomSettingsSheet, setShowRoomSettingsSheet] = useState(false);
-  const { form, handleSubmit, isInitializing } = useRoomSettingsForm({
+  const { form, handleSubmit, isInitializing } = useRoomSettingsForm(room, {
     onSuccess: () => setShowRoomSettingsSheet(false),
-    room,
   });
 
   const { t } = useTranslation();

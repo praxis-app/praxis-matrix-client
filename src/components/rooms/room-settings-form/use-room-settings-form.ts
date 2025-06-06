@@ -1,23 +1,19 @@
 import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { useRoomDirectoryVisibility } from '@/hooks/use-room-directory-visibility';
+import { useRoomJoinRule } from '@/hooks/use-room-join-rule';
 import { useRoomName } from '@/hooks/use-room-name';
 import { useRoomTopic } from '@/hooks/use-room-topic';
 import { getRoomTopic } from '@/lib/room.utilts';
 import { t } from '@/lib/shared.utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { EventType, Room, Visibility } from 'matrix-js-sdk';
+import { EventType, JoinRule, Room, Visibility } from 'matrix-js-sdk';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import * as zod from 'zod';
 
-interface UseRoomSettingsFormProps {
-  room: Room;
-  onSuccess?(): void;
-}
-
-export const roomSettingsFormSchema = zod.object({
+const roomSettingsFormSchema = zod.object({
   name: zod
     .string()
     .min(3, {
@@ -25,7 +21,8 @@ export const roomSettingsFormSchema = zod.object({
     })
     .max(50, {
       message: t('rooms.errors.roomNameMax'),
-    }),
+    })
+    .optional(),
   topic: zod
     .string()
     .max(500, {
@@ -37,22 +34,31 @@ export const roomSettingsFormSchema = zod.object({
       required_error: t('rooms.errors.roomVisibility'),
     })
     .optional(),
+  joinRule: zod
+    .enum([JoinRule.Public, JoinRule.Invite], {
+      required_error: t('rooms.errors.roomAccess'),
+    })
+    .optional(),
 });
 
-export const useRoomSettingsForm = ({
-  room,
-  onSuccess,
-}: UseRoomSettingsFormProps) => {
+export type RoomSettingsFormValues = zod.infer<typeof roomSettingsFormSchema>;
+
+export const useRoomSettingsForm = (
+  room: Room,
+  { onSuccess }: { onSuccess?: () => void } = {},
+) => {
   const [isVisibilityLoading, setIsVisibilityLoading] = useState(true);
 
   const matrixClient = useMatrixClient();
   const { t } = useTranslation();
 
-  const form = useForm<zod.infer<typeof roomSettingsFormSchema>>({
+  const form = useForm<RoomSettingsFormValues>({
     resolver: zodResolver(roomSettingsFormSchema),
     defaultValues: {
       name: room.name,
       topic: getRoomTopic(room),
+      // TODO: Account for other join rules
+      joinRule: room.getJoinRule() as RoomSettingsFormValues['joinRule'],
     },
   });
 
@@ -70,6 +76,14 @@ export const useRoomSettingsForm = ({
     },
   });
 
+  const roomJoinRule = useRoomJoinRule({
+    room,
+    onSuccess: (joinRule) => {
+      // TODO: Account for other join rules
+      form.setValue('joinRule', joinRule as RoomSettingsFormValues['joinRule']);
+    },
+  });
+
   const roomVisibility = useRoomDirectoryVisibility({
     room,
     onSuccess: (visibility) => {
@@ -78,11 +92,9 @@ export const useRoomSettingsForm = ({
     },
   });
 
-  const handleSubmit = async (
-    values: zod.infer<typeof roomSettingsFormSchema>,
-  ) => {
+  const handleSubmit = async (values: RoomSettingsFormValues) => {
     try {
-      if (values.name !== roomName) {
+      if (values.name && values.name !== roomName) {
         await matrixClient.sendStateEvent(
           room.roomId,
           EventType.RoomName,
@@ -102,6 +114,16 @@ export const useRoomSettingsForm = ({
             topic: newTopic,
           },
           '',
+        );
+      }
+
+      if (values.joinRule && values.joinRule !== roomJoinRule) {
+        await matrixClient.sendStateEvent(
+          room.roomId,
+          EventType.RoomJoinRules,
+          {
+            join_rule: values.joinRule,
+          },
         );
       }
       if (values.visibility && values.visibility !== roomVisibility) {

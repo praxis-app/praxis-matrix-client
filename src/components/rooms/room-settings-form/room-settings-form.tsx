@@ -1,7 +1,6 @@
-import { Visibility } from 'matrix-js-sdk';
+import { JoinRule, Visibility } from 'matrix-js-sdk';
 import { UseFormReturn } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import * as zod from 'zod';
 import { Button } from '../../ui/button';
 import {
   Form,
@@ -21,11 +20,11 @@ import {
   SelectValue,
 } from '../../ui/select';
 import { Textarea } from '../../ui/textarea';
-import { roomSettingsFormSchema } from './use-room-settings-form';
+import { RoomSettingsFormValues } from './use-room-settings-form';
 
 interface Props {
-  form: UseFormReturn<zod.infer<typeof roomSettingsFormSchema>>;
-  handleSubmit: (values: zod.infer<typeof roomSettingsFormSchema>) => void;
+  form: UseFormReturn<RoomSettingsFormValues>;
+  handleSubmit: (values: RoomSettingsFormValues) => void;
 }
 
 export const RoomSettingsForm = ({ form, handleSubmit }: Props) => {
@@ -79,10 +78,40 @@ export const RoomSettingsForm = ({ form, handleSubmit }: Props) => {
 
         <FormField
           control={form.control}
+          name="joinRule"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t('rooms.labels.access')}</FormLabel>
+              <Select onValueChange={field.onChange} value={field.value}>
+                <FormControl>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder={t('rooms.placeholders.access')} />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value={JoinRule.Invite}>
+                    {t('rooms.options.inviteOnly')}
+                  </SelectItem>
+                  <SelectItem value={JoinRule.Public}>
+                    {t('rooms.options.anyoneCanJoin')}
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              <FormDescription>
+                {t('rooms.descriptions.roomAccess')}
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name="visibility"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('rooms.labels.visibility')}</FormLabel>
+              <FormLabel>{t('rooms.labels.discoverability')}</FormLabel>
+              {/* TODO: Determine if we should use `defaultValue` or `value` here */}
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger className="w-full">
@@ -92,16 +121,16 @@ export const RoomSettingsForm = ({ form, handleSubmit }: Props) => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value={Visibility.Public}>
-                    {t('rooms.options.public')}
-                  </SelectItem>
                   <SelectItem value={Visibility.Private}>
                     {t('rooms.options.private')}
+                  </SelectItem>
+                  <SelectItem value={Visibility.Public}>
+                    {t('rooms.options.public')}
                   </SelectItem>
                 </SelectContent>
               </Select>
               <FormDescription>
-                {t('rooms.descriptions.roomVisibility')}
+                {t('rooms.descriptions.roomDiscoverability')}
               </FormDescription>
               <FormMessage />
             </FormItem>

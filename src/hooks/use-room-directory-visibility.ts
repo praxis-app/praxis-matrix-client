@@ -4,9 +4,10 @@ import { useMatrixClient } from './use-matrix-client';
 
 interface UseRoomDirectoryVisibilityProps {
   room: Room;
-  onSuccess?(visibility: Visibility | undefined): void;
+  onSuccess?(visibility: Visibility): void;
 }
 
+// TODO: Refactor params where `room` is the first param
 export const useRoomDirectoryVisibility = ({
   room,
   onSuccess,

@@ -61,15 +61,18 @@
 
   "rooms": {
     "labels": {
+      "access": "Access",
+      "discoverability": "Discoverability",
       "name": "Room name",
+      "settings": "Room Settings",
       "topic": "Room topic",
-      "visibility": "Room visibility",
-      "settings": "Room Settings"
+      "visibility": "Room visibility"
     },
     "placeholders": {
       "name": "Enter room name",
       "topic": "Enter room topic (optional)",
-      "visibility": "Select room visibility"
+      "visibility": "Select room visibility",
+      "access": "Select room access"
     },
     "headers": {
       "leaveRoom": "Leave room"
@@ -80,13 +83,17 @@
       "leave": "Leave"
     },
     "options": {
-      "public": "Public",
-      "private": "Private"
+      "anyoneCanJoin": "Public (anyone can join)",
+      "inviteOnly": "Private (invite only)",
+      "private": "Private",
+      "public": "Public"
     },
     "descriptions": {
+      "roomAccess": "Controls who can join. Public allows anyone to join, while private requires members to be invited.",
+      "roomDiscoverability": "Determines whether this room appears in the public room directory.",
       "roomName": "This is the name that will be displayed for your chat room.",
-      "roomVisibility": "Public rooms can be found in the room directory. Private rooms require an invitation.",
-      "roomSettings": "Manage the settings for your chat room."
+      "roomSettings": "Manage the settings for your chat room.",
+      "roomVisibility": "Public rooms can be found in the room directory. Private rooms require an invitation."
     },
     "prompts": {
       "creatingRoom": "Creating...",
@@ -104,8 +111,9 @@
       "roomUpdatedErrorDescription": "There was a problem updating your room. Please try again."
     },
     "errors": {
-      "roomNameMin": "Room name must be at least 3 characters.",
+      "roomAccess": "Please select room access.",
       "roomNameMax": "Room name must not exceed 50 characters.",
+      "roomNameMin": "Room name must be at least 3 characters.",
       "roomTopicMax": "Description must not exceed 500 characters.",
       "roomVisibility": "Please select room visibility."
     }
