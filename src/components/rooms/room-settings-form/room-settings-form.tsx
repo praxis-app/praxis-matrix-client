@@ -1,3 +1,5 @@
+// TODO: Add support for Knock and Restricted join rule options
+
 import { JoinRule, Visibility } from 'matrix-js-sdk';
 import { UseFormReturn } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -25,9 +27,14 @@ import { RoomSettingsFormValues } from './use-room-settings-form';
 interface Props {
   form: UseFormReturn<RoomSettingsFormValues>;
   handleSubmit: (values: RoomSettingsFormValues) => void;
+  hasUnsupportedJoinRule: boolean;
 }
 
-export const RoomSettingsForm = ({ form, handleSubmit }: Props) => {
+export const RoomSettingsForm = ({
+  form,
+  handleSubmit,
+  hasUnsupportedJoinRule,
+}: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -76,34 +83,38 @@ export const RoomSettingsForm = ({ form, handleSubmit }: Props) => {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="joinRule"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t('rooms.labels.access')}</FormLabel>
-              <Select onValueChange={field.onChange} value={field.value}>
-                <FormControl>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder={t('rooms.placeholders.access')} />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value={JoinRule.Invite}>
-                    {t('rooms.options.inviteOnly')}
-                  </SelectItem>
-                  <SelectItem value={JoinRule.Public}>
-                    {t('rooms.options.anyoneCanJoin')}
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-              <FormDescription>
-                {t('rooms.descriptions.roomAccess')}
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {!hasUnsupportedJoinRule && (
+          <FormField
+            control={form.control}
+            name="joinRule"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('rooms.labels.access')}</FormLabel>
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <FormControl>
+                    <SelectTrigger className="w-full">
+                      <SelectValue
+                        placeholder={t('rooms.placeholders.access')}
+                      />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value={JoinRule.Invite}>
+                      {t('rooms.options.inviteOnly')}
+                    </SelectItem>
+                    <SelectItem value={JoinRule.Public}>
+                      {t('rooms.options.anyoneCanJoin')}
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormDescription>
+                  {t('rooms.descriptions.roomAccess')}
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
         <FormField
           control={form.control}

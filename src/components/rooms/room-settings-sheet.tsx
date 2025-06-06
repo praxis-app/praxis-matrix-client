@@ -23,9 +23,10 @@ interface Props {
 
 const RoomSettingsSheet = ({ trigger, room }: Props) => {
   const [showRoomSettingsSheet, setShowRoomSettingsSheet] = useState(false);
-  const { form, handleSubmit, isInitializing } = useRoomSettingsForm(room, {
-    onSuccess: () => setShowRoomSettingsSheet(false),
-  });
+  const { form, handleSubmit, isInitializing, hasUnsupportedJoinRule } =
+    useRoomSettingsForm(room, {
+      onSuccess: () => setShowRoomSettingsSheet(false),
+    });
 
   const { t } = useTranslation();
 
@@ -71,7 +72,11 @@ const RoomSettingsSheet = ({ trigger, room }: Props) => {
 
         <Separator className="mb-7" />
 
-        <RoomSettingsForm form={form} handleSubmit={handleSubmit} />
+        <RoomSettingsForm
+          form={form}
+          handleSubmit={handleSubmit}
+          hasUnsupportedJoinRule={hasUnsupportedJoinRule}
+        />
       </SheetContent>
     </Sheet>
   );
