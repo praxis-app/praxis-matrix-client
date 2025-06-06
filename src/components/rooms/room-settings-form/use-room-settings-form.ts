@@ -1,9 +1,11 @@
 import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { useRoomDirectoryVisibility } from '@/hooks/use-room-directory-visibility';
 import { useRoomName } from '@/hooks/use-room-name';
+import { useRoomTopic } from '@/hooks/use-room-topic';
+import { getRoomTopic } from '@/lib/room.utilts';
 import { t } from '@/lib/shared.utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { EventTimeline, EventType, Room, Visibility } from 'matrix-js-sdk';
+import { EventType, Room, Visibility } from 'matrix-js-sdk';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -46,17 +48,11 @@ export const useRoomSettingsForm = ({
   const matrixClient = useMatrixClient();
   const { t } = useTranslation();
 
-  const roomState = room.getLiveTimeline().getState(EventTimeline.FORWARDS);
-  const topicEvent = roomState?.getStateEvents(EventType.RoomTopic, '');
-  const topic: string | undefined = topicEvent
-    ? topicEvent.getContent().topic
-    : undefined;
-
   const form = useForm<zod.infer<typeof roomSettingsFormSchema>>({
     resolver: zodResolver(roomSettingsFormSchema),
     defaultValues: {
       name: room.name,
-      topic,
+      topic: getRoomTopic(room),
     },
   });
 
@@ -64,6 +60,13 @@ export const useRoomSettingsForm = ({
     room,
     onSuccess: (name) => {
       form.setValue('name', name);
+    },
+  });
+
+  const roomTopic = useRoomTopic({
+    room,
+    onSuccess: (topic) => {
+      form.setValue('topic', topic);
     },
   });
 
@@ -89,7 +92,7 @@ export const useRoomSettingsForm = ({
           '',
         );
       }
-      const currentTopic = topic || '';
+      const currentTopic = roomTopic || '';
       const newTopic = values.topic || '';
       if (newTopic !== currentTopic) {
         await matrixClient.sendStateEvent(
