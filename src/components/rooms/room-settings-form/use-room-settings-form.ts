@@ -98,6 +98,7 @@ export const useRoomSettingsForm = (
           room.roomId,
           EventType.RoomJoinRules,
           { join_rule: values.joinRule },
+          '',
         );
       }
       if (values.visibility && values.visibility !== roomVisibility) {
