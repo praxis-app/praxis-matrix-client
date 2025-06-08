@@ -1,4 +1,4 @@
-import { Room } from 'matrix-js-sdk';
+import { ClientEvent, KnownMembership, Room, RoomEvent } from 'matrix-js-sdk';
 import { useEffect, useState } from 'react';
 import { useMatrixClient } from './use-matrix-client';
 
@@ -12,23 +12,33 @@ const sortRoomsByLastEventTs = (rooms: Room[]) =>
     return getLastEventTs(b) - getLastEventTs(a);
   });
 
+const filterJoinedRooms = (rooms: Room[]) => {
+  return rooms.filter(
+    (room) => room.getMyMembership() === KnownMembership.Join,
+  );
+};
+
 export const useJoinedRooms = () => {
   const [joinedRooms, setJoinedRooms] = useState<Room[]>([]);
   const matrixClient = useMatrixClient();
 
-  const visibleRooms = matrixClient.getVisibleRooms();
-
   useEffect(() => {
-    const syncRooms = async () => {
-      const { joined_rooms } = await matrixClient.getJoinedRooms();
-      const filteredRooms = visibleRooms.filter((room) =>
-        joined_rooms.includes(room.roomId),
-      );
-      const sortedRooms = sortRoomsByLastEventTs(filteredRooms);
+    const handleRoom = () => {
+      const visibleRooms = matrixClient.getVisibleRooms();
+      const joinedRooms = filterJoinedRooms(visibleRooms);
+      const sortedRooms = sortRoomsByLastEventTs(joinedRooms);
       setJoinedRooms(sortedRooms);
     };
-    syncRooms();
-  }, [matrixClient, visibleRooms.length]);
+    handleRoom();
+
+    matrixClient.on(ClientEvent.Sync, handleRoom);
+    matrixClient.on(RoomEvent.Timeline, handleRoom);
+
+    return () => {
+      matrixClient.removeListener(ClientEvent.Sync, handleRoom);
+      matrixClient.removeListener(RoomEvent.Timeline, handleRoom);
+    };
+  }, [matrixClient]);
 
   return joinedRooms;
 };
