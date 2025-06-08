@@ -17,10 +17,8 @@ export function useRoomGuestAccess(
   const roomState = getRoomState(room);
 
   useEventEmitter(roomState, RoomStateEvent.Events, () => {
-    if (room) {
-      setRoomGuestAccess(room.getGuestAccess());
-      onSuccess?.(room.getGuestAccess());
-    }
+    setRoomGuestAccess(room.getGuestAccess());
+    onSuccess?.(room.getGuestAccess());
   });
 
   useEffect(() => {

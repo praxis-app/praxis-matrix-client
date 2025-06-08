@@ -15,16 +15,12 @@ export function useRoomJoinRule(
   const roomState = getRoomState(room);
 
   useEventEmitter(roomState, RoomStateEvent.Events, () => {
-    if (room) {
-      setRoomJoinRule(room.getJoinRule());
-      onSuccess?.(room.getJoinRule());
-    }
+    setRoomJoinRule(room.getJoinRule());
+    onSuccess?.(room.getJoinRule());
   });
 
   useEffect(() => {
-    if (room) {
-      setRoomJoinRule(room.getJoinRule());
-    }
+    setRoomJoinRule(room.getJoinRule());
   }, [room]);
 
   return roomJoinRule;
