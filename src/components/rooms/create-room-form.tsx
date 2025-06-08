@@ -20,7 +20,7 @@ import { NavigationPaths } from '@/constants/shared.constants';
 import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { t } from '@/lib/shared.utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { EventType, GuestAccess, Visibility } from 'matrix-js-sdk';
+import { Visibility } from 'matrix-js-sdk';
 import { ReactNode, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -104,12 +104,14 @@ export const CreateRoomForm = ({
         topic: values.topic,
         room_alias_name: values.name.toLowerCase().replace(/ /g, '-'),
         visibility: values.visibility,
-        initial_state: [
-          {
-            type: EventType.RoomGuestAccess,
-            content: { guest_access: GuestAccess.CanJoin },
-          },
-        ],
+
+        // TODO: Uncomment if we decide to enable guest access by default
+        // initial_state: [
+        //   {
+        //     type: EventType.RoomGuestAccess,
+        //     content: { guest_access: GuestAccess.CanJoin },
+        //   },
+        // ],
       });
 
       form.reset();
