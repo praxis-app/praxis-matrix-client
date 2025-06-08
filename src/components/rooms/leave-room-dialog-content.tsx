@@ -29,6 +29,8 @@ export const LeaveRoomDialogContent = ({
     await matrixClient.leave(room.roomId);
     matrixClient.store.removeRoom(room.roomId);
     setShowLeaveRoomDialog(false);
+
+    // TODO: Only navigate if the user is currently on the room's page
     navigate(NavigationPaths.Home);
   };
 
