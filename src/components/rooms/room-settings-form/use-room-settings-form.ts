@@ -2,13 +2,20 @@
 
 import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { useRoomDirectoryVisibility } from '@/hooks/use-room-directory-visibility';
+import { useRoomGuestAccess } from '@/hooks/use-room-guest-access';
 import { useRoomJoinRule } from '@/hooks/use-room-join-rule';
 import { useRoomName } from '@/hooks/use-room-name';
 import { useRoomTopic } from '@/hooks/use-room-topic';
 import { getRoomTopic } from '@/lib/room.utilts';
 import { t } from '@/lib/shared.utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { EventType, JoinRule, Room, Visibility } from 'matrix-js-sdk';
+import {
+  EventType,
+  GuestAccess,
+  JoinRule,
+  Room,
+  Visibility,
+} from 'matrix-js-sdk';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -32,6 +39,9 @@ const roomSettingsFormSchema = zod.object({
   joinRule: zod.enum([JoinRule.Public, JoinRule.Invite], {
     required_error: t('rooms.errors.roomAccess'),
   }),
+  guestAccess: zod.enum([GuestAccess.CanJoin, GuestAccess.Forbidden], {
+    required_error: t('rooms.errors.roomGuestAccess'),
+  }),
 });
 
 export type RoomSettingsFormValues = zod.infer<typeof roomSettingsFormSchema>;
@@ -49,6 +59,7 @@ export const useRoomSettingsForm = (
       name: room.name,
       topic: getRoomTopic(room),
       joinRule: room.getJoinRule() as RoomSettingsFormValues['joinRule'],
+      guestAccess: room.getGuestAccess(),
       visibility: '',
     },
   });
@@ -67,6 +78,11 @@ export const useRoomSettingsForm = (
       if (joinRule === JoinRule.Public || joinRule === JoinRule.Invite) {
         form.setValue('joinRule', joinRule);
       }
+    },
+  });
+  const roomGuestAccess = useRoomGuestAccess(room, {
+    onSuccess: (guestAccess) => {
+      form.setValue('guestAccess', guestAccess);
     },
   });
 
@@ -105,6 +121,14 @@ export const useRoomSettingsForm = (
         await matrixClient.setRoomDirectoryVisibility(
           room.roomId,
           values.visibility,
+        );
+      }
+      if (values.guestAccess !== roomGuestAccess) {
+        await matrixClient.sendStateEvent(
+          room.roomId,
+          EventType.RoomGuestAccess,
+          { guest_access: values.guestAccess },
+          '',
         );
       }
 

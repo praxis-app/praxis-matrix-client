@@ -66,13 +66,15 @@
       "name": "Room name",
       "settings": "Room Settings",
       "topic": "Room topic",
-      "visibility": "Room visibility"
+      "visibility": "Room visibility",
+      "guestAccess": "Guest access"
     },
     "placeholders": {
       "name": "Enter room name",
       "topic": "Enter room topic (optional)",
       "visibility": "Select room visibility",
-      "access": "Select room access"
+      "access": "Select room access",
+      "guestAccess": "Select guest access"
     },
     "headers": {
       "leaveRoom": "Leave room"
@@ -89,6 +91,7 @@
       "public": "Public"
     },
     "descriptions": {
+      "guestAccess": "People with supported clients will be able to join the room without having a registered account.",
       "roomAccess": "Controls who can join. Public allows anyone to join, while private requires members to be invited.",
       "roomDiscoverability": "Determines whether this room appears in the public room directory.",
       "roomName": "This is the name that will be displayed for your chat room.",
@@ -112,6 +115,7 @@
     },
     "errors": {
       "roomAccess": "Please select room access.",
+      "roomGuestAccess": "Please select room guest access.",
       "roomNameMax": "Room name must not exceed 50 characters.",
       "roomNameMin": "Room name must be at least 3 characters.",
       "roomTopicMax": "Description must not exceed 500 characters.",

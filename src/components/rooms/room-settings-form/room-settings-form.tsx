@@ -1,6 +1,6 @@
 // TODO: Add support for Knock and Restricted join rule options
 
-import { JoinRule, Visibility } from 'matrix-js-sdk';
+import { GuestAccess, JoinRule, Visibility } from 'matrix-js-sdk';
 import { UseFormReturn } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Button } from '../../ui/button';
@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../../ui/select';
+import { Switch } from '../../ui/switch';
 import { Textarea } from '../../ui/textarea';
 import { RoomSettingsFormValues } from './use-room-settings-form';
 
@@ -143,6 +144,33 @@ export const RoomSettingsForm = ({
                 {t('rooms.descriptions.roomDiscoverability')}
               </FormDescription>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="guestAccess"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between gap-6">
+              <div className="space-y-0.5">
+                <FormLabel className="pb-0.5">
+                  {t('rooms.labels.guestAccess')}
+                </FormLabel>
+                <FormDescription>
+                  {t('rooms.descriptions.guestAccess')}
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={field.value === GuestAccess.CanJoin}
+                  onCheckedChange={(checked) => {
+                    field.onChange(
+                      checked ? GuestAccess.CanJoin : GuestAccess.Forbidden,
+                    );
+                  }}
+                />
+              </FormControl>
             </FormItem>
           )}
         />
