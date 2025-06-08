@@ -52,7 +52,7 @@ const RoomSettingsSheet = ({ trigger, room }: Props) => {
             </SheetTitle>
             <VisuallyHidden>
               <SheetDescription>
-                {t('rooms.descriptions.roomSettings')}
+                {t('rooms.descriptions.settings')}
               </SheetDescription>
             </VisuallyHidden>
           </SheetHeader>

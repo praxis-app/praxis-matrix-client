@@ -93,10 +93,10 @@
     "descriptions": {
       "guestAccess": "People with supported clients will be able to join the room without having a registered account.",
       "roomAccess": "Controls who can join. Public allows anyone to join, while private requires members to be invited.",
-      "roomDiscoverability": "Determines whether this room appears in the public room directory.",
+      "discoverability": "Determines whether this room appears in the public room directory.",
       "roomName": "This is the name that will be displayed for your chat room.",
-      "roomSettings": "Manage the settings for your chat room.",
-      "roomVisibility": "Public rooms can be found in the room directory. Private rooms require an invitation."
+      "settings": "Manage the settings for your chat room.",
+      "visibility": "Public rooms can be found in the room directory. Private rooms require an invitation."
     },
     "prompts": {
       "creatingRoom": "Creating...",

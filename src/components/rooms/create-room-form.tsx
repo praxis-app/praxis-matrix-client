@@ -192,7 +192,7 @@ export const CreateRoomForm = ({
                 </SelectContent>
               </Select>
               <FormDescription>
-                {t('rooms.descriptions.roomVisibility')}
+                {t('rooms.descriptions.visibility')}
               </FormDescription>
               <FormMessage />
             </FormItem>

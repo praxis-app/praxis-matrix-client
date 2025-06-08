@@ -65,7 +65,7 @@ export const RoomSettings = () => {
               {t('rooms.labels.settings')}
             </CardTitle>
             <CardDescription>
-              {t('rooms.descriptions.roomSettings')}
+              {t('rooms.descriptions.settings')}
             </CardDescription>
           </CardHeader>
 

@@ -141,7 +141,7 @@ export const RoomSettingsForm = ({
                 </SelectContent>
               </Select>
               <FormDescription>
-                {t('rooms.descriptions.roomDiscoverability')}
+                {t('rooms.descriptions.discoverability')}
               </FormDescription>
               <FormMessage />
             </FormItem>
