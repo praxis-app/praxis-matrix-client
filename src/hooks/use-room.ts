@@ -2,8 +2,8 @@ import { ClientEvent, Room } from 'matrix-js-sdk';
 import { useEffect, useState } from 'react';
 import { useMatrixClient } from './use-matrix-client';
 
-// 30 seconds timeout
-const TIMEOUT = 30000;
+// 120 seconds timeout
+const TIMEOUT = 120 * 1000;
 
 export const useRoom = (roomId?: string) => {
   const [room, setRoom] = useState<Room | null>(null);
