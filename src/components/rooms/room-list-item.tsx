@@ -69,7 +69,7 @@ const RoomListItem = ({ activeRoomId, room }: Props) => {
         </ContextMenuTrigger>
 
         <ContextMenuContent>
-          {showSettingsBtn && (
+          {!isGuest && (
             <ContextMenuItem onClick={() => navigate(settingsPath)}>
               {t('rooms.labels.settings')}
             </ContextMenuItem>
