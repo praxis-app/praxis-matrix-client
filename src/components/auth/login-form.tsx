@@ -12,11 +12,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { NavigationPaths } from '@/constants/shared.constants';
 import { useAppStore } from '@/store/app.store';
-import * as sdk from 'matrix-js-sdk';
-import { SyncState } from 'matrix-js-sdk';
-import { ClientEvent } from 'matrix-js-sdk';
-import type React from 'react';
-import { useState } from 'react';
+import { AuthType, ClientEvent, createClient, SyncState } from 'matrix-js-sdk';
+import { FormEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LuLoaderCircle } from 'react-icons/lu';
 import { useNavigate } from 'react-router-dom';
@@ -32,13 +29,13 @@ export const LoginForm = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const onSubmit = async (event: React.FormEvent) => {
+  const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
     setIsLoading(true);
     setError('');
 
     try {
-      const baseClient = sdk.createClient({
+      const baseClient = createClient({
         baseUrl: import.meta.env.VITE_SERVER_BASE_URL,
       });
 
@@ -46,14 +43,14 @@ export const LoginForm = () => {
         await baseClient.loginRequest({
           user: email,
           password: password,
-          type: 'm.login.password',
+          type: AuthType.Password,
         });
 
       localStorage.setItem('user_id', user_id);
       localStorage.setItem('access_token', access_token);
       localStorage.setItem('device_id', device_id);
 
-      const authenticatedClient = sdk.createClient({
+      const authenticatedClient = createClient({
         baseUrl: import.meta.env.VITE_SERVER_BASE_URL,
         accessToken: access_token,
         userId: user_id,
