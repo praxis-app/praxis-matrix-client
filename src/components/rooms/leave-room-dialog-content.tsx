@@ -1,8 +1,9 @@
 import { NavigationPaths } from '@/constants/shared.constants';
+import { useJoinedRooms } from '@/hooks/use-joined-rooms';
 import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { Room } from 'matrix-js-sdk';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '../ui/button';
 import {
   DialogContent,
@@ -25,13 +26,19 @@ export const LeaveRoomDialogContent = ({
   const matrixClient = useMatrixClient();
   const navigate = useNavigate();
 
+  const { roomId } = useParams();
+  const rooms = useJoinedRooms();
+
   const handleLeaveRoom = async () => {
     await matrixClient.leave(room.roomId);
     matrixClient.store.removeRoom(room.roomId);
     setShowLeaveRoomDialog(false);
 
-    // TODO: Only navigate if the user is currently on the room's page
-    navigate(NavigationPaths.Home);
+    // Only navigate if the user is currently on the room's page
+    const activeRoomId = roomId ?? rooms[0]?.roomId;
+    if (activeRoomId === room.roomId) {
+      navigate(NavigationPaths.Home);
+    }
   };
 
   return (
