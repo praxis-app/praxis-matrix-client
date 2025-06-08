@@ -14,7 +14,7 @@ export const ThemeProvider = ({
   storageKey = 'praxis-theme',
   ...props
 }: ThemeProviderProps) => {
-  const [theme, setTheme] = useState<Theme>(
+  const [theme, setTheme] = useState(
     () => (localStorage.getItem(storageKey) as Theme) || defaultTheme,
   );
 
