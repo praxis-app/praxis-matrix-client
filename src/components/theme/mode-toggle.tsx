@@ -1,3 +1,9 @@
+/**
+ * TODO: Leverage this component to toggle between light and dark mode. Theme mode is
+ * currently just taken from the system preference. We should add a way to toggle
+ * between light and dark mode + explicitly select system.
+ */
+
 import {
   DropdownMenu,
   DropdownMenuContent,
