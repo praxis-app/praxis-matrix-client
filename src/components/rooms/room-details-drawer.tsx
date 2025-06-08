@@ -1,5 +1,6 @@
 import { useIsMobile } from '@/hooks/use-mobile';
-import { EventTimeline, Room } from 'matrix-js-sdk';
+import { useRoomTopic } from '@/hooks/use-room-topic';
+import { Room } from 'matrix-js-sdk';
 import { ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BiDoorOpen } from 'react-icons/bi';
@@ -25,13 +26,10 @@ interface Props {
 
 export const RoomDetailsDrawer = ({ room, trigger }: Props) => {
   const [showLeaveRoomDialog, setShowLeaveRoomDialog] = useState(false);
+  const topic = useRoomTopic(room);
 
   const { t } = useTranslation();
   const isMobile = useIsMobile();
-
-  const roomState = room.getLiveTimeline().getState(EventTimeline.FORWARDS);
-  const topicEvent = roomState?.getStateEvents('m.room.topic', '');
-  const topic = topicEvent ? topicEvent.getContent().topic : null;
 
   return (
     <Drawer>
