@@ -1,7 +1,5 @@
-import { getRoomState } from '@/lib/room.utilts';
-import { GuestAccess, Room, RoomStateEvent } from 'matrix-js-sdk';
-import { useEffect, useState } from 'react';
-import { useEventEmitter } from './use-event-emitter';
+import { Room, GuestAccess } from 'matrix-js-sdk';
+import { useRoomState } from './use-room-state';
 
 interface UseRoomGuestAccessOptions {
   onSuccess?: (guestAccess: GuestAccess) => void;
@@ -11,21 +9,8 @@ export function useRoomGuestAccess(
   room: Room,
   { onSuccess }: UseRoomGuestAccessOptions = {},
 ) {
-  const [roomGuestAccess, setRoomGuestAccess] = useState(
-    room?.getGuestAccess(),
-  );
-  const roomState = getRoomState(room);
-
-  useEventEmitter(roomState, RoomStateEvent.Events, () => {
-    setRoomGuestAccess(room.getGuestAccess());
-    onSuccess?.(room.getGuestAccess());
+  return useRoomState(room, {
+    getValue: (room) => room.getGuestAccess(),
+    onUpdate: onSuccess,
   });
-
-  useEffect(() => {
-    if (room) {
-      setRoomGuestAccess(room.getGuestAccess());
-    }
-  }, [room]);
-
-  return roomGuestAccess;
 }

@@ -1,7 +1,5 @@
-import { getRoomState } from '@/lib/room.utilts';
-import { JoinRule, Room, RoomStateEvent } from 'matrix-js-sdk';
-import { useEffect, useState } from 'react';
-import { useEventEmitter } from './use-event-emitter';
+import { Room, JoinRule } from 'matrix-js-sdk';
+import { useRoomState } from './use-room-state';
 
 interface UseRoomJoinRuleOptions {
   onSuccess?: (joinRule: JoinRule) => void;
@@ -11,17 +9,8 @@ export function useRoomJoinRule(
   room: Room,
   { onSuccess }: UseRoomJoinRuleOptions = {},
 ) {
-  const [roomJoinRule, setRoomJoinRule] = useState(room?.getJoinRule());
-  const roomState = getRoomState(room);
-
-  useEventEmitter(roomState, RoomStateEvent.Events, () => {
-    setRoomJoinRule(room.getJoinRule());
-    onSuccess?.(room.getJoinRule());
+  return useRoomState(room, {
+    getValue: (room) => room.getJoinRule(),
+    onUpdate: onSuccess,
   });
-
-  useEffect(() => {
-    setRoomJoinRule(room.getJoinRule());
-  }, [room]);
-
-  return roomJoinRule;
 }
