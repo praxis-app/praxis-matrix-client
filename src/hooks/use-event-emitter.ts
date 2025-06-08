@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 export function useEventEmitter(
   emitter: EventEmitter | undefined,
   eventName: string | symbol,
-  handler: (...args: any[]) => void,
+  handler: (...args: unknown[]) => void,
 ) {
   // Create a ref that stores handler
   const savedHandler = useRef(handler);
@@ -20,7 +20,7 @@ export function useEventEmitter(
     }
 
     // Create event listener that calls handler function stored in ref
-    const eventListener = (...args: any[]) => savedHandler.current(...args);
+    const eventListener = (...args: unknown[]) => savedHandler.current(...args);
 
     emitter.on(eventName, eventListener);
 

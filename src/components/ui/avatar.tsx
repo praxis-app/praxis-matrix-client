@@ -65,7 +65,7 @@ export interface AvatarBadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof avatarBadgeVariants> {
   children?:
-    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+    | React.ReactElement<unknown, string | React.JSXElementConstructor<unknown>>
     | null
     | never[];
 }
