@@ -1,3 +1,5 @@
+// Ref: https://ui.shadcn.com/docs/components/separator
+
 import { cn } from '@/lib/shared.utils';
 import * as SeparatorPrimitive from '@radix-ui/react-separator';
 import * as React from 'react';

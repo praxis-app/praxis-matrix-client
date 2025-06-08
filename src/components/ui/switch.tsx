@@ -1,3 +1,5 @@
+// Ref: https://ui.shadcn.com/docs/components/switch
+
 import { cn } from '@/lib/shared.utils';
 import * as SwitchPrimitive from '@radix-ui/react-switch';
 import { ComponentProps } from 'react';

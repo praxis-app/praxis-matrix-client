@@ -1,3 +1,5 @@
+// Ref: https://ui.shadcn.com/docs/components/checkbox
+
 import { cn } from '@/lib/shared.utils';
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import * as React from 'react';

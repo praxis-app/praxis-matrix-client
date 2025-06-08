@@ -1,3 +1,5 @@
+// Ref: https://ui.shadcn.com/docs/components/skeleton
+
 import { cn } from '@/lib/shared.utils';
 
 function Skeleton({
