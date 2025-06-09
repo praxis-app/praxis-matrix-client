@@ -2,9 +2,8 @@
 
 import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { useRoomDirectoryVisibility } from '@/hooks/use-room-directory-visibility';
-import { useRoomGuestAccess } from '@/hooks/use-room-guest-access';
-import { useRoomJoinRule } from '@/hooks/use-room-join-rule';
 import { useRoomName } from '@/hooks/use-room-name';
+import { useRoomState } from '@/hooks/use-room-state';
 import { useRoomTopic } from '@/hooks/use-room-topic';
 import { getRoomTopic } from '@/lib/room.utilts';
 import { t } from '@/lib/shared.utils';
@@ -58,7 +57,7 @@ export const useRoomSettingsForm = (
     defaultValues: {
       name: room.name,
       topic: getRoomTopic(room),
-      joinRule: room.getJoinRule() as RoomSettingsFormValues['joinRule'],
+      joinRule: room.getJoinRule() as JoinRule.Public | JoinRule.Invite,
       guestAccess: room.getGuestAccess(),
       visibility: '',
     },
@@ -73,17 +72,13 @@ export const useRoomSettingsForm = (
   const roomVisibility = useRoomDirectoryVisibility(room, {
     onSuccess: (visibility) => form.setValue('visibility', visibility),
   });
-  const roomJoinRule = useRoomJoinRule(room, {
-    onSuccess: (joinRule) => {
-      if (joinRule === JoinRule.Public || joinRule === JoinRule.Invite) {
-        form.setValue('joinRule', joinRule);
-      }
-    },
+  const roomJoinRule = useRoomState(room, {
+    getValue: (room) => room.getJoinRule() as JoinRule.Public | JoinRule.Invite,
+    onUpdate: (joinRule) => form.setValue('joinRule', joinRule),
   });
-  const roomGuestAccess = useRoomGuestAccess(room, {
-    onSuccess: (guestAccess) => {
-      form.setValue('guestAccess', guestAccess);
-    },
+  const roomGuestAccess = useRoomState(room, {
+    getValue: (room) => room.getGuestAccess(),
+    onUpdate: (guestAccess) => form.setValue('guestAccess', guestAccess),
   });
 
   const hasUnsupportedJoinRule =
