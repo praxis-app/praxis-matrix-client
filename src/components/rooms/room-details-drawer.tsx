@@ -1,5 +1,6 @@
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useRoomTopic } from '@/hooks/use-room-topic';
+import { useRoomState } from '@/hooks/use-room-state';
+import { getRoomTopic } from '@/lib/room.utilts';
 import { Room } from 'matrix-js-sdk';
 import { ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -26,7 +27,7 @@ interface Props {
 
 export const RoomDetailsDrawer = ({ room, trigger }: Props) => {
   const [showLeaveRoomDialog, setShowLeaveRoomDialog] = useState(false);
-  const topic = useRoomTopic(room);
+  const topic = useRoomState(room, { getValue: getRoomTopic });
 
   const { t } = useTranslation();
   const isMobile = useIsMobile();
