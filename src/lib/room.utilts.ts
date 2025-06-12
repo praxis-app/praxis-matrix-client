@@ -2,7 +2,7 @@ import { EventTimeline, EventType, Room } from 'matrix-js-sdk';
 
 export const getRoomState = (room?: Room) => {
   if (!room) {
-    return undefined;
+    return;
   }
   const timeline = room.getLiveTimeline();
   return timeline.getState(EventTimeline.FORWARDS);
