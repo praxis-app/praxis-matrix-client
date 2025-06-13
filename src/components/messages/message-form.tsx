@@ -101,11 +101,7 @@ export const MessageForm = ({ roomId }: Props) => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex w-full items-center gap-2 overflow-y-auto border-t p-2 pt-2.5 pb-4"
       >
-        <Button
-          type="submit"
-          className="bg-input/30 size-11 rounded-full"
-          disabled={form.formState.isSubmitting}
-        >
+        <Button className="bg-input/30 size-11 rounded-full">
           <MdAdd className="text-muted-foreground size-7" />
         </Button>
 
@@ -126,7 +122,6 @@ export const MessageForm = ({ roomId }: Props) => {
           />
 
           <Button
-            type="submit"
             size="icon"
             className="rounded-full"
             variant="ghost"
@@ -139,7 +134,7 @@ export const MessageForm = ({ roomId }: Props) => {
         <Button
           type="submit"
           className="size-10 rounded-full"
-          disabled={form.formState.isSubmitting}
+          disabled={form.formState.isSubmitting || !form.formState.isValid}
         >
           <BiSolidSend className="ml-0.5 size-5" />
         </Button>
