@@ -24,6 +24,7 @@ const formSchema = zod.object({
     .max(MESSAGE_BODY_MAX, {
       message: t('messages.errors.longBody'),
     })
+    // TODO: Remove nonempty check once images are supported
     .nonempty(),
 });
 
