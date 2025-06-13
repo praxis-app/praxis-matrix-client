@@ -107,7 +107,7 @@ export const MessageForm = ({ roomId }: Props) => {
         className="flex w-full items-center gap-2 overflow-y-auto border-t p-2 pt-2.5 pb-4"
       >
         <Button
-          className="bg-input/30 size-11 rounded-full"
+          className="bg-input/30 hover:bg-input/40 size-11 rounded-full"
           onClick={() => toast(t('prompts.inDev'))}
         >
           <MdAdd className="text-muted-foreground size-7" />
@@ -150,7 +150,7 @@ export const MessageForm = ({ roomId }: Props) => {
           </Button>
         ) : (
           <Button
-            className="bg-input/30 size-11 rounded-full"
+            className="bg-input/30 hover:bg-input/40 size-11 rounded-full"
             onClick={() => toast(t('prompts.inDev'))}
           >
             <TbMicrophoneFilled className="text-muted-foreground size-5.5" />
