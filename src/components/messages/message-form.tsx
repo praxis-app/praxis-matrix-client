@@ -19,9 +19,12 @@ import { MdAdd, MdImage } from 'react-icons/md';
 const MESSAGE_BODY_MAX = 6000;
 
 const formSchema = zod.object({
-  body: zod.string().max(MESSAGE_BODY_MAX, {
-    message: t('messages.errors.longBody'),
-  }),
+  body: zod
+    .string()
+    .max(MESSAGE_BODY_MAX, {
+      message: t('messages.errors.longBody'),
+    })
+    .nonempty(),
 });
 
 interface Props {
@@ -131,13 +134,15 @@ export const MessageForm = ({ roomId }: Props) => {
           </Button>
         </div>
 
-        <Button
-          type="submit"
-          className="size-10 rounded-full"
-          disabled={form.formState.isSubmitting || !form.formState.isValid}
-        >
-          <BiSolidSend className="ml-0.5 size-5" />
-        </Button>
+        {form.formState.isValid && (
+          <Button
+            type="submit"
+            className="size-10 rounded-full"
+            disabled={form.formState.isSubmitting}
+          >
+            <BiSolidSend className="ml-0.5 size-5" />
+          </Button>
+        )}
       </form>
     </Form>
   );
