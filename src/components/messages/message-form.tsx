@@ -9,12 +9,13 @@ import { KeyboardEventHandler, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { BiSolidSend } from 'react-icons/bi';
+import { MdAdd, MdImage } from 'react-icons/md';
+import { TbMicrophoneFilled } from 'react-icons/tb';
 import { toast } from 'sonner';
 import * as zod from 'zod';
 import { Button } from '../ui/button';
 import { Form, FormField } from '../ui/form';
 import { Textarea } from '../ui/textarea';
-import { MdAdd, MdImage } from 'react-icons/md';
 
 const MESSAGE_BODY_MAX = 6000;
 
@@ -105,7 +106,10 @@ export const MessageForm = ({ roomId }: Props) => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex w-full items-center gap-2 overflow-y-auto border-t p-2 pt-2.5 pb-4"
       >
-        <Button className="bg-input/30 size-11 rounded-full">
+        <Button
+          className="bg-input/30 size-11 rounded-full"
+          onClick={() => toast(t('prompts.inDev'))}
+        >
           <MdAdd className="text-muted-foreground size-7" />
         </Button>
 
@@ -130,18 +134,26 @@ export const MessageForm = ({ roomId }: Props) => {
             className="rounded-full"
             variant="ghost"
             disabled={form.formState.isSubmitting}
+            onClick={() => toast(t('prompts.inDev'))}
           >
             <MdImage className="text-muted-foreground size-6" />
           </Button>
         </div>
 
-        {form.formState.isValid && (
+        {form.formState.isValid ? (
           <Button
             type="submit"
-            className="size-10 rounded-full"
+            className="mx-0.5 size-10 rounded-full"
             disabled={form.formState.isSubmitting}
           >
             <BiSolidSend className="ml-0.5 size-5" />
+          </Button>
+        ) : (
+          <Button
+            className="bg-input/30 size-11 rounded-full"
+            onClick={() => toast(t('prompts.inDev'))}
+          >
+            <TbMicrophoneFilled className="text-muted-foreground size-5.5" />
           </Button>
         )}
       </form>
