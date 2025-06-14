@@ -58,7 +58,7 @@ export const TopNav = ({ header, onBackClick, backBtnIcon }: Props) => {
   );
 
   return (
-    <header className="bg-card flex h-[55px] items-center justify-between border-b border-[--color-border] px-2">
+    <header className="flex h-[55px] items-center justify-between border-b border-[--color-border] px-2">
       <div className="mr-1 flex flex-1 items-center gap-2.5">
         {isMobile ? (
           <NavSheet

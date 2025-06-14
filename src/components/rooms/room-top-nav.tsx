@@ -22,7 +22,7 @@ export const RoomTopNav = ({ room }: Props) => {
   const isMobile = useIsMobile();
 
   return (
-    <header className="bg-card flex h-[55px] items-center justify-between border-b border-[--color-border] px-2 md:pl-6">
+    <header className="flex h-[55px] items-center justify-between border-b border-[--color-border] px-2 md:pl-6">
       <div className="mr-1 flex flex-1 items-center gap-2.5">
         {isMobile && (
           <NavSheet
