@@ -1,5 +1,5 @@
 import { useAppStore } from '@/store/app.store';
-import { indexedDBWorkerFactory } from '@/workers/indexed-db-worker.factory';
+import { indexedDBWorkerFactory } from '@/store/workers/indexed-db-worker.factory';
 import {
   ClientEvent,
   createClient,
