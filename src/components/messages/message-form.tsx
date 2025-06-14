@@ -141,7 +141,7 @@ export const MessageForm = ({ roomId }: Props) => {
               <Textarea
                 {...field}
                 placeholder={t('messages.placeholders.sendMessage')}
-                className="min-h-12 resize-none border-none bg-transparent py-3 shadow-none focus-visible:border-none focus-visible:ring-0 dark:bg-transparent"
+                className="min-h-12 resize-none border-none bg-transparent py-3 shadow-none focus-visible:border-none focus-visible:ring-0 md:py-3.5 dark:bg-transparent"
                 onKeyDown={handleInputKeyDown}
                 ref={inputRef}
                 rows={1}
