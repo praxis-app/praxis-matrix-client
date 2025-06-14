@@ -2,10 +2,10 @@
 
 import { KeyCodes } from '@/constants/shared.constants';
 import { useMatrixClient } from '@/hooks/use-matrix-client';
-import { t } from '@/lib/shared.utils';
+import { cn, t } from '@/lib/shared.utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { MsgType } from 'matrix-js-sdk';
-import { KeyboardEventHandler, useEffect, useRef } from 'react';
+import { KeyboardEventHandler, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { BiSolidSend } from 'react-icons/bi';
@@ -40,6 +40,8 @@ interface Props {
 }
 
 export const MessageForm = ({ roomId }: Props) => {
+  const [showMenu, setShowMenu] = useState(false);
+
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const matrixClient = useMatrixClient();
   const { t } = useTranslation();
@@ -112,9 +114,14 @@ export const MessageForm = ({ roomId }: Props) => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex w-full items-center gap-2 overflow-y-auto border-t p-2 pt-2.5 pb-4"
       >
-        <DropdownMenu>
+        <DropdownMenu open={showMenu} onOpenChange={setShowMenu}>
           <DropdownMenuTrigger className="bg-input/30 hover:bg-input/40 inline-flex size-11 cursor-pointer items-center justify-center rounded-full p-2 px-3 focus:outline-none [&_svg]:shrink-0">
-            <MdAdd className="text-muted-foreground size-7" />
+            <MdAdd
+              className={cn(
+                'text-muted-foreground size-7 transition-transform duration-200',
+                showMenu && 'rotate-45',
+              )}
+            />
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className="w-52"
