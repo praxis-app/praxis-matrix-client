@@ -9,11 +9,17 @@ import { KeyboardEventHandler, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { BiSolidSend } from 'react-icons/bi';
-import { MdAdd, MdImage } from 'react-icons/md';
+import { MdAdd, MdImage, MdPoll } from 'react-icons/md';
 import { TbMicrophoneFilled } from 'react-icons/tb';
 import { toast } from 'sonner';
 import * as zod from 'zod';
 import { Button } from '../ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
 import { Form, FormField } from '../ui/form';
 import { Textarea } from '../ui/textarea';
 
@@ -106,12 +112,26 @@ export const MessageForm = ({ roomId }: Props) => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex w-full items-center gap-2 overflow-y-auto border-t p-2 pt-2.5 pb-4"
       >
-        <Button
-          className="bg-input/30 hover:bg-input/40 size-11 rounded-full"
-          onClick={() => toast(t('prompts.inDev'))}
-        >
-          <MdAdd className="text-muted-foreground size-7" />
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger className="bg-input/30 hover:bg-input/40 inline-flex size-11 cursor-pointer items-center justify-center rounded-full p-2 px-3 focus:outline-none [&_svg]:shrink-0">
+            <MdAdd className="text-muted-foreground size-7" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            className="w-52"
+            align="start"
+            alignOffset={-1}
+            side="top"
+            sideOffset={20}
+          >
+            <DropdownMenuItem
+              className="text-md"
+              onClick={() => toast(t('prompts.inDev'))}
+            >
+              <MdPoll className="text-foreground size-5" />
+              {t('proposals.actions.create')}
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
 
         <div className="bg-input/30 flex w-full items-center rounded-3xl px-2">
           <FormField
