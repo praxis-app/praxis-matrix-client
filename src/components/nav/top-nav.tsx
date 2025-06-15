@@ -3,7 +3,7 @@ import {
   KeyCodes,
   NavigationPaths,
 } from '@/constants/shared.constants';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsDesktop } from '@/hooks/use-is-desktop';
 import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LuArrowLeft } from 'react-icons/lu';
@@ -23,7 +23,7 @@ export const TopNav = ({ header, onBackClick, backBtnIcon }: Props) => {
   const [navSheetOpen, setNavSheetOpen] = useState(false);
 
   const { t } = useTranslation();
-  const isMobile = useIsMobile();
+  const isDesktop = useIsDesktop();
   const navigate = useNavigate();
 
   const handleBackClick = useCallback(() => {
@@ -31,13 +31,13 @@ export const TopNav = ({ header, onBackClick, backBtnIcon }: Props) => {
       onBackClick();
       return;
     }
-    if (!isMobile) {
+    if (isDesktop) {
       navigate(NavigationPaths.Home);
       return;
     }
     // Show nav drawer as default behavior
     setNavSheetOpen(true);
-  }, [isMobile, navigate, onBackClick, setNavSheetOpen]);
+  }, [isDesktop, navigate, onBackClick, setNavSheetOpen]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -58,16 +58,16 @@ export const TopNav = ({ header, onBackClick, backBtnIcon }: Props) => {
   );
 
   return (
-    <header className="bg-card flex h-[55px] items-center justify-between border-b border-[--color-border] px-2">
+    <header className="flex h-[55px] items-center justify-between border-b border-[--color-border] px-2">
       <div className="mr-1 flex flex-1 items-center gap-2.5">
-        {isMobile ? (
+        {isDesktop ? (
+          renderBackBtn()
+        ) : (
           <NavSheet
             trigger={renderBackBtn()}
             setOpen={setNavSheetOpen}
             open={navSheetOpen}
           />
-        ) : (
-          renderBackBtn()
         )}
 
         <div className="flex flex-1 items-center text-[1.05rem] font-medium select-none">

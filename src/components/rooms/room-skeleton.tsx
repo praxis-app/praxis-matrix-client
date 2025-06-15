@@ -1,4 +1,4 @@
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsDesktop } from '@/hooks/use-is-desktop';
 import { Skeleton } from '../ui/skeleton';
 
 export const MessageSkeleton = () => {
@@ -35,11 +35,11 @@ export const RoomFeedSkeleton = () => (
 );
 
 export const RoomSkeleton = () => {
-  const isMobile = useIsMobile();
+  const isDesktop = useIsDesktop();
 
   return (
     <div className="fixed top-0 right-0 bottom-0 left-0 flex gap-2.5 p-2.5">
-      {!isMobile && <Skeleton className="h-full w-48" />}
+      {isDesktop && <Skeleton className="h-full w-48" />}
 
       <div className="flex flex-1 flex-col justify-between gap-4">
         <Skeleton className="h-12 w-full" />

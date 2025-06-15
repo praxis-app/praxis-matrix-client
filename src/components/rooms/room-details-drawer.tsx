@@ -1,4 +1,4 @@
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsDesktop } from '@/hooks/use-is-desktop';
 import { useRoomState } from '@/hooks/use-room-state';
 import { getRoomTopic } from '@/lib/room.utilts';
 import { Room } from 'matrix-js-sdk';
@@ -30,11 +30,11 @@ export const RoomDetailsDrawer = ({ room, trigger }: Props) => {
   const topic = useRoomState(room, { getValue: getRoomTopic });
 
   const { t } = useTranslation();
-  const isMobile = useIsMobile();
+  const isDesktop = useIsDesktop();
 
   return (
     <Drawer>
-      {isMobile ? <DrawerTrigger asChild>{trigger}</DrawerTrigger> : trigger}
+      {isDesktop ? trigger : <DrawerTrigger asChild>{trigger}</DrawerTrigger>}
 
       <DrawerContent className="flex min-h-[calc(100vh-55px)] flex-col items-start rounded-t-2xl border-0">
         <DrawerHeader className="w-full pt-5 pb-6">

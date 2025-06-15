@@ -59,6 +59,12 @@
     }
   },
 
+  "proposals": {
+    "actions": {
+      "create": "Create Proposal"
+    }
+  },
+
   "rooms": {
     "labels": {
       "access": "Access",

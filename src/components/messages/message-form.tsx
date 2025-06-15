@@ -2,25 +2,37 @@
 
 import { KeyCodes } from '@/constants/shared.constants';
 import { useMatrixClient } from '@/hooks/use-matrix-client';
-import { t } from '@/lib/shared.utils';
+import { cn, t } from '@/lib/shared.utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { MsgType } from 'matrix-js-sdk';
-import { KeyboardEventHandler, useEffect, useRef } from 'react';
+import { KeyboardEventHandler, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { MdImage, MdSend } from 'react-icons/md';
+import { BiSolidSend } from 'react-icons/bi';
+import { MdAdd, MdImage, MdPoll } from 'react-icons/md';
+import { TbMicrophoneFilled } from 'react-icons/tb';
 import { toast } from 'sonner';
 import * as zod from 'zod';
 import { Button } from '../ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
 import { Form, FormField } from '../ui/form';
 import { Textarea } from '../ui/textarea';
 
 const MESSAGE_BODY_MAX = 6000;
 
 const formSchema = zod.object({
-  body: zod.string().max(MESSAGE_BODY_MAX, {
-    message: t('messages.errors.longBody'),
-  }),
+  body: zod
+    .string()
+    .max(MESSAGE_BODY_MAX, {
+      message: t('messages.errors.longBody'),
+    })
+    // TODO: Remove nonempty check once images are supported
+    .nonempty(),
 });
 
 interface Props {
@@ -28,6 +40,8 @@ interface Props {
 }
 
 export const MessageForm = ({ roomId }: Props) => {
+  const [showMenu, setShowMenu] = useState(false);
+
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const matrixClient = useMatrixClient();
   const { t } = useTranslation();
@@ -98,9 +112,35 @@ export const MessageForm = ({ roomId }: Props) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="bg-card w-full overflow-y-auto border-t p-2 pb-4"
+        className="flex w-full items-center gap-2 overflow-y-auto border-t p-2 pt-2.5 pb-4"
       >
-        <div className="bg-input/30 rounded-2xl p-1 transition-colors duration-200">
+        <DropdownMenu open={showMenu} onOpenChange={setShowMenu}>
+          <DropdownMenuTrigger className="bg-input/30 hover:bg-input/40 inline-flex size-11 cursor-pointer items-center justify-center rounded-full p-2 px-3 focus:outline-none [&_svg]:shrink-0">
+            <MdAdd
+              className={cn(
+                'text-muted-foreground size-7 transition-transform duration-200',
+                showMenu && 'rotate-45',
+              )}
+            />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            className="w-52"
+            align="start"
+            alignOffset={-1}
+            side="top"
+            sideOffset={20}
+          >
+            <DropdownMenuItem
+              className="text-md"
+              onClick={() => toast(t('prompts.inDev'))}
+            >
+              <MdPoll className="text-foreground size-5" />
+              {t('proposals.actions.create')}
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        <div className="bg-input/30 flex w-full items-center rounded-3xl px-2">
           <FormField
             control={form.control}
             name="body"
@@ -108,7 +148,7 @@ export const MessageForm = ({ roomId }: Props) => {
               <Textarea
                 {...field}
                 placeholder={t('messages.placeholders.sendMessage')}
-                className="min-h-12 resize-none border-none bg-transparent shadow-none focus-visible:border-none focus-visible:ring-0 dark:bg-transparent"
+                className="min-h-12 resize-none border-none bg-transparent py-3 shadow-none focus-visible:border-none focus-visible:ring-0 md:py-3.5 dark:bg-transparent"
                 onKeyDown={handleInputKeyDown}
                 ref={inputRef}
                 rows={1}
@@ -116,26 +156,33 @@ export const MessageForm = ({ roomId }: Props) => {
             )}
           />
 
-          <div className="flex justify-between">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="rounded-full"
-              disabled={form.formState.isSubmitting}
-            >
-              <MdImage className="text-muted-foreground size-6" />
-            </Button>
-            <Button
-              type="submit"
-              variant="ghost"
-              size="icon"
-              className="rounded-full"
-              disabled={form.formState.isSubmitting}
-            >
-              <MdSend className="text-muted-foreground size-5" />
-            </Button>
-          </div>
+          <Button
+            size="icon"
+            className="rounded-full"
+            variant="ghost"
+            disabled={form.formState.isSubmitting}
+            onClick={() => toast(t('prompts.inDev'))}
+          >
+            <MdImage className="text-muted-foreground size-6" />
+          </Button>
         </div>
+
+        {form.formState.isValid ? (
+          <Button
+            type="submit"
+            className="mx-0.5 size-10 rounded-full"
+            disabled={form.formState.isSubmitting}
+          >
+            <BiSolidSend className="ml-0.5 size-5" />
+          </Button>
+        ) : (
+          <Button
+            className="bg-input/30 hover:bg-input/40 size-11 rounded-full"
+            onClick={() => toast(t('prompts.inDev'))}
+          >
+            <TbMicrophoneFilled className="text-muted-foreground size-5.5" />
+          </Button>
+        )}
       </form>
     </Form>
   );
