@@ -2,7 +2,7 @@
 
 A chat-based collaborative decision-making (CDM) app that seamlessly blends informal discussion with structured democratic processes. Built on the Matrix protocol for decentralized, censorship-resistant organizing, this tool would allow groups to transition smoothly from conversations to proposals without breaking flow. Designed for grassroots organizing and direct action coordination, it combines the familiarity of messaging apps with powerful decision-making features like inline proposals, voting mechanisms, and forum-style organization when needed. The frontend will be built with React, Vite, and the Matrix JS SDK, while the backend will either leverage the Synapse homeserver implementation (Python) or Dendrite (Golang).
 
-## Work in Progress
+## Work in progress
 
 You are entering a construction yard. Things are going to change and break regularly as the project is still getting off the ground. Please bear in mind that Praxis is not yet intended for serious use outside of testing or research purposes. Your feedback is highly welcome.
 
