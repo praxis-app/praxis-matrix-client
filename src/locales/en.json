@@ -77,7 +77,8 @@
       "body": "Enter your proposal"
     },
     "errors": {
-      "longBody": "Proposal body cannot exceed 6000 characters"
+      "longBody": "Proposal body cannot exceed 6000 characters",
+      "errorCreatingProposal": "Error creating proposal"
     }
   },
 

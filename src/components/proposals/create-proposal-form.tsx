@@ -73,7 +73,7 @@ export const CreateProposalForm = ({
         description: values.body + ' ' + roomId,
       });
     } catch {
-      toast(t('messages.errors.errorSendingMessage'), {
+      toast(t('proposals.errors.errorCreatingProposal'), {
         description: t('prompts.tryAgain'),
       });
     }
