@@ -26,7 +26,7 @@ interface ProposalFormSubmitButtonProps {
   isSubmitting: boolean;
 }
 
-interface ProposalFormProps {
+interface CreateProposalFormProps {
   roomId: string;
   submitButton: (props: ProposalFormSubmitButtonProps) => ReactNode;
 }
@@ -50,7 +50,10 @@ export const ProposalFormSubmitButton = ({
   );
 };
 
-export const ProposalForm = ({ roomId, submitButton }: ProposalFormProps) => {
+export const CreateProposalForm = ({
+  roomId,
+  submitButton,
+}: CreateProposalFormProps) => {
   const matrixClient = useMatrixClient();
   const { t } = useTranslation();
 

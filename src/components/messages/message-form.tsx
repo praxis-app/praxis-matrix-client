@@ -14,9 +14,9 @@ import { TbMicrophoneFilled } from 'react-icons/tb';
 import { toast } from 'sonner';
 import * as zod from 'zod';
 import {
-  ProposalForm,
+  CreateProposalForm,
   ProposalFormSubmitButton,
-} from '../proposals/proposal-form';
+} from '../proposals/create-proposal-form';
 import { Button } from '../ui/button';
 import {
   Dialog,
@@ -161,7 +161,7 @@ export const MessageForm = ({ roomId }: Props) => {
             <DialogDescription>
               {t('proposals.descriptions.create')}
             </DialogDescription>
-            <ProposalForm
+            <CreateProposalForm
               roomId={roomId}
               submitButton={(props) => (
                 <DialogFooter>
