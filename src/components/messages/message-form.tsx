@@ -156,7 +156,7 @@ export const MessageForm = ({ roomId }: Props) => {
 
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>{t('proposals.actions.create')}</DialogTitle>
+              <DialogTitle>{t('proposals.headers.create')}</DialogTitle>
             </DialogHeader>
             <DialogDescription>
               {t('proposals.descriptions.create')}

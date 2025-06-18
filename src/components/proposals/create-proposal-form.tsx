@@ -12,7 +12,6 @@ import { Button } from '../ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -97,9 +96,6 @@ export const CreateProposalForm = ({
                   rows={1}
                 />
               </FormControl>
-              <FormDescription>
-                {t('proposals.descriptions.body')}
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}

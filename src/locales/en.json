@@ -63,8 +63,11 @@
     "labels": {
       "body": "Proposal"
     },
+    "headers": {
+      "create": "Create a New Proposal"
+    },
     "placeholders": {
-      "body": "Enter your proposal"
+      "body": "Enter your proposal details..."
     },
     "actions": {
       "create": "Create Proposal"
@@ -73,7 +76,7 @@
       "creatingProposal": "Creating..."
     },
     "descriptions": {
-      "create": "Create a new proposal",
+      "create": "Submit a proposal for this room to discuss and vote on.",
       "body": "Enter your proposal"
     },
     "errors": {
