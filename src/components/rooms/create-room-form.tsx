@@ -105,7 +105,7 @@ export const CreateRoomForm = ({
         room_alias_name: values.name.toLowerCase().replace(/ /g, '-'),
         visibility: values.visibility,
 
-        // TODO: Uncomment if we decide to enable guest access by default
+        // TODO: Uncomment if it's decided to enable guest access by default
         // initial_state: [
         //   {
         //     type: EventType.RoomGuestAccess,

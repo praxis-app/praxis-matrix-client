@@ -60,8 +60,24 @@
   },
 
   "proposals": {
+    "labels": {
+      "body": "Proposal"
+    },
+    "placeholders": {
+      "body": "Enter your proposal"
+    },
     "actions": {
       "create": "Create Proposal"
+    },
+    "prompts": {
+      "creatingProposal": "Creating..."
+    },
+    "descriptions": {
+      "create": "Create a new proposal",
+      "body": "Enter your proposal"
+    },
+    "errors": {
+      "longBody": "Proposal body cannot exceed 6000 characters"
     }
   },
 
