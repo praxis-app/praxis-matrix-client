@@ -3,6 +3,8 @@
 import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { t } from '@/lib/shared.utils';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { TimelineEvents } from 'matrix-js-sdk';
+import { PollStartEvent } from 'matrix-js-sdk/src/extensible_events_v1/PollStartEvent';
 import { ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -30,7 +32,7 @@ interface CreateProposalFormProps {
   submitButton: (props: ProposalFormSubmitButtonProps) => ReactNode;
 }
 
-const proposalFormSchema = zod.object({
+const createProposalFormSchema = zod.object({
   body: zod.string().max(PROPOSAL_BODY_MAX, {
     message: t('proposals.errors.longBody'),
   }),
@@ -56,26 +58,40 @@ export const CreateProposalForm = ({
   const matrixClient = useMatrixClient();
   const { t } = useTranslation();
 
-  const form = useForm<zod.infer<typeof proposalFormSchema>>({
-    resolver: zodResolver(proposalFormSchema),
+  const form = useForm<zod.infer<typeof createProposalFormSchema>>({
+    resolver: zodResolver(createProposalFormSchema),
     defaultValues: {
       body: '',
     },
   });
 
-  const onSubmit = async (values: zod.infer<typeof proposalFormSchema>) => {
+  const onSubmit = async (
+    values: zod.infer<typeof createProposalFormSchema>,
+  ) => {
     if (!matrixClient || !values.body.trim()) {
       return;
     }
+    const pollStart = PollStartEvent.from(
+      values.body.trim(),
+      // TODO: Add i18n messages / enable dynamic options
+      ['Agree', 'Disagree', 'Abstain'],
+      'com.praxis-app.proposal',
+    ).serialize();
+
     try {
-      toast('TODO: Implement proposal creation', {
-        description: values.body + ' ' + roomId,
-      });
+      await matrixClient.sendEvent(
+        roomId,
+        null,
+        pollStart.type as keyof TimelineEvents,
+        pollStart.content as TimelineEvents[keyof TimelineEvents],
+      );
     } catch {
       toast(t('proposals.errors.errorCreatingProposal'), {
         description: t('prompts.tryAgain'),
       });
     }
+
+    // TODO: Close dialog after submission
     form.reset();
   };
 

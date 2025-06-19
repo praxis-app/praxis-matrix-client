@@ -154,7 +154,7 @@ export const MessageForm = ({ roomId }: Props) => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <DialogContent>
+          <DialogContent className="pt-10 md:pt-6">
             <DialogHeader>
               <DialogTitle>{t('proposals.headers.create')}</DialogTitle>
             </DialogHeader>
