@@ -70,7 +70,11 @@
       "body": "Enter your proposal details..."
     },
     "actions": {
-      "create": "Create Proposal"
+      "abstain": "Abstain",
+      "agree": "Agree",
+      "block": "Block",
+      "create": "Create Proposal",
+      "disagree": "Disagree"
     },
     "prompts": {
       "creatingProposal": "Creating..."

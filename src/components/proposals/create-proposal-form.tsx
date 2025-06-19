@@ -1,10 +1,10 @@
 // TODO: Add remaining layout and functionality - below is a WIP
 
 import { useMatrixClient } from '@/hooks/use-matrix-client';
+import { createProposalStartEvent } from '@/lib/proposal.utils';
 import { t } from '@/lib/shared.utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TimelineEvents } from 'matrix-js-sdk';
-import { PollStartEvent } from 'matrix-js-sdk/src/extensible_events_v1/PollStartEvent';
 import { ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -71,10 +71,15 @@ export const CreateProposalForm = ({
     if (!matrixClient || !values.body.trim()) {
       return;
     }
-    const pollStart = PollStartEvent.from(
+
+    // TODO: Ensure that position fields don't get stripped by `serialize()`
+    const proposalStart = createProposalStartEvent(
       values.body.trim(),
-      // TODO: Add i18n messages / enable dynamic options
-      ['Agree', 'Disagree', 'Abstain'],
+      [
+        { text: t('proposals.actions.agree'), position: 'agree' },
+        { text: t('proposals.actions.disagree'), position: 'disagree' },
+        { text: t('proposals.actions.abstain'), position: 'abstain' },
+      ],
       'com.praxis-app.proposal',
     ).serialize();
 
@@ -82,8 +87,8 @@ export const CreateProposalForm = ({
       await matrixClient.sendEvent(
         roomId,
         null,
-        pollStart.type as keyof TimelineEvents,
-        pollStart.content as TimelineEvents[keyof TimelineEvents],
+        proposalStart.type as keyof TimelineEvents,
+        proposalStart.content as TimelineEvents[keyof TimelineEvents],
       );
     } catch {
       toast(t('proposals.errors.errorCreatingProposal'), {
