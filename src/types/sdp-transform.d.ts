@@ -1,3 +1,15 @@
+/**
+ * Enhanced type definitions for the 'sdp-transform' library
+ * 
+ * This file is necessary because:
+ * - The existing @types/sdp-transform package has incomplete type definitions
+ * - matrix-js-sdk's WebRTC code was causing TS7006 errors (implicit 'any' types)
+ * - The original types marked 'rtp' and 'fmtp' as optional, but matrix-js-sdk assumes they exist
+ * - Without proper MediaDescription.ssrcs typing, forEach operations on ssrc arrays failed
+ * - This provides complete, accurate types matching how the SDK actually uses the library
+ * - Resolves all remaining TypeScript errors in the matrix-js-sdk WebRTC functionality
+ */
+
 // Enhanced type definitions for sdp-transform library
 declare module 'sdp-transform' {
   export interface MediaDescription {
