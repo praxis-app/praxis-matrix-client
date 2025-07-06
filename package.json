@@ -6,6 +6,7 @@
     "dev": "vite --host",
     "build": "vite build",
     "lint": "eslint .",
+    "types": "tsc -b",
     "preview": "vite preview"
   },
   "dependencies": {
