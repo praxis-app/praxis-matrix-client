@@ -1,269 +1,286 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import { describe, it, expect, vi, beforeEach, Mock } from 'vitest'
-import { LoginForm } from '../login-form'
-import { useAppStore } from '@/store/app.store'
-import { useNavigate } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import { createClient, AuthType, ClientEvent, SyncState } from 'matrix-js-sdk'
-import { NavigationPaths } from '@/constants/shared.constants'
+import { NavigationPaths } from '@/constants/shared.constants';
+import { useAppStore } from '@/store/app.store';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { AuthType, ClientEvent, createClient, SyncState } from 'matrix-js-sdk';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
+import { LoginForm } from '../login-form';
 
 // Mock dependencies
-vi.mock('@/store/app.store')
-vi.mock('react-router-dom')
-vi.mock('react-i18next')
-vi.mock('matrix-js-sdk')
+vi.mock('@/store/app.store');
+vi.mock('react-router-dom');
+vi.mock('react-i18next');
+vi.mock('matrix-js-sdk');
 
 describe('LoginForm', () => {
   // Mock functions
-  const mockSetMatrixClient = vi.fn()
-  const mockNavigate = vi.fn()
-  const mockTranslate = vi.fn((key: string) => key)
-  const mockLoginRequest = vi.fn()
-  const mockStartClient = vi.fn()
-  const mockOnce = vi.fn()
+  const mockSetMatrixClient = vi.fn();
+  const mockNavigate = vi.fn();
+  const mockTranslate = vi.fn((key: string) => key);
+  const mockLoginRequest = vi.fn();
+  const mockStartClient = vi.fn();
+  const mockOnce = vi.fn();
 
   // Mock implementations
   beforeEach(() => {
-    vi.clearAllMocks()
+    vi.clearAllMocks();
 
     // Mock useAppStore
-    ;(useAppStore as unknown as Mock).mockReturnValue({
+    (useAppStore as unknown as Mock).mockReturnValue({
       setMatrixClient: mockSetMatrixClient,
-    })
+    });
 
     // Mock useNavigate
-    ;(useNavigate as Mock).mockReturnValue(mockNavigate)
+    (useNavigate as Mock).mockReturnValue(mockNavigate);
 
     // Mock useTranslation
-    ;(useTranslation as Mock).mockReturnValue({
+    (useTranslation as Mock).mockReturnValue({
       t: mockTranslate,
-    })
+    });
 
     // Mock createClient - always return same object with all methods
-    ;(createClient as Mock).mockReturnValue({
+    (createClient as Mock).mockReturnValue({
       loginRequest: mockLoginRequest,
       startClient: mockStartClient,
       once: mockOnce,
-    })
+    });
 
     // Reset localStorage mock
-    localStorage.setItem = vi.fn()
-  })
+    localStorage.setItem = vi.fn();
+  });
 
   it('renders the login form correctly', () => {
-    render(<LoginForm />)
+    render(<LoginForm />);
 
-    expect(screen.getByLabelText('auth.labels.email')).toBeInTheDocument()
-    expect(screen.getByLabelText('auth.labels.password')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Login' })).toBeInTheDocument()
-    expect(mockTranslate).toHaveBeenCalledWith('auth.prompts.enterCredentials')
-    expect(mockTranslate).toHaveBeenCalledWith('auth.labels.email')
-    expect(mockTranslate).toHaveBeenCalledWith('auth.labels.password')
-  })
+    expect(screen.getByLabelText('auth.labels.email')).toBeInTheDocument();
+    expect(screen.getByLabelText('auth.labels.password')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Login' })).toBeInTheDocument();
+    expect(mockTranslate).toHaveBeenCalledWith('auth.prompts.enterCredentials');
+    expect(mockTranslate).toHaveBeenCalledWith('auth.labels.email');
+    expect(mockTranslate).toHaveBeenCalledWith('auth.labels.password');
+  });
 
   it('updates email and password inputs correctly', async () => {
-    const user = userEvent.setup()
-    render(<LoginForm />)
+    const user = userEvent.setup();
+    render(<LoginForm />);
 
-    const emailInput = screen.getByLabelText('auth.labels.email')
-    const passwordInput = screen.getByLabelText('auth.labels.password')
+    const emailInput = screen.getByLabelText('auth.labels.email');
+    const passwordInput = screen.getByLabelText('auth.labels.password');
 
-    await user.type(emailInput, 'test@example.com')
-    await user.type(passwordInput, 'password123')
+    await user.type(emailInput, 'test@example.com');
+    await user.type(passwordInput, 'password123');
 
-    expect(emailInput).toHaveValue('test@example.com')
-    expect(passwordInput).toHaveValue('password123')
-  })
+    expect(emailInput).toHaveValue('test@example.com');
+    expect(passwordInput).toHaveValue('password123');
+  });
 
   it('shows loading state during form submission', async () => {
-    const user = userEvent.setup()
-    
+    const user = userEvent.setup();
+
     // Mock a delayed login request
-    mockLoginRequest.mockImplementation(() => new Promise(resolve => setTimeout(resolve, 100)))
-    
-    render(<LoginForm />)
+    mockLoginRequest.mockImplementation(
+      () => new Promise((resolve) => setTimeout(resolve, 100)),
+    );
 
-    const emailInput = screen.getByLabelText('auth.labels.email')
-    const passwordInput = screen.getByLabelText('auth.labels.password')
-    const submitButton = screen.getByRole('button', { name: 'Login' })
+    render(<LoginForm />);
 
-    await user.type(emailInput, 'test@example.com')
-    await user.type(passwordInput, 'password123')
-    await user.click(submitButton)
+    const emailInput = screen.getByLabelText('auth.labels.email');
+    const passwordInput = screen.getByLabelText('auth.labels.password');
+    const submitButton = screen.getByRole('button', { name: 'Login' });
 
-    expect(screen.getByText('Logging in...')).toBeInTheDocument()
-    expect(submitButton).toBeDisabled()
-    expect(screen.getByTestId('loading-spinner')).toBeInTheDocument() // Loading spinner
-  })
+    await user.type(emailInput, 'test@example.com');
+    await user.type(passwordInput, 'password123');
+    await user.click(submitButton);
+
+    expect(screen.getByText('Logging in...')).toBeInTheDocument();
+    expect(submitButton).toBeDisabled();
+    expect(screen.getByTestId('loading-spinner')).toBeInTheDocument(); // Loading spinner
+  });
 
   it('handles successful login flow', async () => {
-    const user = userEvent.setup()
+    const user = userEvent.setup();
     const mockUserData = {
       user_id: '@test:example.com',
       access_token: 'mock_token',
       device_id: 'mock_device',
-    }
+    };
 
-    mockLoginRequest.mockResolvedValue(mockUserData)
-    mockStartClient.mockResolvedValue(undefined)
-    
+    mockLoginRequest.mockResolvedValue(mockUserData);
+    mockStartClient.mockResolvedValue(undefined);
+
     // Mock the once method to immediately call the callback with SyncState.Prepared
     mockOnce.mockImplementation((event: string, callback: Function) => {
       if (event === ClientEvent.Sync) {
-        callback(SyncState.Prepared)
+        callback(SyncState.Prepared);
       }
-    })
+    });
 
-    render(<LoginForm />)
+    render(<LoginForm />);
 
-    const emailInput = screen.getByLabelText('auth.labels.email')
-    const passwordInput = screen.getByLabelText('auth.labels.password')
-    const submitButton = screen.getByRole('button', { name: 'Login' })
+    const emailInput = screen.getByLabelText('auth.labels.email');
+    const passwordInput = screen.getByLabelText('auth.labels.password');
+    const submitButton = screen.getByRole('button', { name: 'Login' });
 
-    await user.type(emailInput, 'test@example.com')
-    await user.type(passwordInput, 'password123')
-    await user.click(submitButton)
+    await user.type(emailInput, 'test@example.com');
+    await user.type(passwordInput, 'password123');
+    await user.click(submitButton);
 
     await waitFor(() => {
       expect(mockLoginRequest).toHaveBeenCalledWith({
         user: 'test@example.com',
         password: 'password123',
         type: AuthType.Password,
-      })
-    })
+      });
+    });
 
     await waitFor(() => {
-      expect(localStorage.setItem).toHaveBeenCalledWith('user_id', mockUserData.user_id)
-      expect(localStorage.setItem).toHaveBeenCalledWith('access_token', mockUserData.access_token)
-      expect(localStorage.setItem).toHaveBeenCalledWith('device_id', mockUserData.device_id)
-    })
+      expect(localStorage.setItem).toHaveBeenCalledWith(
+        'user_id',
+        mockUserData.user_id,
+      );
+      expect(localStorage.setItem).toHaveBeenCalledWith(
+        'access_token',
+        mockUserData.access_token,
+      );
+      expect(localStorage.setItem).toHaveBeenCalledWith(
+        'device_id',
+        mockUserData.device_id,
+      );
+    });
 
     await waitFor(() => {
-      expect(createClient).toHaveBeenCalledTimes(2)
+      expect(createClient).toHaveBeenCalledTimes(2);
       expect(createClient).toHaveBeenNthCalledWith(1, {
         baseUrl: import.meta.env.VITE_SERVER_BASE_URL,
-      })
+      });
       expect(createClient).toHaveBeenNthCalledWith(2, {
         baseUrl: import.meta.env.VITE_SERVER_BASE_URL,
         accessToken: mockUserData.access_token,
         userId: mockUserData.user_id,
         deviceId: mockUserData.device_id,
-      })
-    })
+      });
+    });
 
     await waitFor(() => {
       expect(mockStartClient).toHaveBeenCalledWith({
         initialSyncLimit: 10,
-      })
-    })
+      });
+    });
 
     await waitFor(() => {
-      expect(mockSetMatrixClient).toHaveBeenCalled()
-      expect(mockNavigate).toHaveBeenCalledWith(NavigationPaths.Home)
-    })
-  })
+      expect(mockSetMatrixClient).toHaveBeenCalled();
+      expect(mockNavigate).toHaveBeenCalledWith(NavigationPaths.Home);
+    });
+  });
 
   it('handles login error correctly', async () => {
-    const user = userEvent.setup()
-    
-    mockLoginRequest.mockRejectedValue(new Error('Invalid credentials'))
+    const user = userEvent.setup();
 
-    render(<LoginForm />)
+    mockLoginRequest.mockRejectedValue(new Error('Invalid credentials'));
 
-    const emailInput = screen.getByLabelText('auth.labels.email')
-    const passwordInput = screen.getByLabelText('auth.labels.password')
-    const submitButton = screen.getByRole('button', { name: 'Login' })
+    render(<LoginForm />);
 
-    await user.type(emailInput, 'test@example.com')
-    await user.type(passwordInput, 'wrongpassword')
-    await user.click(submitButton)
+    const emailInput = screen.getByLabelText('auth.labels.email');
+    const passwordInput = screen.getByLabelText('auth.labels.password');
+    const submitButton = screen.getByRole('button', { name: 'Login' });
+
+    await user.type(emailInput, 'test@example.com');
+    await user.type(passwordInput, 'wrongpassword');
+    await user.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.getByText('Invalid email or password. Please try again.')).toBeInTheDocument()
-    })
+      expect(
+        screen.getByText('Invalid email or password. Please try again.'),
+      ).toBeInTheDocument();
+    });
 
-    expect(submitButton).not.toBeDisabled()
-    expect(mockNavigate).not.toHaveBeenCalled()
-    expect(mockSetMatrixClient).not.toHaveBeenCalled()
-  })
+    expect(submitButton).not.toBeDisabled();
+    expect(mockNavigate).not.toHaveBeenCalled();
+    expect(mockSetMatrixClient).not.toHaveBeenCalled();
+  });
 
   it('clears error message on new submission', async () => {
-    const user = userEvent.setup()
-    
+    const user = userEvent.setup();
+
     // First submission fails
-    mockLoginRequest.mockRejectedValueOnce(new Error('Invalid credentials'))
-    
-    render(<LoginForm />)
+    mockLoginRequest.mockRejectedValueOnce(new Error('Invalid credentials'));
 
-    const emailInput = screen.getByLabelText('auth.labels.email')
-    const passwordInput = screen.getByLabelText('auth.labels.password')
-    const submitButton = screen.getByRole('button', { name: 'Login' })
+    render(<LoginForm />);
 
-    await user.type(emailInput, 'test@example.com')
-    await user.type(passwordInput, 'wrongpassword')
-    await user.click(submitButton)
+    const emailInput = screen.getByLabelText('auth.labels.email');
+    const passwordInput = screen.getByLabelText('auth.labels.password');
+    const submitButton = screen.getByRole('button', { name: 'Login' });
+
+    await user.type(emailInput, 'test@example.com');
+    await user.type(passwordInput, 'wrongpassword');
+    await user.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.getByText('Invalid email or password. Please try again.')).toBeInTheDocument()
-    })
+      expect(
+        screen.getByText('Invalid email or password. Please try again.'),
+      ).toBeInTheDocument();
+    });
 
     // Second submission should clear the error immediately when started
-    mockLoginRequest.mockImplementation(() => new Promise(() => {})) // Never resolves
-    
-    await user.clear(passwordInput)
-    await user.type(passwordInput, 'newpassword')
-    
+    mockLoginRequest.mockImplementation(() => new Promise(() => {})); // Never resolves
+
+    await user.clear(passwordInput);
+    await user.type(passwordInput, 'newpassword');
+
     // Check that error is cleared as soon as form is submitted
-    await user.click(submitButton)
-    
+    await user.click(submitButton);
+
     // Error should be cleared immediately when form submission starts
-    expect(screen.queryByText('Invalid email or password. Please try again.')).not.toBeInTheDocument()
-  })
+    expect(
+      screen.queryByText('Invalid email or password. Please try again.'),
+    ).not.toBeInTheDocument();
+  });
 
   it('prevents form submission when loading', async () => {
-    const user = userEvent.setup()
-    
+    const user = userEvent.setup();
+
     // Mock a delayed login request
-    mockLoginRequest.mockImplementation(() => new Promise(() => {})) // Never resolves
-    
-    render(<LoginForm />)
+    mockLoginRequest.mockImplementation(() => new Promise(() => {})); // Never resolves
 
-    const emailInput = screen.getByLabelText('auth.labels.email')
-    const passwordInput = screen.getByLabelText('auth.labels.password')
-    const submitButton = screen.getByRole('button', { name: 'Login' })
+    render(<LoginForm />);
 
-    await user.type(emailInput, 'test@example.com')
-    await user.type(passwordInput, 'password123')
-    await user.click(submitButton)
+    const emailInput = screen.getByLabelText('auth.labels.email');
+    const passwordInput = screen.getByLabelText('auth.labels.password');
+    const submitButton = screen.getByRole('button', { name: 'Login' });
+
+    await user.type(emailInput, 'test@example.com');
+    await user.type(passwordInput, 'password123');
+    await user.click(submitButton);
 
     // Button should be disabled during loading
-    expect(submitButton).toBeDisabled()
-    
+    expect(submitButton).toBeDisabled();
+
     // Try to click again - should not trigger another request
-    await user.click(submitButton)
-    
-    expect(mockLoginRequest).toHaveBeenCalledTimes(1)
-  })
+    await user.click(submitButton);
+
+    expect(mockLoginRequest).toHaveBeenCalledTimes(1);
+  });
 
   it('validates required fields', () => {
-    render(<LoginForm />)
+    render(<LoginForm />);
 
-    const emailInput = screen.getByLabelText('auth.labels.email')
-    const passwordInput = screen.getByLabelText('auth.labels.password')
+    const emailInput = screen.getByLabelText('auth.labels.email');
+    const passwordInput = screen.getByLabelText('auth.labels.password');
 
-    expect(emailInput).toBeRequired()
-    expect(passwordInput).toBeRequired()
-  })
+    expect(emailInput).toBeRequired();
+    expect(passwordInput).toBeRequired();
+  });
 
   it('has correct input types and autocomplete attributes', () => {
-    render(<LoginForm />)
+    render(<LoginForm />);
 
-    const emailInput = screen.getByLabelText('auth.labels.email')
-    const passwordInput = screen.getByLabelText('auth.labels.password')
+    const emailInput = screen.getByLabelText('auth.labels.email');
+    const passwordInput = screen.getByLabelText('auth.labels.password');
 
-    expect(emailInput).toHaveAttribute('autocomplete', 'email')
-    expect(passwordInput).toHaveAttribute('type', 'password')
-    expect(passwordInput).toHaveAttribute('autocomplete', 'current-password')
-  })
-})
+    expect(emailInput).toHaveAttribute('autocomplete', 'email');
+    expect(passwordInput).toHaveAttribute('type', 'password');
+    expect(passwordInput).toHaveAttribute('autocomplete', 'current-password');
+  });
+});

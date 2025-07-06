@@ -1,5 +1,5 @@
-import '@testing-library/jest-dom'
-import { beforeEach, vi } from 'vitest'
+import '@testing-library/jest-dom';
+import { beforeEach, vi } from 'vitest';
 
 // Mock environment variables
 Object.defineProperty(globalThis, 'import.meta', {
@@ -9,7 +9,7 @@ Object.defineProperty(globalThis, 'import.meta', {
     },
   },
   configurable: true,
-})
+});
 
 // Mock localStorage
 const localStorageMock = {
@@ -17,12 +17,12 @@ const localStorageMock = {
   setItem: vi.fn(),
   removeItem: vi.fn(),
   clear: vi.fn(),
-}
+};
 Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
-})
+});
 
 // Reset mocks before each test
 beforeEach(() => {
-  vi.clearAllMocks()
-})
+  vi.clearAllMocks();
+});
