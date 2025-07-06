@@ -1,6 +1,6 @@
 /**
  * Type definitions for the 'another-json' module
- * 
+ *
  * This file is necessary because:
  * - The 'another-json' package used by matrix-js-sdk doesn't have built-in TypeScript types
  * - There are no @types/another-json definitions available on npm

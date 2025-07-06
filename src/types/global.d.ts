@@ -1,6 +1,6 @@
 /**
  * Global type definitions for missing browser APIs
- * 
+ *
  * This file is necessary because:
  * - matrix-js-sdk uses modern JavaScript features not yet in TypeScript's standard lib
  * - Uint8Array.toBase64() and fromBase64() methods are ES2024 features not fully supported
@@ -17,24 +17,27 @@ declare global {
   }
 
   interface Uint8ArrayConstructor {
-    fromBase64?(base64: string, options?: Uint8ArrayFromBase64Options): Uint8Array;
+    fromBase64?(
+      base64: string,
+      options?: Uint8ArrayFromBase64Options,
+    ): Uint8Array;
   }
 
   interface Uint8ArrayToBase64Options {
-    alphabet?: "base64" | "base64url";
+    alphabet?: 'base64' | 'base64url';
     omitPadding?: boolean;
   }
 
   interface Uint8ArrayFromBase64Options {
-    alphabet?: "base64" | "base64url";
-    lastChunkHandling?: "loose" | "strict";
+    alphabet?: 'base64' | 'base64url';
+    lastChunkHandling?: 'loose' | 'strict';
   }
 
   interface Navigator {
     webkitGetUserMedia?: (
       constraints: MediaStreamConstraints,
       successCallback: NavigatorUserMediaSuccessCallback,
-      errorCallback: NavigatorUserMediaErrorCallback
+      errorCallback: NavigatorUserMediaErrorCallback,
     ) => void;
   }
 

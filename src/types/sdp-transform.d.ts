@@ -1,6 +1,6 @@
 /**
  * Enhanced type definitions for the 'sdp-transform' library
- * 
+ *
  * This file is necessary because:
  * - The existing @types/sdp-transform package has incomplete type definitions
  * - matrix-js-sdk's WebRTC code was causing TS7006 errors (implicit 'any' types)
