@@ -77,7 +77,8 @@
       "disagree": "Disagree"
     },
     "prompts": {
-      "creatingProposal": "Creating..."
+      "creatingProposal": "Creating...",
+      "proposalCreated": "Proposal created successfully"
     },
     "descriptions": {
       "create": "Submit a proposal for this room to discuss and vote on.",

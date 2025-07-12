@@ -163,7 +163,7 @@ export const MessageForm = ({ roomId }: Props) => {
             </DialogDescription>
             <CreateProposalForm
               roomId={roomId}
-              onSubmit={() => setShowProposalForm(false)}
+              onSuccess={() => setShowProposalForm(false)}
               submitButton={(props) => (
                 <DialogFooter>
                   <ProposalFormSubmitButton {...props} />

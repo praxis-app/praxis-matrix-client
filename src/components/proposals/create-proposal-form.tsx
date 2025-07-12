@@ -36,7 +36,7 @@ interface ProposalFormSubmitButtonProps {
 interface CreateProposalFormProps {
   roomId: string;
   submitButton: (props: ProposalFormSubmitButtonProps) => ReactNode;
-  onSubmit: () => void;
+  onSuccess: () => void;
 }
 
 const createProposalFormSchema = zod.object({
@@ -61,7 +61,7 @@ export const ProposalFormSubmitButton = ({
 export const CreateProposalForm = ({
   roomId,
   submitButton,
-  onSubmit,
+  onSuccess,
 }: CreateProposalFormProps) => {
   const matrixClient = useMatrixClient();
   const { t } = useTranslation();
@@ -73,7 +73,7 @@ export const CreateProposalForm = ({
     },
   });
 
-  const onSubmitProposal = async (
+  const onSubmit = async (
     values: zod.infer<typeof createProposalFormSchema>,
   ) => {
     if (!matrixClient || !values.body.trim()) {
@@ -96,28 +96,32 @@ export const CreateProposalForm = ({
     ]).serialize();
 
     try {
-      await matrixClient.sendEvent(
+      const result = await matrixClient.sendEvent(
         roomId,
         null,
         proposalStart.type as keyof TimelineEvents,
         proposalStart.content as TimelineEvents[keyof TimelineEvents],
       );
-    } catch {
+
+      // TODO: Remove once no longer needed for debugging
+      console.info(t('proposals.prompts.proposalCreated'), result);
+      toast(t('proposals.prompts.proposalCreated'), {
+        description: JSON.stringify(result),
+      });
+
+      form.reset();
+      onSuccess();
+    } catch (error) {
       toast(t('proposals.errors.errorCreatingProposal'), {
         description: t('prompts.tryAgain'),
       });
+      console.error(error);
     }
-
-    form.reset();
-    onSubmit();
   };
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmitProposal)}
-        className="space-y-6"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="body"
