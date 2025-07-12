@@ -1,4 +1,4 @@
-// TODO: Implement ProposalStartEvent in proposal form - the following is a WIP
+// TODO: Clean up ProposalStartEvent and ProposalAnswerSubevent, remove unneeded code - the following is a WIP
 
 import {
   ExtensibleAnyMessageEventContent,
