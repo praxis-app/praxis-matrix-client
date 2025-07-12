@@ -72,16 +72,11 @@ export const CreateProposalForm = ({
       return;
     }
 
-    // TODO: Ensure that position fields don't get stripped by `serialize()`
-    const proposalStart = ProposalStartEvent.from(
-      values.body.trim(),
-      [
-        { text: t('proposals.actions.agree'), position: 'agree' },
-        { text: t('proposals.actions.disagree'), position: 'disagree' },
-        { text: t('proposals.actions.abstain'), position: 'abstain' },
-      ],
-      'com.praxis-app.proposal',
-    ).serialize();
+    const proposalStart = ProposalStartEvent.from(values.body.trim(), [
+      { text: t('proposals.actions.agree'), position: 'agree' },
+      { text: t('proposals.actions.disagree'), position: 'disagree' },
+      { text: t('proposals.actions.abstain'), position: 'abstain' },
+    ]).serialize();
 
     try {
       await matrixClient.sendEvent(

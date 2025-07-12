@@ -19,6 +19,13 @@ import {
   PollStartEvent,
 } from 'matrix-js-sdk/src/extensible_events_v1/PollStartEvent';
 
+const PRAXIS_PROPOSAL_KIND = new NamespacedValue(
+  'com.praxis-app.proposal.kind',
+);
+const PRAXIS_PROPOSAL_ANSWER_POSITION = new NamespacedValue(
+  'com.praxis-app.proposal.answer.position',
+);
+
 export type ProposalAnswer = ExtensibleAnyMessageEventContent & {
   id: string;
   position?: string;
@@ -49,7 +56,7 @@ class ProposalAnswerSubevent extends PollAnswerSubevent {
       type: 'org.matrix.sdk.poll.answer',
       content: {
         id: this.id,
-        position: this.position,
+        [PRAXIS_PROPOSAL_ANSWER_POSITION.name]: this.position,
         ...this.serializeMMessageOnly(),
       },
     };
@@ -108,7 +115,7 @@ export class ProposalStartEvent extends PollStartEvent {
   public static from(
     question: string,
     answers: { text: string; position: string }[] | string[],
-    kind: KnownPollKind | string,
+    kind: KnownPollKind | string = PRAXIS_PROPOSAL_KIND.name,
     maxSelections = 1,
   ): ProposalStartEvent {
     const processedAnswers = answers.map((a) => {
