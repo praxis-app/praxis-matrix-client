@@ -19,6 +19,10 @@ export const RoomFeed = (props: Props) => {
 
   useEffect(() => {
     const roomEvents = props.room.getLiveTimeline().getEvents();
+
+    // TODO: Remove once no longer needed for testing
+    console.log('roomEvents', roomEvents);
+
     setMessages(
       roomEvents.filter((e) => e.getType() === EventType.RoomMessage),
     );

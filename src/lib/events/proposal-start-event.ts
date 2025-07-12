@@ -12,10 +12,25 @@ import { PollStartEvent } from 'matrix-js-sdk/src/extensible_events_v1/PollStart
 export class ProposalStartEvent extends PollStartEvent {
   public static from(
     question: string,
-    answers: string[],
+    answers: { text: string; position: string }[] | string[],
     kind: KnownPollKind | string,
     maxSelections = 1,
   ): ProposalStartEvent {
+    const processedAnswers = answers.map((a) => {
+      if (typeof a === 'string') {
+        return {
+          id: this.getAnswerId(),
+          [M_TEXT.name]: a,
+        };
+      } else {
+        return {
+          id: this.getAnswerId(),
+          [M_TEXT.name]: a.text,
+          position: a.position,
+        };
+      }
+    });
+
     return new ProposalStartEvent({
       type: M_POLL_START.name,
       content: {
@@ -24,10 +39,7 @@ export class ProposalStartEvent extends PollStartEvent {
           question: { [M_TEXT.name]: question },
           kind: kind instanceof NamespacedValue ? kind.name : kind,
           max_selections: maxSelections,
-          answers: answers.map((a) => ({
-            id: this.getAnswerId(),
-            [M_TEXT.name]: a,
-          })),
+          answers: processedAnswers,
         },
       },
     });

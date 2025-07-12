@@ -1,7 +1,7 @@
 // TODO: Add remaining layout and functionality - below is a WIP
 
 import { useMatrixClient } from '@/hooks/use-matrix-client';
-import { createProposalStartEvent } from '@/lib/proposal.utils';
+import { ProposalStartEvent } from '@/lib/events/proposal-start-event';
 import { t } from '@/lib/shared.utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TimelineEvents } from 'matrix-js-sdk';
@@ -73,7 +73,7 @@ export const CreateProposalForm = ({
     }
 
     // TODO: Ensure that position fields don't get stripped by `serialize()`
-    const proposalStart = createProposalStartEvent(
+    const proposalStart = ProposalStartEvent.from(
       values.body.trim(),
       [
         { text: t('proposals.actions.agree'), position: 'agree' },
