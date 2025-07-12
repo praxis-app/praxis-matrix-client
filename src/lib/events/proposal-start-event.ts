@@ -1,4 +1,4 @@
-// TODO: Clean up ProposalStartEvent and ProposalAnswerSubevent, remove unneeded code - the following is a WIP
+// Ref: https://github.com/matrix-org/matrix-js-sdk/blob/develop/src/extensible_events_v1/PollStartEvent.ts
 
 import {
   ExtensibleAnyMessageEventContent,
