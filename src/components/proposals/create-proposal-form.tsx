@@ -23,6 +23,12 @@ import { Textarea } from '../ui/textarea';
 
 const PROPOSAL_BODY_MAX = 6000;
 
+enum ProposalAnswerPosition {
+  Agree = 'agree',
+  Disagree = 'disagree',
+  Abstain = 'abstain',
+}
+
 interface ProposalFormSubmitButtonProps {
   isSubmitting: boolean;
 }
@@ -30,6 +36,7 @@ interface ProposalFormSubmitButtonProps {
 interface CreateProposalFormProps {
   roomId: string;
   submitButton: (props: ProposalFormSubmitButtonProps) => ReactNode;
+  onSubmit: () => void;
 }
 
 const createProposalFormSchema = zod.object({
@@ -54,6 +61,7 @@ export const ProposalFormSubmitButton = ({
 export const CreateProposalForm = ({
   roomId,
   submitButton,
+  onSubmit,
 }: CreateProposalFormProps) => {
   const matrixClient = useMatrixClient();
   const { t } = useTranslation();
@@ -65,7 +73,7 @@ export const CreateProposalForm = ({
     },
   });
 
-  const onSubmit = async (
+  const onSubmitProposal = async (
     values: zod.infer<typeof createProposalFormSchema>,
   ) => {
     if (!matrixClient || !values.body.trim()) {
@@ -73,9 +81,18 @@ export const CreateProposalForm = ({
     }
 
     const proposalStart = ProposalStartEvent.from(values.body.trim(), [
-      { text: t('proposals.actions.agree'), position: 'agree' },
-      { text: t('proposals.actions.disagree'), position: 'disagree' },
-      { text: t('proposals.actions.abstain'), position: 'abstain' },
+      {
+        text: t('proposals.actions.agree'),
+        position: ProposalAnswerPosition.Agree,
+      },
+      {
+        text: t('proposals.actions.disagree'),
+        position: ProposalAnswerPosition.Disagree,
+      },
+      {
+        text: t('proposals.actions.abstain'),
+        position: ProposalAnswerPosition.Abstain,
+      },
     ]).serialize();
 
     try {
@@ -91,13 +108,16 @@ export const CreateProposalForm = ({
       });
     }
 
-    // TODO: Close dialog after submission
     form.reset();
+    onSubmit();
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form
+        onSubmit={form.handleSubmit(onSubmitProposal)}
+        className="space-y-6"
+      >
         <FormField
           control={form.control}
           name="body"
