@@ -118,20 +118,11 @@ export class ProposalStartEvent extends PollStartEvent {
     kind: KnownPollKind | string = PRAXIS_PROPOSAL_KIND.name,
     maxSelections = 1,
   ): ProposalStartEvent {
-    const processedAnswers = answers.map((a) => {
-      if (typeof a === 'string') {
-        return {
-          id: this.getAnswerId(),
-          [M_TEXT.name]: a,
-        };
-      } else {
-        return {
-          id: this.getAnswerId(),
-          [M_TEXT.name]: a.text,
-          position: a.position,
-        };
-      }
-    });
+    const processedAnswers = answers.map((a) => ({
+      id: this.getAnswerId(),
+      [M_TEXT.name]: typeof a === 'string' ? a : a.text,
+      position: typeof a === 'string' ? undefined : a.position,
+    }));
 
     return new ProposalStartEvent({
       type: M_POLL_START.name,
@@ -145,21 +136,6 @@ export class ProposalStartEvent extends PollStartEvent {
         },
       },
     });
-  }
-
-  public serialize(): IPartialEvent<object> {
-    return {
-      type: M_POLL_START.name,
-      content: {
-        [M_POLL_START.name]: {
-          question: this.question.serialize().content,
-          kind: this.rawKind,
-          max_selections: this.maxSelections,
-          answers: this.answers.map((a) => a.serialize().content),
-        },
-        [M_TEXT.name]: `${this.question.text}\n${this.answers.map((a, i) => `${i + 1}. ${a.text}`).join('\n')}`,
-      },
-    };
   }
 
   private static getAnswerId = () => {
