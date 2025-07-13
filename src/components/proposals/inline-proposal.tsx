@@ -8,7 +8,7 @@ interface Props {
   room: Room;
 }
 
-export const ProposalCard = ({ proposal, room }: Props) => {
+export const InlineProposal = ({ proposal, room }: Props) => {
   const { [M_TEXT.name]: body } = proposal.getContent();
 
   const userId = proposal.getSender() ?? '';

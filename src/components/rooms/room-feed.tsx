@@ -3,11 +3,11 @@ import { EventType, MatrixEvent, Room, RoomEvent } from 'matrix-js-sdk';
 import { useEffect, useState } from 'react';
 import { AuthMessage } from '../auth/auth-message';
 import { Message } from '../messages/message';
-import { ProposalCard } from '../proposals/proposal-card';
+import { InlineProposal } from '../proposals/inline-proposal';
 
 const RoomEventItem = ({ event, room }: { event: MatrixEvent; room: Room }) => {
   if (event.getType() === EventType.PollStart) {
-    return <ProposalCard proposal={event} room={room} />;
+    return <InlineProposal proposal={event} room={room} />;
   }
   return <Message message={event} room={room} />;
 };
