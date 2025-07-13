@@ -1,7 +1,9 @@
 import { timeAgo } from '@/lib/time.utils';
 import { M_POLL_START, MatrixEvent, Room } from 'matrix-js-sdk';
+import { useTranslation } from 'react-i18next';
 import FormattedText from '../shared/formatted-text';
-import { Card } from '../ui/card';
+import { Button } from '../ui/button';
+import { Card, CardAction } from '../ui/card';
 import { UserAvatar } from '../users/user-avatar';
 
 interface Props {
@@ -20,6 +22,8 @@ export const InlineProposal = ({ proposal, room }: Props) => {
   const createdAt = proposal.getDate()?.toString() ?? '';
   const formattedDate = timeAgo(createdAt);
 
+  const { t } = useTranslation();
+
   if (!body) {
     return null;
   }
@@ -34,8 +38,23 @@ export const InlineProposal = ({ proposal, room }: Props) => {
           <div className="text-muted-foreground text-sm">{formattedDate}</div>
         </div>
 
-        <Card className="w-full p-3">
+        <Card className="w-full px-3 py-3.5">
           <FormattedText text={body} />
+
+          <CardAction className="flex flex-wrap gap-2">
+            <Button variant="outline" size="lg" className="flex-1">
+              {t('proposals.actions.agree')}
+            </Button>
+            <Button variant="outline" size="lg" className="flex-1">
+              {t('proposals.actions.disagree')}
+            </Button>
+            <Button variant="outline" size="lg" className="flex-1">
+              {t('proposals.actions.abstain')}
+            </Button>
+            <Button variant="outline" size="lg" className="flex-1">
+              {t('proposals.actions.block')}
+            </Button>
+          </CardAction>
         </Card>
       </div>
     </div>

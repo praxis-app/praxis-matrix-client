@@ -27,6 +27,7 @@ enum ProposalAnswerPosition {
   Agree = 'agree',
   Disagree = 'disagree',
   Abstain = 'abstain',
+  Block = 'block',
 }
 
 interface ProposalFormSubmitButtonProps {
@@ -92,6 +93,10 @@ export const CreateProposalForm = ({
       {
         text: t('proposals.actions.abstain'),
         position: ProposalAnswerPosition.Abstain,
+      },
+      {
+        text: t('proposals.actions.block'),
+        position: ProposalAnswerPosition.Block,
       },
     ]).serialize();
 
