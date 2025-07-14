@@ -1,7 +1,17 @@
+import {
+  PRAXIS_PROPOSAL_ANSWER_POSITION,
+  PROPOSAL_ANSWERS,
+} from '@/constants/proposal.constants';
 import { timeAgo } from '@/lib/time.utils';
-import { FaClipboard } from 'react-icons/fa';
-import { M_POLL_START, MatrixEvent, Room } from 'matrix-js-sdk';
+import { ProposalAnswer } from '@/types/proposal.types';
+import {
+  M_POLL_START,
+  MatrixEvent,
+  PollStartSubtype,
+  Room,
+} from 'matrix-js-sdk';
 import { useTranslation } from 'react-i18next';
+import { FaClipboard } from 'react-icons/fa';
 import FormattedText from '../shared/formatted-text';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
@@ -9,13 +19,24 @@ import { Card, CardAction } from '../ui/card';
 import { Separator } from '../ui/separator';
 import { UserAvatar } from '../users/user-avatar';
 
-interface Props {
+const VoteButton = ({ answer }: { answer: ProposalAnswer }) => {
+  const label = PROPOSAL_ANSWERS[answer[PRAXIS_PROPOSAL_ANSWER_POSITION.name]];
+  return (
+    <Button variant="outline" size="lg" className="flex-1">
+      {label}
+    </Button>
+  );
+};
+
+export const InlineProposal = ({
+  proposal,
+  room,
+}: {
   proposal: MatrixEvent;
   room: Room;
-}
-
-export const InlineProposal = ({ proposal, room }: Props) => {
+}) => {
   const { [M_POLL_START.name]: pollStart } = proposal.getContent();
+  const { answers } = pollStart as PollStartSubtype;
   const { body } = pollStart.question;
 
   const userId = proposal.getSender() ?? '';
@@ -50,18 +71,9 @@ export const InlineProposal = ({ proposal, room }: Props) => {
           <FormattedText text={body} className="pt-1 pb-2" />
 
           <CardAction className="flex flex-wrap gap-2">
-            <Button variant="outline" size="lg" className="flex-1">
-              {t('proposals.actions.agree')}
-            </Button>
-            <Button variant="outline" size="lg" className="flex-1">
-              {t('proposals.actions.disagree')}
-            </Button>
-            <Button variant="outline" size="lg" className="flex-1">
-              {t('proposals.actions.abstain')}
-            </Button>
-            <Button variant="outline" size="lg" className="flex-1">
-              {t('proposals.actions.block')}
-            </Button>
+            {answers.map((answer) => (
+              <VoteButton answer={answer as ProposalAnswer} key={answer.id} />
+            ))}
           </CardAction>
 
           <Separator className="my-1" />

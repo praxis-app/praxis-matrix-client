@@ -20,15 +20,9 @@ import {
   FormMessage,
 } from '../ui/form';
 import { Textarea } from '../ui/textarea';
+import { ProposalAnswerPosition } from '@/constants/proposal.constants';
 
 const PROPOSAL_BODY_MAX = 6000;
-
-enum ProposalAnswerPosition {
-  Agree = 'agree',
-  Disagree = 'disagree',
-  Abstain = 'abstain',
-  Block = 'block',
-}
 
 interface ProposalFormSubmitButtonProps {
   isSubmitting: boolean;

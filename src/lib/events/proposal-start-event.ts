@@ -1,6 +1,10 @@
 // Ref: https://github.com/matrix-org/matrix-js-sdk/blob/develop/src/extensible_events_v1/PollStartEvent.ts
 
 import {
+  PRAXIS_PROPOSAL_ANSWER_POSITION,
+  PRAXIS_PROPOSAL_KIND,
+} from '@/constants/proposal.constants';
+import {
   ExtensibleAnyMessageEventContent,
   IPartialEvent,
   KnownPollKind,
@@ -18,13 +22,6 @@ import {
   PollAnswerSubevent,
   PollStartEvent,
 } from 'matrix-js-sdk/src/extensible_events_v1/PollStartEvent';
-
-const PRAXIS_PROPOSAL_KIND = new NamespacedValue(
-  'com.praxis-app.proposal.kind',
-);
-const PRAXIS_PROPOSAL_ANSWER_POSITION = new NamespacedValue(
-  'com.praxis-app.proposal.answer.position',
-);
 
 export type ProposalAnswer = ExtensibleAnyMessageEventContent & {
   id: string;
