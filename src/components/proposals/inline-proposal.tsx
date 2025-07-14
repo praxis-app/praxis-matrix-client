@@ -2,8 +2,10 @@ import { timeAgo } from '@/lib/time.utils';
 import { M_POLL_START, MatrixEvent, Room } from 'matrix-js-sdk';
 import { useTranslation } from 'react-i18next';
 import FormattedText from '../shared/formatted-text';
+import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Card, CardAction } from '../ui/card';
+import { Separator } from '../ui/separator';
 import { UserAvatar } from '../users/user-avatar';
 
 interface Props {
@@ -38,8 +40,10 @@ export const InlineProposal = ({ proposal, room }: Props) => {
           <div className="text-muted-foreground text-sm">{formattedDate}</div>
         </div>
 
-        <Card className="w-full px-3 py-3.5">
-          <FormattedText text={body} />
+        <Card className="w-full gap-4.5 px-3 py-3.5">
+          <FormattedText
+            text={t('proposals.labels.proposal', { proposal: body })}
+          />
 
           <CardAction className="flex flex-wrap gap-2">
             <Button variant="outline" size="lg" className="flex-1">
@@ -55,6 +59,16 @@ export const InlineProposal = ({ proposal, room }: Props) => {
               {t('proposals.actions.block')}
             </Button>
           </CardAction>
+
+          <Separator />
+
+          <div className="flex justify-between">
+            <div className="text-muted-foreground flex gap-3.5 text-sm">
+              <div>10/12 voted</div>
+              <div>Ends in 2 days</div>
+            </div>
+            <Badge variant="outline">{t('proposals.labels.active')}</Badge>
+          </div>
         </Card>
       </div>
     </div>

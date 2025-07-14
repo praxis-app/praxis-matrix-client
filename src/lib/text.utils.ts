@@ -36,6 +36,6 @@ export const convertBoldToSpan = (text: string) =>
   text
     .replace(
       /<(b|strong)>/g,
-      '<span style="font-family: Inter; font-weight: 700;">',
+      '<span style="font-family: Inter; font-weight: 500;">',
     )
     .replace(/<\/(b|strong)>/g, '</span>');
