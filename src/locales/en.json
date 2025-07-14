@@ -64,7 +64,7 @@
       "body": "Proposal",
       "active": "Active",
       "closed": "Closed",
-      "proposal": "<b>Proposal:</b> {{proposal}}"
+      "consensusProposal": "Consensus Proposal"
     },
     "headers": {
       "create": "Create a New Proposal"

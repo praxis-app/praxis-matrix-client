@@ -1,4 +1,5 @@
 import { timeAgo } from '@/lib/time.utils';
+import { FaClipboard } from 'react-icons/fa';
 import { M_POLL_START, MatrixEvent, Room } from 'matrix-js-sdk';
 import { useTranslation } from 'react-i18next';
 import FormattedText from '../shared/formatted-text';
@@ -40,10 +41,13 @@ export const InlineProposal = ({ proposal, room }: Props) => {
           <div className="text-muted-foreground text-sm">{formattedDate}</div>
         </div>
 
-        <Card className="w-full gap-4.5 px-3 py-3.5">
-          <FormattedText
-            text={t('proposals.labels.proposal', { proposal: body })}
-          />
+        <Card className="w-full gap-3.5 px-3 py-3.5">
+          <div className="flex items-center gap-1.5 font-medium">
+            <FaClipboard className="mb-0.5" />
+            {t('proposals.labels.consensusProposal')}
+          </div>
+
+          <FormattedText text={body} />
 
           <CardAction className="flex flex-wrap gap-2">
             <Button variant="outline" size="lg" className="flex-1">
@@ -60,7 +64,7 @@ export const InlineProposal = ({ proposal, room }: Props) => {
             </Button>
           </CardAction>
 
-          <Separator />
+          <Separator className="my-1" />
 
           <div className="flex justify-between">
             <div className="text-muted-foreground flex gap-3.5 text-sm">
