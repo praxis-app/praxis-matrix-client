@@ -75,6 +75,7 @@ export const CreateProposalForm = ({
       return;
     }
 
+    // Leverage `PROPOSAL_ANSWER_LABELS` here to have 1 source of truth for labels
     const proposalStart = ProposalStartEvent.from(values.body.trim(), [
       {
         text: t('proposals.actions.agree'),
@@ -97,7 +98,6 @@ export const CreateProposalForm = ({
     try {
       const result = await matrixClient.sendEvent(
         roomId,
-        null,
         proposalStart.type as keyof TimelineEvents,
         proposalStart.content as TimelineEvents[keyof TimelineEvents],
       );

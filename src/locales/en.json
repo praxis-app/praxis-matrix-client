@@ -93,6 +93,12 @@
     }
   },
 
+  "votes": {
+    "prompts": {
+      "voteCast": "Vote cast successfully"
+    }
+  },
+
   "rooms": {
     "labels": {
       "access": "Access",

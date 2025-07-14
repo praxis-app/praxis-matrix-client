@@ -1,7 +1,8 @@
 import {
   PRAXIS_PROPOSAL_ANSWER_POSITION,
-  PROPOSAL_ANSWERS,
+  PROPOSAL_ANSWER_LABELS,
 } from '@/constants/proposal.constants';
+import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { timeAgo } from '@/lib/time.utils';
 import { ProposalAnswer } from '@/types/proposal.types';
 import {
@@ -9,7 +10,9 @@ import {
   MatrixEvent,
   PollStartSubtype,
   Room,
+  TimelineEvents,
 } from 'matrix-js-sdk';
+import { PollResponseEvent } from 'matrix-js-sdk/src/extensible_events_v1/PollResponseEvent';
 import { useTranslation } from 'react-i18next';
 import { FaClipboard } from 'react-icons/fa';
 import FormattedText from '../shared/formatted-text';
@@ -18,11 +21,50 @@ import { Button } from '../ui/button';
 import { Card, CardAction } from '../ui/card';
 import { Separator } from '../ui/separator';
 import { UserAvatar } from '../users/user-avatar';
+import { toast } from 'sonner';
 
-const VoteButton = ({ answer }: { answer: ProposalAnswer }) => {
-  const label = PROPOSAL_ANSWERS[answer[PRAXIS_PROPOSAL_ANSWER_POSITION.name]];
+// TODO: Move to own file as `ProposalVoteButton`
+const VoteButton = ({
+  answer,
+  roomId,
+  proposalId,
+}: {
+  answer: ProposalAnswer;
+  roomId: string;
+  proposalId: string;
+}) => {
+  const matrixClient = useMatrixClient();
+  const { t } = useTranslation();
+
+  const position = answer[PRAXIS_PROPOSAL_ANSWER_POSITION.name];
+  const label = PROPOSAL_ANSWER_LABELS[position];
+
+  const handleClick = async () => {
+    const response = PollResponseEvent.from(
+      [answer.id],
+      proposalId,
+    ).serialize();
+
+    const result = await matrixClient.sendEvent(
+      roomId,
+      null,
+      response.type as keyof TimelineEvents,
+      response.content as TimelineEvents[keyof TimelineEvents],
+    );
+
+    console.info(t('votes.prompts.voteCast'), result);
+    toast(t('votes.prompts.voteCast'), {
+      description: JSON.stringify(result),
+    });
+  };
+
   return (
-    <Button variant="outline" size="lg" className="flex-1">
+    <Button
+      variant="outline"
+      size="lg"
+      className="flex-1"
+      onClick={handleClick}
+    >
       {label}
     </Button>
   );
@@ -72,7 +114,12 @@ export const InlineProposal = ({
 
           <CardAction className="flex flex-wrap gap-2">
             {answers.map((answer) => (
-              <VoteButton answer={answer as ProposalAnswer} key={answer.id} />
+              <VoteButton
+                answer={answer as ProposalAnswer}
+                key={answer.id}
+                roomId={room.roomId}
+                proposalId={proposal.getId()!}
+              />
             ))}
           </CardAction>
 

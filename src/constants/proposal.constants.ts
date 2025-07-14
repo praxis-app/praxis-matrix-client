@@ -15,7 +15,7 @@ export enum ProposalAnswerPosition {
   Block = 'block',
 }
 
-export const PROPOSAL_ANSWERS = {
+export const PROPOSAL_ANSWER_LABELS = {
   [ProposalAnswerPosition.Agree]: t('proposals.actions.agree'),
   [ProposalAnswerPosition.Disagree]: t('proposals.actions.disagree'),
   [ProposalAnswerPosition.Abstain]: t('proposals.actions.abstain'),
