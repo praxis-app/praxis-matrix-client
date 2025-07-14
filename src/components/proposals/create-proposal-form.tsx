@@ -1,5 +1,6 @@
 // TODO: Add remaining layout and functionality - below is a WIP
 
+import { PROPOSAL_ANSWER_LABELS } from '@/constants/proposal.constants';
 import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { ProposalStartEvent } from '@/lib/events/proposal-start-event';
 import { t } from '@/lib/shared.utils';
@@ -20,7 +21,6 @@ import {
   FormMessage,
 } from '../ui/form';
 import { Textarea } from '../ui/textarea';
-import { ProposalAnswerPosition } from '@/constants/proposal.constants';
 
 const PROPOSAL_BODY_MAX = 6000;
 
@@ -75,25 +75,16 @@ export const CreateProposalForm = ({
       return;
     }
 
-    // Leverage `PROPOSAL_ANSWER_LABELS` here to have 1 source of truth for labels
-    const proposalStart = ProposalStartEvent.from(values.body.trim(), [
-      {
-        text: t('proposals.actions.agree'),
-        position: ProposalAnswerPosition.Agree,
-      },
-      {
-        text: t('proposals.actions.disagree'),
-        position: ProposalAnswerPosition.Disagree,
-      },
-      {
-        text: t('proposals.actions.abstain'),
-        position: ProposalAnswerPosition.Abstain,
-      },
-      {
-        text: t('proposals.actions.block'),
-        position: ProposalAnswerPosition.Block,
-      },
-    ]).serialize();
+    const answers = Object.entries(PROPOSAL_ANSWER_LABELS).map(
+      ([position, label]) => ({
+        text: label,
+        position,
+      }),
+    );
+    const proposalStart = ProposalStartEvent.from(
+      values.body.trim(),
+      answers,
+    ).serialize();
 
     try {
       const result = await matrixClient.sendEvent(

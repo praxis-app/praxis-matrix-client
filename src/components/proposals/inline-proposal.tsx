@@ -69,6 +69,7 @@ export const InlineProposal = ({ proposal, room }: InlineProposalProps) => {
 
           <Separator className="my-1" />
 
+          {/* TODO: Replace with actual proposal data */}
           <div className="flex justify-between">
             <div className="text-muted-foreground flex gap-3.5 text-sm">
               <div>10/12 voted</div>
