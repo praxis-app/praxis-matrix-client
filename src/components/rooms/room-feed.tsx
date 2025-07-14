@@ -41,11 +41,10 @@ export const RoomFeed = (props: { room: Room }) => {
 
   useEffect(() => {
     matrixClient.on(RoomEvent.Timeline, (event, room, toStart) => {
-      if (
-        event.getType() !== EventType.RoomMessage ||
-        props.room.roomId !== room?.roomId ||
-        toStart
-      ) {
+      const isSupportedEvent =
+        event.getType() === EventType.RoomMessage ||
+        event.getType() === EventType.PollStart;
+      if (!isSupportedEvent || props.room.roomId !== room?.roomId || toStart) {
         return;
       }
       setEvents((prev) => {
