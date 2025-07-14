@@ -41,7 +41,7 @@ export const InlineProposal = ({ proposal, room }: Props) => {
           <div className="text-muted-foreground text-sm">{formattedDate}</div>
         </div>
 
-        <Card className="w-full gap-3.5 rounded-md px-3 py-3.5">
+        <Card className="before:border-l-border relative w-full gap-3.5 rounded-md px-3 py-3.5 before:absolute before:inset-0 before:mt-[-0.025rem] before:mb-[-0.025rem] before:rounded-md before:border-l-3">
           <div className="flex items-center gap-1.5 font-medium">
             <FaClipboard className="mb-0.5" />
             {t('proposals.labels.consensusProposal')}
