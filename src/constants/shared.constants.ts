@@ -1,3 +1,5 @@
+export const URL_REGEX = /(https?:\/\/[^\s]+)/g;
+
 export enum Time {
   Minute = 60,
   Hour = 3600,
@@ -24,4 +26,12 @@ export enum NavigationPaths {
   Login = '/auth/login',
   SignUp = '/auth/signup',
   Rooms = '/rooms',
+}
+
+export enum TruncationSizes {
+  ExtraSmall = 16,
+  Small = 25,
+  Medium = 35,
+  Large = 65,
+  ExtraLarge = 175,
 }

@@ -13,7 +13,20 @@ import { MdAdd, MdImage, MdPoll } from 'react-icons/md';
 import { TbMicrophoneFilled } from 'react-icons/tb';
 import { toast } from 'sonner';
 import * as zod from 'zod';
+import {
+  CreateProposalForm,
+  ProposalFormSubmitButton,
+} from '../proposals/create-proposal-form';
 import { Button } from '../ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -40,6 +53,7 @@ interface Props {
 }
 
 export const MessageForm = ({ roomId }: Props) => {
+  const [showProposalForm, setShowProposalForm] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -114,31 +128,50 @@ export const MessageForm = ({ roomId }: Props) => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex w-full items-center gap-2 overflow-y-auto border-t p-2 pt-2.5 pb-4"
       >
-        <DropdownMenu open={showMenu} onOpenChange={setShowMenu}>
-          <DropdownMenuTrigger className="bg-input/30 hover:bg-input/40 inline-flex size-11 cursor-pointer items-center justify-center rounded-full p-2 px-3 focus:outline-none [&_svg]:shrink-0">
-            <MdAdd
-              className={cn(
-                'text-muted-foreground size-7 transition-transform duration-200',
-                showMenu && 'rotate-45',
+        <Dialog open={showProposalForm} onOpenChange={setShowProposalForm}>
+          <DropdownMenu open={showMenu} onOpenChange={setShowMenu}>
+            <DropdownMenuTrigger className="bg-input/30 hover:bg-input/40 inline-flex size-11 cursor-pointer items-center justify-center rounded-full p-2 px-3 focus:outline-none [&_svg]:shrink-0">
+              <MdAdd
+                className={cn(
+                  'text-muted-foreground size-7 transition-transform duration-200',
+                  showMenu && 'rotate-45',
+                )}
+              />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className="w-52"
+              align="start"
+              alignOffset={-1}
+              side="top"
+              sideOffset={20}
+            >
+              <DialogTrigger asChild>
+                <DropdownMenuItem className="text-md">
+                  <MdPoll className="text-foreground size-5" />
+                  {t('proposals.actions.create')}
+                </DropdownMenuItem>
+              </DialogTrigger>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <DialogContent className="pt-10 md:pt-6">
+            <DialogHeader>
+              <DialogTitle>{t('proposals.headers.create')}</DialogTitle>
+            </DialogHeader>
+            <DialogDescription>
+              {t('proposals.descriptions.create')}
+            </DialogDescription>
+            <CreateProposalForm
+              roomId={roomId}
+              onSuccess={() => setShowProposalForm(false)}
+              submitButton={(props) => (
+                <DialogFooter>
+                  <ProposalFormSubmitButton {...props} />
+                </DialogFooter>
               )}
             />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="w-52"
-            align="start"
-            alignOffset={-1}
-            side="top"
-            sideOffset={20}
-          >
-            <DropdownMenuItem
-              className="text-md"
-              onClick={() => toast(t('prompts.inDev'))}
-            >
-              <MdPoll className="text-foreground size-5" />
-              {t('proposals.actions.create')}
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+          </DialogContent>
+        </Dialog>
 
         <div className="bg-input/30 flex w-full items-center rounded-3xl px-2">
           <FormField
