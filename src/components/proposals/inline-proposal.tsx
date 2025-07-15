@@ -82,17 +82,20 @@ export const InlineProposal = ({ proposal, room }: InlineProposalProps) => {
         return;
       }
 
-      // TODO: Convert to a reduce and include filtering for redacted relations
-      const userVotes = relations.map((relation) => {
+      const userVotes = relations.reduce<ProposalVote[]>((result, relation) => {
+        // Filter out redacted relations
+        if (relation.isRedacted()) {
+          return result;
+        }
         const { [M_POLL_RESPONSE.name]: pollResponse } = relation.getContent();
         const { answers } = pollResponse as PollResponseSubtype;
 
-        return {
+        return result.concat({
           sender: relation.getSender()!,
           ts: relation.getTs(),
           answers,
-        };
-      });
+        });
+      }, []);
 
       const collectedVotes = collectUserVotes(userVotes);
       setVotes(collectedVotes);
