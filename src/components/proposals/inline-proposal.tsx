@@ -24,11 +24,11 @@ interface InlineProposalProps {
   room: Room;
 }
 
-export function collectUserVotes(
+const collectUserVotes = (
   userResponses: ProposalVote[],
   userId?: string,
   selected?: string,
-) {
+) => {
   const userVotes: Record<string, ProposalVote> = {};
 
   for (const response of userResponses) {
@@ -47,7 +47,7 @@ export function collectUserVotes(
   }
 
   return userVotes;
-}
+};
 
 export const InlineProposal = ({ proposal, room }: InlineProposalProps) => {
   const [votes, setVotes] = useState<Record<string, ProposalVote>>({});
