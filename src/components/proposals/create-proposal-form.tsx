@@ -87,17 +87,11 @@ export const CreateProposalForm = ({
     ).serialize();
 
     try {
-      const result = await matrixClient.sendEvent(
+      await matrixClient.sendEvent(
         roomId,
         proposalStart.type as keyof TimelineEvents,
         proposalStart.content as TimelineEvents[keyof TimelineEvents],
       );
-
-      // TODO: Remove once no longer needed for debugging
-      console.info(t('proposals.prompts.proposalCreated'), result);
-      toast(t('proposals.prompts.proposalCreated'), {
-        description: JSON.stringify(result),
-      });
 
       form.reset();
       onSuccess();
