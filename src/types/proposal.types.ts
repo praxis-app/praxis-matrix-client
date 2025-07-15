@@ -8,7 +8,6 @@ export type ProposalAnswer = PollAnswer & {
   [PRAXIS_PROPOSAL_ANSWER_POSITION.name]: ProposalAnswerPosition;
 };
 
-// TODO: Determine whether sender field is needed
 export interface ProposalVote {
   sender: string;
   answers: string[];
