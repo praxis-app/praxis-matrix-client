@@ -105,7 +105,7 @@ export const CreateRoomForm = ({
         room_alias_name: values.name.toLowerCase().replace(/ /g, '-'),
         visibility: values.visibility,
 
-        // TODO: Remove when no longer needed for testing
+        // TODO: Handle bot invite in application service instead of client
         invite: ['@praxis-bot:rhizome.matrix.host'],
 
         // TODO: Uncomment if it's decided to enable guest access by default
