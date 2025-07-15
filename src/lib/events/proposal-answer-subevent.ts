@@ -7,12 +7,12 @@ import { PollAnswerSubevent } from 'matrix-js-sdk/src/extensible_events_v1/PollS
 
 export type ProposalAnswer = ExtensibleAnyMessageEventContent & {
   id: string;
-  position?: string;
+  position: string;
 };
 
 export class ProposalAnswerSubevent extends PollAnswerSubevent {
   public readonly id: string;
-  public readonly position?: string;
+  public readonly position: string;
 
   public constructor(wireFormat: IPartialEvent<ProposalAnswer>) {
     super(wireFormat);
