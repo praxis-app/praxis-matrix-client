@@ -76,11 +76,11 @@ export const InlineProposal = ({ proposal, room }: InlineProposalProps) => {
 
     const getResponses = async () => {
       const poll = room.polls.get(proposal.getId()!);
-      if (!poll) {
+      const responses = await poll?.getResponses();
+      const relations = responses?.getRelations();
+      if (!relations) {
         return;
       }
-      const responses = await poll.getResponses();
-      const relations = responses.getRelations();
 
       // TODO: Convert to a reduce and include filtering for redacted relations
       const userVotes = relations.map((relation) => {
