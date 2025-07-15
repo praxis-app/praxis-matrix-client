@@ -3,7 +3,8 @@ import {
   PROPOSAL_ANSWER_LABELS,
 } from '@/constants/proposal.constants';
 import { useMatrixClient } from '@/hooks/use-matrix-client';
-import { ProposalAnswer } from '@/types/proposal.types';
+import { cn } from '@/lib/shared.utils';
+import { ProposalAnswer, ProposalVote } from '@/types/proposal.types';
 import { TimelineEvents } from 'matrix-js-sdk';
 import { PollResponseEvent } from 'matrix-js-sdk/src/extensible_events_v1/PollResponseEvent';
 import { useTranslation } from 'react-i18next';
@@ -12,16 +13,24 @@ import { Button } from '../ui/button';
 
 interface Props {
   answer: ProposalAnswer;
+  myVote?: ProposalVote;
   roomId: string;
   proposalId: string;
 }
 
-export const ProposalVoteButton = ({ answer, roomId, proposalId }: Props) => {
+export const ProposalVoteButton = ({
+  answer,
+  myVote,
+  roomId,
+  proposalId,
+}: Props) => {
   const matrixClient = useMatrixClient();
   const { t } = useTranslation();
 
   const position = answer[PRAXIS_PROPOSAL_ANSWER_POSITION.name];
   const label = PROPOSAL_ANSWER_LABELS[position];
+
+  const isSelected = myVote?.answers.includes(answer.id);
 
   const handleClick = async () => {
     const response = PollResponseEvent.from(
@@ -46,7 +55,7 @@ export const ProposalVoteButton = ({ answer, roomId, proposalId }: Props) => {
     <Button
       variant="outline"
       size="lg"
-      className="flex-1"
+      className={cn('flex-1', isSelected && '!bg-primary/15')}
       onClick={handleClick}
     >
       {label}

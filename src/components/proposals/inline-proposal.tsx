@@ -1,11 +1,15 @@
+import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { timeAgo } from '@/lib/time.utils';
-import { ProposalAnswer } from '@/types/proposal.types';
+import { ProposalAnswer, ProposalVote } from '@/types/proposal.types';
 import {
+  M_POLL_RESPONSE,
   M_POLL_START,
   MatrixEvent,
+  PollResponseSubtype,
   PollStartSubtype,
   Room,
 } from 'matrix-js-sdk';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaClipboard } from 'react-icons/fa';
 import FormattedText from '../shared/formatted-text';
@@ -20,7 +24,38 @@ interface InlineProposalProps {
   room: Room;
 }
 
+export function collectUserVotes(
+  userResponses: ProposalVote[],
+  userId?: string,
+  selected?: string,
+) {
+  const userVotes: Record<string, ProposalVote> = {};
+
+  for (const response of userResponses) {
+    const otherResponse = userVotes[response.sender];
+    if (!otherResponse || otherResponse.ts < response.ts) {
+      userVotes[response.sender] = response;
+    }
+  }
+
+  if (selected && userId) {
+    userVotes[userId] = {
+      sender: userId,
+      ts: Date.now(),
+      answers: [selected],
+    };
+  }
+
+  return userVotes;
+}
+
 export const InlineProposal = ({ proposal, room }: InlineProposalProps) => {
+  const [votes, setVotes] = useState<Record<string, ProposalVote>>({});
+
+  const matrixClient = useMatrixClient();
+  const currentUserId = matrixClient.getUserId();
+  const myVote = currentUserId ? votes[currentUserId] : undefined;
+
   const { [M_POLL_START.name]: pollStart } = proposal.getContent();
   const { answers } = pollStart as PollStartSubtype;
   const { body } = pollStart.question;
@@ -33,6 +68,38 @@ export const InlineProposal = ({ proposal, room }: InlineProposalProps) => {
   const formattedDate = timeAgo(createdAt);
 
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (Object.keys(votes).length) {
+      return;
+    }
+
+    const getResponses = async () => {
+      const poll = room.polls.get(proposal.getId()!);
+      if (!poll) {
+        return;
+      }
+      const responses = await poll.getResponses();
+      const relations = responses.getRelations();
+
+      // TODO: Convert to a reduce and include filtering for redacted relations
+      const userVotes = relations.map((relation) => {
+        const { [M_POLL_RESPONSE.name]: pollResponse } = relation.getContent();
+        const { answers } = pollResponse as PollResponseSubtype;
+
+        return {
+          sender: relation.getSender()!,
+          ts: relation.getTs(),
+          answers,
+        };
+      });
+
+      const collectedVotes = collectUserVotes(userVotes);
+      setVotes(collectedVotes);
+    };
+
+    getResponses();
+  }, [proposal, room]);
 
   if (!body) {
     return null;
@@ -63,6 +130,7 @@ export const InlineProposal = ({ proposal, room }: InlineProposalProps) => {
                 key={answer.id}
                 roomId={room.roomId}
                 proposalId={proposal.getId()!}
+                myVote={myVote}
               />
             ))}
           </CardAction>
