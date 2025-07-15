@@ -17,6 +17,11 @@ import { MessageEvent } from 'matrix-js-sdk/src/extensible_events_v1/MessageEven
 import { PollStartEvent } from 'matrix-js-sdk/src/extensible_events_v1/PollStartEvent';
 import { ProposalAnswerSubevent } from './proposal-answer-subevent';
 
+enum MatrixSDKEventTypes {
+  PollAnswer = 'org.matrix.sdk.poll.answer',
+  PollQuestion = 'org.matrix.sdk.poll.question',
+}
+
 export class ProposalStartEvent extends PollStartEvent {
   public readonly answers: ProposalAnswerSubevent[];
   public readonly kind: KnownPollKind;
@@ -34,7 +39,7 @@ export class ProposalStartEvent extends PollStartEvent {
     }
 
     this.question = new MessageEvent({
-      type: 'org.matrix.sdk.poll.question',
+      type: MatrixSDKEventTypes.PollQuestion,
       content: poll.question,
     });
 
@@ -51,12 +56,12 @@ export class ProposalStartEvent extends PollStartEvent {
         : 1;
 
     if (!Array.isArray(poll.answers)) {
-      throw new InvalidEventError('Poll answers must be an array');
+      throw new InvalidEventError('Proposal answers must be an array');
     }
     const answers = poll.answers.slice(0, 20).map(
       (a) =>
         new ProposalAnswerSubevent({
-          type: 'org.matrix.sdk.poll.answer',
+          type: MatrixSDKEventTypes.PollAnswer,
           content: a,
         }),
     );
