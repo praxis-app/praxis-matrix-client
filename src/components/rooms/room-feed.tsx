@@ -21,9 +21,9 @@ export const RoomFeed = (props: { room: Room }) => {
     return b.getTs() - a.getTs();
   });
 
+  // Initial load
   useEffect(() => {
     const roomEvents = props.room.getLiveTimeline().getEvents();
-
     setEvents(
       roomEvents.filter(
         (e) =>
@@ -33,6 +33,7 @@ export const RoomFeed = (props: { room: Room }) => {
     );
   }, [props.room, props.room.roomId]);
 
+  // Realtime updates
   useEffect(() => {
     matrixClient.on(RoomEvent.Timeline, (event, room, toStart) => {
       const isSupportedEvent =
