@@ -7,9 +7,10 @@ import { cn } from '@/lib/shared.utils';
 import { ProposalAnswer, ProposalVote } from '@/types/proposal.types';
 import { TimelineEvents } from 'matrix-js-sdk';
 import { PollResponseEvent } from 'matrix-js-sdk/src/extensible_events_v1/PollResponseEvent';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '../ui/button';
+import { toast } from 'sonner';
 
 interface Props {
   answer: ProposalAnswer;
@@ -26,6 +27,8 @@ export const ProposalVoteButton = ({
   proposalId,
   setVotes,
 }: Props) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const matrixClient = useMatrixClient();
   const { t } = useTranslation();
 
@@ -36,32 +39,49 @@ export const ProposalVoteButton = ({
   const label = PROPOSAL_ANSWER_LABELS[position];
 
   const handleClick = async () => {
-    if (!currentUserId) {
+    if (!currentUserId || isLoading) {
       return;
     }
+    setIsLoading(true);
+
+    // Update state optimistically
+    let prevVotes = {};
+    setVotes((prev) => {
+      prevVotes = prev;
+      return {
+        ...prev,
+        [currentUserId]: {
+          sender: currentUserId,
+          answers: [answer.id],
+          ts: Date.now(),
+        },
+      };
+    });
+
     const response = PollResponseEvent.from(
       [answer.id],
       proposalId,
     ).serialize();
 
-    const result = await matrixClient.sendEvent(
-      roomId,
-      null,
-      response.type as keyof TimelineEvents,
-      response.content as TimelineEvents[keyof TimelineEvents],
-    );
+    try {
+      const result = await matrixClient.sendEvent(
+        roomId,
+        null,
+        response.type as keyof TimelineEvents,
+        response.content as TimelineEvents[keyof TimelineEvents],
+      );
 
-    setVotes((prev) => ({
-      ...prev,
-      [currentUserId]: {
-        sender: currentUserId,
-        answers: [answer.id],
-        ts: Date.now(),
-      },
-    }));
+      // TODO: Remove when no longer needed for debugging
+      console.info(t('votes.prompts.voteCast'), result);
+    } catch (error) {
+      // Revert state if error occurs
+      setVotes(prevVotes);
 
-    // TODO: Remove when no longer needed for debugging
-    console.info(t('votes.prompts.voteCast'), result);
+      toast(t('errors.somethingWentWrong'));
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
