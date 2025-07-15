@@ -64,15 +64,12 @@ export const ProposalVoteButton = ({
     ).serialize();
 
     try {
-      const result = await matrixClient.sendEvent(
+      await matrixClient.sendEvent(
         roomId,
         null,
         response.type as keyof TimelineEvents,
         response.content as TimelineEvents[keyof TimelineEvents],
       );
-
-      // TODO: Remove when no longer needed for debugging
-      console.info(t('votes.prompts.voteCast'), result);
     } catch (error) {
       // Revert state if error occurs
       setVotes(prevVotes);
