@@ -129,11 +129,12 @@ export const InlineProposal = ({ proposal, room }: InlineProposalProps) => {
           <CardAction className="flex flex-wrap gap-2">
             {answers.map((answer) => (
               <ProposalVoteButton
-                answer={answer as ProposalAnswer}
                 key={answer.id}
-                roomId={room.roomId}
-                proposalId={proposal.getId()!}
+                answer={answer as ProposalAnswer}
                 myVote={myVote}
+                proposalId={proposal.getId()!}
+                roomId={room.roomId}
+                setVotes={setVotes}
               />
             ))}
           </CardAction>

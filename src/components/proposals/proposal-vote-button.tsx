@@ -7,8 +7,8 @@ import { cn } from '@/lib/shared.utils';
 import { ProposalAnswer, ProposalVote } from '@/types/proposal.types';
 import { TimelineEvents } from 'matrix-js-sdk';
 import { PollResponseEvent } from 'matrix-js-sdk/src/extensible_events_v1/PollResponseEvent';
+import { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'sonner';
 import { Button } from '../ui/button';
 
 interface Props {
@@ -16,6 +16,7 @@ interface Props {
   myVote?: ProposalVote;
   roomId: string;
   proposalId: string;
+  setVotes: Dispatch<SetStateAction<Record<string, ProposalVote>>>;
 }
 
 export const ProposalVoteButton = ({
@@ -23,16 +24,21 @@ export const ProposalVoteButton = ({
   myVote,
   roomId,
   proposalId,
+  setVotes,
 }: Props) => {
   const matrixClient = useMatrixClient();
   const { t } = useTranslation();
 
+  const currentUserId = matrixClient.getUserId();
+  const isSelected = myVote?.answers.includes(answer.id);
+
   const position = answer[PRAXIS_PROPOSAL_ANSWER_POSITION.name];
   const label = PROPOSAL_ANSWER_LABELS[position];
 
-  const isSelected = myVote?.answers.includes(answer.id);
-
   const handleClick = async () => {
+    if (!currentUserId) {
+      return;
+    }
     const response = PollResponseEvent.from(
       [answer.id],
       proposalId,
@@ -45,10 +51,17 @@ export const ProposalVoteButton = ({
       response.content as TimelineEvents[keyof TimelineEvents],
     );
 
+    setVotes((prev) => ({
+      ...prev,
+      [currentUserId]: {
+        sender: currentUserId,
+        answers: [answer.id],
+        ts: Date.now(),
+      },
+    }));
+
+    // TODO: Remove when no longer needed for debugging
     console.info(t('votes.prompts.voteCast'), result);
-    toast(t('votes.prompts.voteCast'), {
-      description: JSON.stringify(result),
-    });
   };
 
   return (
