@@ -1,6 +1,7 @@
 // Ref: https://github.com/matrix-org/matrix-js-sdk/blob/develop/src/extensible_events_v1/PollStartEvent.ts
 
 import { PRAXIS_PROPOSAL_KIND } from '@/constants/proposal.constants';
+import { ProposalAnswer } from '@/types/proposal.types';
 import {
   IPartialEvent,
   KnownPollKind,
@@ -62,7 +63,7 @@ export class ProposalStartEvent extends PollStartEvent {
       (a) =>
         new ProposalAnswerSubevent({
           type: MatrixSDKEventTypes.PollAnswer,
-          content: a,
+          content: a as ProposalAnswer,
         }),
     );
     if (answers.length <= 0) {
