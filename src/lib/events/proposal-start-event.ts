@@ -1,6 +1,6 @@
 // Ref: https://github.com/matrix-org/matrix-js-sdk/blob/develop/src/extensible_events_v1/PollStartEvent.ts
 
-import { PRAXIS_PROPOSAL_KIND } from '@/constants/proposal.constants';
+import { PROPOSAL_KIND } from '@/constants/proposal.constants';
 import { ProposalAnswer } from '@/types/proposal.types';
 import {
   IPartialEvent,
@@ -75,7 +75,7 @@ export class ProposalStartEvent extends PollStartEvent {
   public static from(
     question: string,
     answers: { text: string; position: string }[] | string[],
-    kind: KnownPollKind | string = PRAXIS_PROPOSAL_KIND.name,
+    kind: KnownPollKind | string = PROPOSAL_KIND,
     maxSelections = 1,
   ): ProposalStartEvent {
     const processedAnswers = answers.map((a) => ({
