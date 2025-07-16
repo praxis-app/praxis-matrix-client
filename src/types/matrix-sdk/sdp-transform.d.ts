@@ -10,7 +10,6 @@
  * - Resolves all remaining TypeScript errors in the matrix-js-sdk WebRTC functionality
  */
 
-// Enhanced type definitions for sdp-transform library
 declare module 'sdp-transform' {
   export interface MediaDescription {
     type: string;

@@ -3,13 +3,10 @@
  *
  * This file is necessary because:
  * - matrix-js-sdk uses modern JavaScript features not yet in TypeScript's standard lib
- * - Uint8Array.toBase64() and fromBase64() methods are ES2024 features not fully supported
  * - Legacy WebRTC APIs like Navigator.webkitGetUserMedia are not in standard types
  * - Without these definitions, TypeScript throws TS2304 and TS2339 errors
  * - This extends the global interfaces to match the runtime APIs the SDK depends on
  */
-
-// Global type definitions for missing browser APIs
 
 declare global {
   interface Uint8Array {
