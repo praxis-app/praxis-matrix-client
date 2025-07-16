@@ -1,14 +1,10 @@
 // Ref: https://github.com/matrix-org/matrix-js-sdk/blob/develop/src/extensible_events_v1/PollStartEvent.ts
 
 import { PRAXIS_PROPOSAL_ANSWER_POSITION } from '@/constants/proposal.constants';
-import { ExtensibleAnyMessageEventContent, IPartialEvent } from 'matrix-js-sdk';
+import { ProposalAnswer } from '@/types/proposal.types';
+import { IPartialEvent } from 'matrix-js-sdk';
 import { InvalidEventError } from 'matrix-js-sdk/src/extensible_events_v1/InvalidEventError';
 import { PollAnswerSubevent } from 'matrix-js-sdk/src/extensible_events_v1/PollStartEvent';
-
-export type ProposalAnswer = ExtensibleAnyMessageEventContent & {
-  id: string;
-  position: string;
-};
 
 export class ProposalAnswerSubevent extends PollAnswerSubevent {
   public readonly id: string;
