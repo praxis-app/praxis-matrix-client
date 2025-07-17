@@ -1,6 +1,16 @@
-# Praxis Matrix Client
+# Praxis Matrix Client - Chat-Based CDM
 
-This is a Matrix client for Praxis.
+Praxis is a chat-based collaborative decision-making (CDM) app that seamlessly blends informal discussion with structured democratic processes. Built on the Matrix protocol for federated, decentralized communication, this tool allows groups to transition smoothly from informal conversation to structured decision-making without breaking flow.
+
+Designed for organizations, teams, and communities that need robust group decision-making capabilities, it combines the familiarity of messaging apps with powerful decision-making features like inline proposals, multiple voting models, and forum-style organization when needed. The frontend is built with React and the Matrix JS SDK, while the backend leverages the [Synapse](https://github.com/element-hq/synapse) homeserver implementation (Python + Rust) and a custom application service for validation and extended functionality.
+
+See the [Praxis CDM Service](https://github.com/praxis-app/praxis-cdm-service) repository for more information.
+
+## Work in progress
+
+You are entering a construction yard. Things are going to change and break regularly as the project is still getting off the ground. Please bear in mind that Praxis is not yet intended for serious use outside of testing or research purposes. Your feedback is highly welcome.
+
+Please note that this is also an experimental approach within the Praxis project. The main repository is located at https://github.com/praxis-app/praxis.
 
 ## Installation and setup
 
