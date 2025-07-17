@@ -1,12 +1,7 @@
 import { t } from '@/lib/shared.utils';
-import { NamespacedValue } from 'matrix-js-sdk/lib/NamespacedValue';
 
-export const PRAXIS_PROPOSAL_KIND = new NamespacedValue(
-  'com.praxis-app.proposal.kind',
-);
-export const PRAXIS_PROPOSAL_ANSWER_POSITION = new NamespacedValue(
-  'com.praxis-app.proposal.answer.position',
-);
+export const PROPOSAL_KIND = 'com.praxis-app.proposal.kind';
+export const ANSWER_POSITION = 'com.praxis-app.proposal.answer.position';
 
 export enum ProposalAnswerPosition {
   Agree = 'agree',

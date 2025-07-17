@@ -1,6 +1,7 @@
 import {
-  PRAXIS_PROPOSAL_ANSWER_POSITION,
+  ANSWER_POSITION,
   PROPOSAL_ANSWER_LABELS,
+  ProposalAnswerPosition,
 } from '@/constants/proposal.constants';
 import { useMatrixClient } from '@/hooks/use-matrix-client';
 import { cn } from '@/lib/shared.utils';
@@ -9,8 +10,8 @@ import { TimelineEvents } from 'matrix-js-sdk';
 import { PollResponseEvent } from 'matrix-js-sdk/src/extensible_events_v1/PollResponseEvent';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button } from '../ui/button';
 import { toast } from 'sonner';
+import { Button } from '../ui/button';
 
 interface Props {
   answer: ProposalAnswer;
@@ -35,8 +36,8 @@ export const ProposalVoteButton = ({
   const currentUserId = matrixClient.getUserId();
   const isSelected = myVote?.answers.includes(answer.id);
 
-  const position = answer[PRAXIS_PROPOSAL_ANSWER_POSITION.name];
-  const label = PROPOSAL_ANSWER_LABELS[position];
+  const position = answer[ANSWER_POSITION];
+  const label = PROPOSAL_ANSWER_LABELS[position as ProposalAnswerPosition];
 
   const handleClick = async () => {
     if (!currentUserId || isLoading) {

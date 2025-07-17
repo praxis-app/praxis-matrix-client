@@ -102,7 +102,7 @@ export const InlineProposal = ({ proposal, room }: InlineProposalProps) => {
     };
 
     getResponses();
-  }, [proposal, room]);
+  }, [proposal, room, votes]);
 
   if (!body) {
     return null;

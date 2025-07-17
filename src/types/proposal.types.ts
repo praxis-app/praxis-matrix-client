@@ -1,7 +1,7 @@
 import { PollAnswer } from 'matrix-js-sdk';
 
 export type ProposalAnswer = PollAnswer & {
-  position: string;
+  [key: string]: string;
 };
 
 export interface ProposalVote {
