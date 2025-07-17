@@ -135,7 +135,10 @@ export const LoginForm = () => {
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? (
               <>
-                <LuLoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+                <LuLoaderCircle
+                  className="mr-2 h-4 w-4 animate-spin"
+                  data-testid="loading-spinner"
+                />
                 Logging in...
               </>
             ) : (

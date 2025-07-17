@@ -60,8 +60,41 @@
   },
 
   "proposals": {
+    "labels": {
+      "body": "Proposal",
+      "active": "Active",
+      "closed": "Closed",
+      "consensusProposal": "Consensus Proposal"
+    },
+    "headers": {
+      "create": "Create a New Proposal"
+    },
+    "placeholders": {
+      "body": "Enter your proposal details..."
+    },
     "actions": {
-      "create": "Create Proposal"
+      "abstain": "Abstain",
+      "agree": "Agree",
+      "block": "Block",
+      "create": "Create Proposal",
+      "disagree": "Disagree"
+    },
+    "prompts": {
+      "creatingProposal": "Creating..."
+    },
+    "descriptions": {
+      "create": "Submit a proposal for this room to discuss and vote on.",
+      "body": "Enter your proposal"
+    },
+    "errors": {
+      "longBody": "Proposal body cannot exceed 6000 characters",
+      "errorCreatingProposal": "Error creating proposal"
+    }
+  },
+
+  "votes": {
+    "prompts": {
+      "voteCast": "Vote cast successfully"
     }
   },
 

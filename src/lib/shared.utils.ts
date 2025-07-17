@@ -11,8 +11,13 @@ export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
 };
 
-/** A wrapper around the i18next `t` function with type safety using the ns1 `Namespace` type. */
-export const t: TFunction<Namespace<'ns1'>, undefined> = translate;
+/**
+ * A wrapper around the i18next `t` function with type safety using the translation `Namespace` type.
+ *
+ * TODO: Remove this util and replace all instances with `useTranslation` hook
+ * Ref: https://github.com/praxis-app/praxis-matrix-client/pull/7#pullrequestreview-3022541526
+ */
+export const t: TFunction<Namespace<'translation'>, undefined> = translate;
 
 /** Generates a random string of a given length. */
 export const getRandomString = (length: number) => {

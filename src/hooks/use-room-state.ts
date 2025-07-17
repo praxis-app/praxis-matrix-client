@@ -23,7 +23,7 @@ export function useRoomState<T>(
 
   useEffect(() => {
     setValue(getValue(room));
-  }, [room]);
+  }, [room, getValue]);
 
   return value;
 }
