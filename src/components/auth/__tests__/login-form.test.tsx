@@ -63,11 +63,13 @@ describe('LoginForm', () => {
     mockStartClient.mockResolvedValue(undefined);
 
     // Mock the once method to immediately call the callback with SyncState.Prepared
-    mockOnce.mockImplementation((event: string, callback: Function) => {
-      if (event === ClientEvent.Sync) {
-        callback(SyncState.Prepared);
-      }
-    });
+    mockOnce.mockImplementation(
+      (event: string, callback: (state: SyncState) => void) => {
+        if (event === ClientEvent.Sync) {
+          callback(SyncState.Prepared);
+        }
+      },
+    );
 
     render(<LoginForm />);
 
@@ -125,5 +127,39 @@ describe('LoginForm', () => {
       expect(mockSetMatrixClient).toHaveBeenCalled();
       expect(mockNavigate).toHaveBeenCalledWith(NavigationPaths.Home);
     });
+  });
+
+  it('handles failed login and displays an error message', async () => {
+    const user = userEvent.setup();
+    const errorMessage = 'Invalid email or password. Please try again.';
+
+    // TODO: Ensure this doesn't show the error message as output in the console
+    mockLoginRequest.mockRejectedValue(new Error('Login failed'));
+
+    render(<LoginForm />);
+
+    const emailInput = screen.getByLabelText('auth.labels.email');
+    const passwordInput = screen.getByLabelText('auth.labels.password');
+    const submitButton = screen.getByRole('button', { name: 'Login' });
+
+    await user.type(emailInput, 'wrong@example.com');
+    await user.type(passwordInput, 'wrongpassword');
+    await user.click(submitButton);
+
+    await waitFor(() => {
+      expect(mockLoginRequest).toHaveBeenCalledWith({
+        user: 'wrong@example.com',
+        password: 'wrongpassword',
+        type: AuthType.Password,
+      });
+    });
+
+    await waitFor(() => {
+      const errorElement = screen.getByText(errorMessage);
+      expect(errorElement).toBeInTheDocument();
+    });
+
+    expect(mockSetMatrixClient).not.toHaveBeenCalled();
+    expect(mockNavigate).not.toHaveBeenCalled();
   });
 });
