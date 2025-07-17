@@ -1,16 +1,6 @@
 import '@testing-library/jest-dom';
 import { beforeEach, vi } from 'vitest';
 
-// Mock environment variables
-Object.defineProperty(globalThis, 'import.meta', {
-  value: {
-    env: {
-      VITE_SERVER_BASE_URL: 'https://test-server.example.com',
-    },
-  },
-  configurable: true,
-});
-
 // Mock localStorage
 const localStorageMock = {
   getItem: vi.fn(),
