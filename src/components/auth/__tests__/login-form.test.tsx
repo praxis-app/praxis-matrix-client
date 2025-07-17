@@ -133,7 +133,6 @@ describe('LoginForm', () => {
     const user = userEvent.setup();
     const errorMessage = 'Invalid email or password. Please try again.';
 
-    // TODO: Ensure this doesn't show the error message as output in the console
     mockLoginRequest.mockRejectedValue(new Error('Login failed'));
 
     render(<LoginForm />);
@@ -141,6 +140,11 @@ describe('LoginForm', () => {
     const emailInput = screen.getByLabelText('auth.labels.email');
     const passwordInput = screen.getByLabelText('auth.labels.password');
     const submitButton = screen.getByRole('button', { name: 'Login' });
+
+    // Suppress console.error during test to prevent error output
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {
+      return;
+    });
 
     await user.type(emailInput, 'wrong@example.com');
     await user.type(passwordInput, 'wrongpassword');
@@ -153,6 +157,9 @@ describe('LoginForm', () => {
         type: AuthType.Password,
       });
     });
+
+    // Restore console.error
+    consoleSpy.mockRestore();
 
     await waitFor(() => {
       const errorElement = screen.getByText(errorMessage);
