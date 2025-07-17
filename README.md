@@ -10,6 +10,8 @@ See the [Praxis CDM Service](https://github.com/praxis-org/praxis-cdm-service) r
 
 You are entering a construction yard. Things are going to change and break regularly as the project is still getting off the ground. Please bear in mind that Praxis is not yet intended for serious use outside of testing or research purposes. Your feedback is highly welcome.
 
+Please note that this is also an experimental approach within the Praxis project. The main repository is located at https://github.com/praxis-app/praxis.
+
 ## Installation and setup
 
 Ensure that you have [Node.js](https://nodejs.org/en/download) v22.11.0 installed on your machine before proceeding.
