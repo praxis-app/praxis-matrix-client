@@ -1,5 +1,6 @@
 import { timeAgo } from '@/lib/time.utils';
 import { MatrixEvent, Room } from 'matrix-js-sdk';
+import FormattedText from '../shared/formatted-text';
 import { UserAvatar } from '../users/user-avatar';
 
 interface Props {
@@ -31,7 +32,7 @@ export const Message = ({ message, room }: Props) => {
           <div className="text-muted-foreground text-sm">{formattedDate}</div>
         </div>
 
-        <div>{body}</div>
+        <FormattedText text={body} />
       </div>
     </div>
   );
