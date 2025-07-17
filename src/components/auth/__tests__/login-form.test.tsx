@@ -8,14 +8,12 @@ import { useNavigate } from 'react-router-dom';
 import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import { LoginForm } from '../login-form';
 
-// Mock dependencies
 vi.mock('@/store/app.store');
 vi.mock('react-router-dom');
 vi.mock('react-i18next');
 vi.mock('matrix-js-sdk');
 
 describe('LoginForm', () => {
-  // Mock functions
   const mockSetMatrixClient = vi.fn();
   const mockNavigate = vi.fn();
   const mockTranslate = vi.fn((key: string) => key);
@@ -23,7 +21,6 @@ describe('LoginForm', () => {
   const mockStartClient = vi.fn();
   const mockOnce = vi.fn();
 
-  // Mock implementations
   beforeEach(() => {
     vi.clearAllMocks();
 
