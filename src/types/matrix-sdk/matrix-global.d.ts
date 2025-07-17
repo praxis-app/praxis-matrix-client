@@ -33,8 +33,8 @@ declare global {
   interface Navigator {
     webkitGetUserMedia?: (
       constraints: MediaStreamConstraints,
-      successCallback: NavigatorUserMediaSuccessCallback,
-      errorCallback: NavigatorUserMediaErrorCallback,
+      successCallback: (stream: MediaStream) => void,
+      errorCallback: (error: Error) => void,
     ) => void;
   }
 
